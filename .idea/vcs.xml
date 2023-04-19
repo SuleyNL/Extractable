@@ -2,5 +2,9 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/TableGenerator/genalog" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/TableGenerator/genalog/genalog" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/TableGenerator/genalog2/genalog" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/TableGenerator/genalog2/genalog3" vcs="Git" />
   </component>
 </project>
