@@ -9,15 +9,13 @@ import requests
 from genalog.generation.content import CompositeContent, ContentType
 from genalog.generation.document import DocumentGenerator
 
-
 sample_text_url = "https://raw.githubusercontent.com/microsoft/genalog/main/example/sample/generation/example.txt"
 
 r = requests.get(sample_text_url, allow_redirects=True)
 text = r.content.decode("ascii")
 
-
 # Initialize CompositeContent Object
-paragraphs = text.split('\n\n') # split paragraphs by `\n\n`
+paragraphs = text.split('\n\n')  # split paragraphs by `\n\n`
 content_types = [ContentType.PARAGRAPH] * len(paragraphs)
 content = CompositeContent(paragraphs, content_types)
 
@@ -85,5 +83,5 @@ for doc in doc_gen:
     plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
     plt.title(f"Image ({img.shape[1]}x{img.shape[0]})")
     plt.show()
-    
+
 '''

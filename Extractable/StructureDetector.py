@@ -4,7 +4,7 @@ from Extractable.library import *
 import abc
 from typing import Type
 
-import torch
+import torch	
 from PIL import Image
 from toolz import compose_left
 from transformers import AutoImageProcessor, TableTransformerForObjectDetection, DetrFeatureExtractor
