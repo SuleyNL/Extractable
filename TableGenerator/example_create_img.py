@@ -1,7 +1,7 @@
 from genalog.pipeline import AnalogDocumentGeneration
 from PIL import Image as im
 import matplotlib.pyplot as plt
-from genalog.degradation.degrader import ImageState
+from genalog.degrader import ImageState
 import requests
 
 

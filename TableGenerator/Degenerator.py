@@ -1,5 +1,4 @@
-import cv2
-from genalog.degradation.degrader import Degrader
+from genalog.degrader import Degrader
 from matplotlib import pyplot as plt
 
 # We are applying degradation effects to the images in the following sequence:
