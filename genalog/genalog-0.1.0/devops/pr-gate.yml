@@ -1,0 +1,51 @@
+# ---------------------------------------------------------
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# ---------------------------------------------------------
+
+name: $(Date:yyyyMMdd).$(Rev:r)
+
+trigger: none # trigger only via pr
+
+pr:
+- main
+
+variables:
+- group: azureResourceKeys
+
+stages:
+- stage: static_analysis
+  jobs:
+  - job: flake8_linux_py36
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - template: templates/base/run-linter.yml
+      parameters:
+        pyVersion: '3.6'
+    - task: ComponentGovernanceComponentDetection@0
+
+- stage: unit_tests
+  dependsOn: static_analysis
+  jobs:
+  - template: templates/run-tests-on-multiple-os-py.yml
+    parameters:
+      pyVersions: ['3.6', '3.7', '3.8']
+      testTypes: ['unit', 'io']
+      imageOSs: ['ubuntu-18.04']  # 'windows-latest', 'macos-latest' are not supported
+
+- stage: e2e_tests
+  dependsOn: static_analysis
+  jobs:
+  - template: templates/run-tests-on-multiple-os-py.yml
+    parameters:
+      pyVersions: ['3.6']
+      testTypes: ['e2e']
+      imageOSs: ['ubuntu-18.04']  # 'windows-latest', 'macos-latest' are not supported
+
+- stage: collect_final_code_coverage
+  dependsOn: 
+  - unit_tests
+  - e2e_tests
+  jobs:
+  - template: templates/merge-cov-reports.yml

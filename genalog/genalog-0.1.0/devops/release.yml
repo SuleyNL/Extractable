@@ -1,0 +1,78 @@
+# ---------------------------------------------------------
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# ---------------------------------------------------------
+
+trigger: none # Need manual trigger
+
+parameters:
+- name: releaseType
+  displayName: Release Type
+  type: string
+  default: Test
+  values:
+  - Test
+  - Production
+  
+strategy:
+  matrix:
+    linux_x64_py3.6:
+      imageName: 'ubuntu-18.04'
+      python.version: '3.6'
+
+pool:
+    vmImage: '$(imageName)'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '$(python.version)'
+    addToPath: true
+    architecture: 'x64'
+  displayName: 'Use Python $(python.version)'
+
+- bash: |
+    pip install --upgrade pip 
+    pip install setuptools wheel
+    python setup.py bdist_wheel --dist-dir dist
+    python setup.py sdist --dist-dir dist
+  workingDirectory: $(Build.SourcesDirectory)
+  displayName: 'Building wheel package & sdist'
+
+- bash: |
+    pip install twine
+  workingDirectory: $(Build.SourcesDirectory)
+  displayName: 'Install twine' 
+
+- task: TwineAuthenticate@1
+  inputs:
+    pythonUploadServiceConnection: testpypi
+  condition: ${{eq(parameters.releaseType, 'Test')}}
+  displayName: 'Twine Authentication for Test'
+
+- task: TwineAuthenticate@1
+  inputs:
+    pythonUploadServiceConnection: pypi
+  condition: ${{eq(parameters.releaseType, 'Production')}}
+  displayName: 'Twine Authentication for Production'
+
+- bash: |
+    twine upload --verbose -r genalog --config-file $(PYPIRC_PATH) dist/*.whl
+  workingDirectory: $(Build.SourcesDirectory)
+  displayName: 'Uploading Wheel to ${{parameters.releaseType}} PyPI'
+
+- task: GitHubRelease@1
+  inputs:
+    gitHubConnection: 'github.com_laserprec'
+    repositoryName: 'microsoft/genalog'
+    action: 'create'
+    target: '$(Build.SourceVersion)'
+    tagSource: 'gitTag'
+    tagPattern: 'v.*'
+    releaseNotesFilePath: 'CHANGELOG.md'
+    assets: '$(Build.SourcesDirectory)/dist/*'
+    isDraft: true
+    changeLogCompareToRelease: 'lastFullRelease'
+    changeLogType: 'commitBased'
+  condition: ${{eq(parameters.releaseType, 'Test')}}
+  displayName: 'Prepare GitHub Release (Draft)'

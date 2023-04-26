@@ -1,0 +1,40 @@
+# ---------------------------------------------------------
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# ---------------------------------------------------------
+
+# Template for running tests on multiple Python versions and platforms
+parameters:
+- name: testType
+  type: string
+  default: all
+  values:
+    - unit
+    - e2e
+    - slow
+    - azure
+    - io
+    - all
+
+steps:
+- bash: |
+    if [[ '${{parameters.testType}}' == 'all' ]]
+    then
+      tox -e py 
+    elif [[ '${{parameters.testType}}' == 'unit' ]]
+    then
+      tox -e py -- tests/unit
+    elif [[ '${{parameters.testType}}' == 'e2e' ]]
+    then
+      tox -e py -- tests/e2e
+    else
+      tox -e py -- -m "${{parameters.testType}}"
+    fi
+  env:
+    # These keys come from azureResourceKeys variable group
+    BLOB_KEY : $(BLOB_KEY) 
+    SEARCH_SERVICE_KEY: $(SEARCH_SERVICE_KEY)
+    COGNITIVE_SERVICE_KEY: $(COGNITIVE_SERVICE_KEY)
+    COMPUTER_VISION_SUBSCRIPTION_KEY: $(COMPUTER_VISION_SUBSCRIPTION_KEY)
+  workingDirectory: $(Build.SourcesDirectory)
+  displayName: 'Running (${{parameters.testType}}) Tests'
