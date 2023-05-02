@@ -25,20 +25,20 @@ class Options:
     @property
     def __default__(self):
         return {
-            "with_lines": True,
-            "lines_width": 1,
-            "double_lines": False,
-            "font_size": 8,
-            "rows_in_cell": 1,
-            "empty_values": 0,
-            "censor_bars": 0,
-            "vertical_headers": False,
-            "text_alignment": "L",
-            "text_underscore": False,
-            "colored_uneven_rows": False,
-            "colored_header": False,
-            "column_amount": 4,
-            "row_amount": 5,
+            OptionsENUM.WITH_LINES: True,
+            OptionsENUM.LINES_WIDTH: 1,
+            OptionsENUM.DOUBLE_LINES: False,
+            OptionsENUM.FONT_SIZE: 8,
+            OptionsENUM.ROWS_IN_CELL: 1,
+            OptionsENUM.EMPTY_VALUES: 0,
+            OptionsENUM.CENSOR_BARS: 0,
+            OptionsENUM.VERTICAL_HEADERS: False,
+            OptionsENUM.TEXT_ALIGNMENT: 'L',
+            OptionsENUM.TEXT_UNDERSCORE: False,
+            OptionsENUM.COLORED_UNEVEN_ROWS: False,
+            OptionsENUM.COLORED_HEADER: False,
+            OptionsENUM.ROW_AMOUNT: 5,
+            OptionsENUM.COLUMN_AMOUNT: 4,
         }
 
 
