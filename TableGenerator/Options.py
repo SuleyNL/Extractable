@@ -3,14 +3,14 @@ from enum import Enum
 
 class Options:
     with_lines = [True, False]
-    lines_width = [1, 3, 5]
-    double_lines = [True, False]
+    lines_width = [1, 3, 5]                 #--
+    double_lines = [True, False]            #--
     font_size = [5, 8, 16]
     rows_in_cell = [1, 2, 3]
     empty_values = [0, 0.2, 0.4, 0.6, 0.8, 1]
-    censor_bars = [0, 0.2, 0.4, 0.6, 0.8, 1]
-    vertical_headers = [True, False]
-    text_alignment = ["L", "C", "R", "X"]
+    censor_bars = [0, 0.2, 0.4, 0.6, 0.8, 1]#-
+    vertical_headers = [True, False]        #--
+    text_alignment = ["L", "C", "R", "X"]   #-
     text_underscore = [True, False]
     colored_uneven_rows = [True, False]
     colored_header = [True, False]
@@ -25,20 +25,20 @@ class Options:
     @property
     def __default__(self):
         return {
-            OptionsENUM.WITH_LINES: True,
-            OptionsENUM.LINES_WIDTH: 1,
-            OptionsENUM.DOUBLE_LINES: False,
-            OptionsENUM.FONT_SIZE: 8,
-            OptionsENUM.ROWS_IN_CELL: 1,
-            OptionsENUM.EMPTY_VALUES: 0,
-            OptionsENUM.CENSOR_BARS: 0,
-            OptionsENUM.VERTICAL_HEADERS: False,
-            OptionsENUM.TEXT_ALIGNMENT: 'L',
-            OptionsENUM.TEXT_UNDERSCORE: False,
-            OptionsENUM.COLORED_UNEVEN_ROWS: False,
-            OptionsENUM.COLORED_HEADER: False,
-            OptionsENUM.ROW_AMOUNT: 5,
-            OptionsENUM.COLUMN_AMOUNT: 4,
+            OptionsENUM.WITH_LINES.value: True,
+            OptionsENUM.LINES_WIDTH.value: 1,
+            OptionsENUM.DOUBLE_LINES.value: False,
+            OptionsENUM.FONT_SIZE.value: 8,
+            OptionsENUM.ROWS_IN_CELL.value: 1,
+            OptionsENUM.EMPTY_VALUES.value: 0,
+            OptionsENUM.CENSOR_BARS.value: 0,
+            OptionsENUM.VERTICAL_HEADERS.value: False,
+            OptionsENUM.TEXT_ALIGNMENT.value: 'L',
+            OptionsENUM.TEXT_UNDERSCORE.value: False,
+            OptionsENUM.COLORED_UNEVEN_ROWS.value: False,
+            OptionsENUM.COLORED_HEADER.value: False,
+            OptionsENUM.ROW_AMOUNT.value: 5,
+            OptionsENUM.COLUMN_AMOUNT.value: 4,
         }
 
 
