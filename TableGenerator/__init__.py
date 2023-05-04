@@ -28,11 +28,11 @@ def startProcess(output_dir:str):
         GenerateOneTable(output_file, **args)
 
 
-def GenerateOneTable(output_file, **args):
+def GenerateOneTable(output_file, args):
     table_data = GenerateTableData(args[OptionsENUM.COLUMN_AMOUNT.value],
                                    args[OptionsENUM.ROW_AMOUNT.value],
                                    args[OptionsENUM.ROWS_IN_CELL.value])
 
-    GeneratePDFTable(table_data, output_file, **args)
+    GeneratePDFTable(table_data, output_file, args)
 
 
