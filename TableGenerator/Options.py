@@ -7,7 +7,7 @@ class Options:
     double_lines = [True, False]            #--
     font_size = [5, 8, 16]
     rows_in_cell = [1, 2, 3]
-    empty_values = [0, 0.2, 0.4, 0.6, 0.8, 1]
+    empty_values = [0, 0.1, 0.2, 0.3, 0.4, 0.5]
     censor_bars = [0, 0.2, 0.4, 0.6, 0.8, 1]#-
     vertical_headers = [True, False]        #--
     text_alignment = ["L", "C", "R", "X"]   #-

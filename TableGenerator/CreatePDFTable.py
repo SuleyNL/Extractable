@@ -52,18 +52,20 @@ def GeneratePDFTable(table_data: numpy.array, output_file: str, options: dict):
 
     num_cells = sum(len(row) for row in table_data)
 
-    # CENSOR_BARS
-    #num_censor_cells = max(round(num_cells * options[OptionsENUM.CENSOR_BARS.value]), 1) # Make sure at least one cell is merged
-    num_censor_cells = max(round(num_cells * 0.2), 1) # Make sure at least one cell is merged
+    #EMPTY CELLS
+    num_empty_cells = math.ceil(num_cells * options[OptionsENUM.EMPTY_VALUES.value])
+    # Create a list of cell indices to empty
+    empty_indices = random.sample(range(num_cells), num_empty_cells)
 
+
+    # CENSOR_BARS
+    num_censor_cells = math.ceil(num_cells * options[OptionsENUM.CENSOR_BARS.value]) # Make sure at least one cell is merged
     # Create a list of cell indices to censor
     censor_indices = random.sample(range(num_cells), num_censor_cells)
 
     #MERGE CELLS
-    #num_merge_cells = round(num_cells * options[OptionsENUM.EMPTY_VALUES.value])
+    #num_merge_cells = math.ceil(num_cells * options[OptionsENUM.EMPTY_VALUES.value])
     num_merge_cells = math.ceil(num_cells * 0.0)
-
-
     # Create a list of cell indices to merge
     merge_indices = random.sample(range(num_cells), num_merge_cells)
 
@@ -75,8 +77,6 @@ def GeneratePDFTable(table_data: numpy.array, output_file: str, options: dict):
                    cell_fill_color=100
                    ) as table:
 
-        censor_index_set = set(censor_indices)
-        merge_index_set = set(merge_indices)
         cell_id = 0
         i = 0
         
@@ -90,25 +90,23 @@ def GeneratePDFTable(table_data: numpy.array, output_file: str, options: dict):
                 colspan = 1
                 pdf.set_fill_color(255,255,255)
 
-                if cell_id in censor_index_set:
+                if cell_id in censor_indices:
                     pdf.set_fill_color(10, 10, 20)
                     pass
 
-                if cell_id in merge_index_set:
+                if cell_id in merge_indices:
                     colspan = 2
                     pass
 
-                datum = data_row[j]
+                if cell_id in empty_indices:
+                    datum = ""
+                    pass
+
                 row.cell(datum, colspan=colspan)
 
                 cell_id += 1
                 j += colspan
             i+=1
-
-
-        pass
-    pdf.ln(h=10)
-
 
     # add all options as text in pdf
     pdf.set_font("FreeSans", size=8)
