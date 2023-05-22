@@ -19,7 +19,7 @@ Extractable is designed to be easy to use and highly flexible. Some of its key f
 ## Installation
 
 To install Extractable, simply use pip:
-```pip install extractable```
+```pip install Extractable```
 
 Extractable is designed to be used with Python 3.10.
 
@@ -28,12 +28,15 @@ Extractable is designed to be used with Python 3.10.
 To use Extractable, simply import the library and use its functions. We provide comprehensive documentation to get started with the library.
 
 ```python
-import extractable
+import Extractable
+
+input_file = "path_to/your_input.pdf"
+output_file = "path_to/your_preferred_output"
 
 # Extract tables from a PDF file
-tables = extractable.extract_tables("path/to/pdf")
+tables = Extractable.Extractor.extract_using_TATR(input_file, output_file)
 
-# Process the tables using your favorite data science library
+# That's how simple it is!
 ```
 
 ## Contributing
