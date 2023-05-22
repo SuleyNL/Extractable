@@ -9,7 +9,7 @@ from TableGenerator.Options import *
 from TableGenerator.CreatePDFTable import *
 
 options = Options()
-params = options.__dict__
+params = options.__to_dict__()
 
 
 def startProcess(output_dir:str):
@@ -25,14 +25,17 @@ def startProcess(output_dir:str):
 
         output_file = output_dir + str(i) + '.pdf'
 
-        GenerateOneTable(output_file, **args)
+        GenerateOneTable(output_file, args)
 
 
 def GenerateOneTable(output_file, args):
+    print()
     table_data = GenerateTableData(args[OptionsENUM.COLUMN_AMOUNT.value],
                                    args[OptionsENUM.ROW_AMOUNT.value],
                                    args[OptionsENUM.ROWS_IN_CELL.value])
 
     GeneratePDFTable(table_data, output_file, args)
+    print("table generated with the following settings: " + str(args))
+
 
 

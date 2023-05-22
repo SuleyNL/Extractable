@@ -37,8 +37,8 @@ class PDFToImageConverter(Pipe):
         return dataobj
 
 
-def plot_results(pil_img, model, scores, labels, boxes):
-    plt.figure(figsize=(16, 10))
+def plot_results(pil_img, model, scores, labels, boxes, title: str):
+    plt.figure(figsize=(8, 5))
     plt.imshow(pil_img)
     ax = plt.gca()
     COLORS = [[0.000, 0.447, 0.741], [0.850, 0.325, 0.098], [0.929, 0.694, 0.125],
@@ -46,11 +46,12 @@ def plot_results(pil_img, model, scores, labels, boxes):
     colors = COLORS * 100
     for score, label, (xmin, ymin, xmax, ymax), c in zip(scores.tolist(), labels.tolist(), boxes.tolist(), colors):
         ax.add_patch(plt.Rectangle((xmin, ymin), xmax - xmin, ymax - ymin,
-                                   fill=False, color=c, linewidth=3))
+                                   fill=False, color=c, linewidth=1))
         text = f'{model.config.id2label[label]}: {score:0.2f}'
-        ax.text(xmin, ymin, text, fontsize=15,
-                bbox=dict(facecolor='yellow', alpha=0.5))
-    plt.axis('off')
+        ax.text(xmin, ymin, text, fontsize=6,
+                bbox=dict(facecolor='yellow', alpha=0.3))
+    plt.axis('on')
+    plt.title(title)
     plt.show()
 
 
