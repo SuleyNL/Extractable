@@ -36,12 +36,12 @@ tables = extractable.extract_tables("path/to/pdf")
 # Process the tables using your favorite data science library
 ```
 
-##Contributing
+## Contributing
 Extractable is an open-source project and we welcome contributions from the community. If you would like to contribute, please take a look at our contribution guidelines and feel free to reach out to us on our GitHub repository.
 
-##License
+## License
 This software is free to use, and I encourage anyone who finds it useful to use it in any way they see fit. While I have not applied any license to the software, I do ask that users respect Microsofts' authorship of the TATR software and give appropriate attribution when sharing or distributing it. Please note that I make no warranties or guarantees about the software's functionality, and I am not liable for any damages resulting from its use
 
-##Acknowledgments
+## Acknowledgments
 We would like to thank Microsoft for developing the TATR library and making it open-source. We have built upon their work to create Extractable, and we are grateful for their contribution to the open-source community.
 
