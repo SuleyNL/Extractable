@@ -19,8 +19,10 @@ class StructureRecognitionWithTATR(Pipe):
     def process(dataobj: DataObj):
         # Detect table structure in a table
         # Return the table locations as an object that can be passed to the next step in the pipeline
-        file_path = dataobj.input_file
-        image = Image.open(file_path).convert("RGB")
+        if dataobj.data['table_image'] is not None:
+            image = dataobj.data['table_image']
+        else:
+            image = Image.open(dataobj.input_file).convert("RGB")
         width, height = image.size
         image.resize((int(width * 0.5), int(height * 0.5)))
 
@@ -35,7 +37,7 @@ class StructureRecognitionWithTATR(Pipe):
         target_sizes = [image.size[::-1]]
 
         results = feature_extractor.post_process_object_detection(outputs, threshold=0.9, target_sizes=target_sizes)[0]
-        plot_results(image, model, results['scores'], results['labels'], results['boxes'])
+        plot_results(image, model, results['scores'], results['labels'], results['boxes'], 'This is the recognized structure')
 
         dataobj.data[__class__.__name__] = {"objects detected: " + str([f"{model.config.id2label[value]}: {np.count_nonzero(results['labels'] == value)}" for value in np.unique(results['labels'])])}
         return dataobj

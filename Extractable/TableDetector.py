@@ -21,6 +21,8 @@ class TableDetectorTATR(Pipe):
         # Detect tables in the image
         # Return the table locations as an object that can be passed to the next step in the pipeline
 
+        inner_data = {}
+
         file_path = dataobj.input_file
         image = Image.open(file_path).convert("RGB")
 
@@ -32,20 +34,41 @@ class TableDetectorTATR(Pipe):
 
         # convert outputs (bounding boxes and class logits) to COCO API
         target_sizes = torch.tensor([image.size[::-1]])
-        results = image_processor.post_process_object_detection(outputs, threshold=0.9, target_sizes=target_sizes)[
-            0
-        ]
+        results = image_processor.post_process_object_detection(outputs, threshold=0.9, target_sizes=target_sizes)[0]
 
         for score, label, box in zip(results["scores"], results["labels"], results["boxes"]):
             box = [round(i, 2) for i in box.tolist()]
-            dataobj.data[__class__.__name__] = {f"Detected {model.config.id2label[label.item()]} with confidence " +
-                                                f"{round(score.item(), 3)} at location {box}"}
+            inner_data['detection'] = f"Detected {model.config.id2label[label.item()]} with confidence " +f"{round(score.item(), 3)} at location {box}"
             print(
                 f"Detected {model.config.id2label[label.item()]} with confidence "
                 f"{round(score.item(), 3)} at location {box}"
             )
-        print('r')
-        plot_results(image, model, results['scores'], results['labels'], results['boxes'])
+        plot_results(image, model, results['scores'], results['labels'], results['boxes'], title='Tables detected: ' + str(len(results["scores"])))
+
+        max_width, max_height = target_sizes[0]
+
+        if len(results["scores"]) > 0:
+            for i, bbox in enumerate(results["boxes"]):
+                # Extract the bounding box values as a list
+                bbox = bbox.int().tolist()
+
+                # Increase the bounding box size by 5 pixels on all sides so that
+                bbox_enlarged = [
+                    max(bbox[0] - 20, 0),  # expanded_x_min
+                    max(bbox[1] - 20, 0),  # expanded_y_min
+                    min(bbox[2] + 20, max_width),  # expanded_x_max
+                    min(bbox[3] + 20, max_height)  # expanded_y_max
+                ]
+
+                table_image = image.crop(bbox_enlarged)
+                plt.imshow(table_image)
+                plt.axis('on')
+                plt.title(
+                    'cropped image of only table, number ' + str(i + 1) + ' out of ' + str(len(results["scores"])))
+                plt.show()
+            dataobj.data['table_image'] = table_image
+
+        dataobj.data[__class__.__name__] = inner_data
         return dataobj
 
 
