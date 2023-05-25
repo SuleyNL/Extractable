@@ -20,54 +20,67 @@ class TableDetectorTATR(Pipe):
     def process(dataobj: DataObj):
         # Detect tables in the image
         # Return the table locations as an object that can be passed to the next step in the pipeline
+        if dataobj.data['table_images'] is not None and len(dataobj.data['table_images']) > 0:
+            images = dataobj.data['table_images']
+        elif dataobj.data['pdf_images'] is not None and len(dataobj.data['pdf_images']) > 0:
+            images = dataobj.data['pdf_images']
+        else:
+            images = None
+            #TODO: raise error no image found
+            pass
 
         inner_data = {}
+        inner_data['detection'] = []
+        table_images = []                   #cropped images of only the table
+        for i, image_path in enumerate(images):
+            image = Image.open(image_path).convert("RGB")
 
-        file_path = dataobj.input_file
-        image = Image.open(file_path).convert("RGB")
+            image_processor = AutoImageProcessor.from_pretrained("microsoft/table-transformer-detection")
+            model = TableTransformerForObjectDetection.from_pretrained("microsoft/table-transformer-detection")
 
-        image_processor = AutoImageProcessor.from_pretrained("microsoft/table-transformer-detection")
-        model = TableTransformerForObjectDetection.from_pretrained("microsoft/table-transformer-detection")
+            inputs = image_processor(images=image, return_tensors="pt")
+            outputs = model(**inputs)
 
-        inputs = image_processor(images=image, return_tensors="pt")
-        outputs = model(**inputs)
+            # convert outputs (bounding boxes and class logits) to COCO API
+            target_sizes = torch.tensor([image.size[::-1]])
+            results = image_processor.post_process_object_detection(outputs, threshold=0.9, target_sizes=target_sizes)[0]
 
-        # convert outputs (bounding boxes and class logits) to COCO API
-        target_sizes = torch.tensor([image.size[::-1]])
-        results = image_processor.post_process_object_detection(outputs, threshold=0.9, target_sizes=target_sizes)[0]
+            for score, label, box in zip(results["scores"], results["labels"], results["boxes"]):
+                box = [round(i, 2) for i in box.tolist()]
+                inner_data['detection'].append(f"Detected {model.config.id2label[label.item()]} with confidence: " +f"{round(score.item(), 3)} at location: {box}")
+                print(
+                    f"Detected {model.config.id2label[label.item()]} with confidence "
+                    f"{round(score.item(), 3)} at location {box}"
+                )
 
-        for score, label, box in zip(results["scores"], results["labels"], results["boxes"]):
-            box = [round(i, 2) for i in box.tolist()]
-            inner_data['detection'] = f"Detected {model.config.id2label[label.item()]} with confidence " +f"{round(score.item(), 3)} at location {box}"
-            print(
-                f"Detected {model.config.id2label[label.item()]} with confidence "
-                f"{round(score.item(), 3)} at location {box}"
-            )
-        plot_results(image, model, results['scores'], results['labels'], results['boxes'], title='Tables detected: ' + str(len(results["scores"])))
+            plot_results(image, model, results['scores'], results['labels'], results['boxes'], title='Page number: ' + str(i + 1) + '/' + str(len(images)) +' | Tables detected: ' + str(len(results["scores"])))
 
-        max_width, max_height = target_sizes[0]
+            max_height, max_width = target_sizes[0]
 
-        if len(results["scores"]) > 0:
-            for i, bbox in enumerate(results["boxes"]):
-                # Extract the bounding box values as a list
-                bbox = bbox.int().tolist()
+            if len(results["scores"]) > 0:
+                for j, bbox in enumerate(results["boxes"]):
+                    # Extract the bounding box values as a list
+                    bbox = bbox.int().tolist()
 
-                # Increase the bounding box size by 5 pixels on all sides so that
-                bbox_enlarged = [
-                    max(bbox[0] - 20, 0),  # expanded_x_min
-                    max(bbox[1] - 20, 0),  # expanded_y_min
-                    min(bbox[2] + 20, max_width),  # expanded_x_max
-                    min(bbox[3] + 20, max_height)  # expanded_y_max
-                ]
+                    # Increase the bounding box size by 5 pixels on all sides so that
+                    bbox_enlarged = [
+                        max(bbox[0] - 40, 0),  # expanded_x_min
+                        max(bbox[1] - 40, 0),  # expanded_y_min
+                        min(bbox[2] + 40, max_width.item()),  # expanded_x_max
+                        min(bbox[3] + 40, max_height.item())  # expanded_y_max
+                    ]
 
-                table_image = image.crop(bbox_enlarged)
-                plt.imshow(table_image)
-                plt.axis('on')
-                plt.title(
-                    'cropped image of only table, number ' + str(i + 1) + ' out of ' + str(len(results["scores"])))
-                plt.show()
-            dataobj.data['table_image'] = table_image
+                    table_image = image.crop(bbox_enlarged)
+                    plt.imshow(table_image)
+                    plt.axis('on')
+                    plt.title('cropped image of only table | number ' + str(j + 1) + ' out of ' + str(len(results["scores"])))
+                    plt.show()
 
+                    image_path = f"{dataobj.input_file.rstrip('.pdf')}_table_{i + 1}{('.' + str(j + 1))if i>0 else ''}.jpg"
+                    table_image.save(image_path, "JPEG")
+                    table_images.append(image_path)
+
+        dataobj.data['table_images'] = table_images
         dataobj.data[__class__.__name__] = inner_data
         return dataobj
 

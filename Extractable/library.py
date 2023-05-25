@@ -1,4 +1,5 @@
 import abc
+from enum import Enum
 from typing import Type
 
 import torch
@@ -10,8 +11,18 @@ from transformers import TableTransformerForObjectDetection
 import numpy as np
 
 
+class Filetype(Enum):
+    PDF = 'pdf'
+    IMG = 'img'
+
+
 class DataObj:
-    def __init__(self, data: dict, input_file: str, output_file: str):
+    def __init__(self, data: dict, input_file: str, output_file: str, input_filetype: Filetype = Filetype.PDF):
+
+        data['pdf_images'] = [input_file] if input_filetype is not None else None        # image of each page in pdf
+        data['table_images'] = None                                                    # image of each table in pdf
+        data['xml_labeled_tables'] = None
+
         self.data = data
         self.input_file = input_file
         self.output_file = output_file
@@ -37,6 +48,62 @@ class PDFToImageConverter(Pipe):
         return dataobj
 
 
+class Bbox:
+    def __init__(self, x1, y1, x2, y2):
+        self.x1 = max(x1, x2)
+        self.x2 = min(x1, x2)
+        self.y1 = max(y1, y2)
+        self.y2 = max(y1, y2)
+        self.box = [self.x1, self.y1, self.x2, self.y2]
+        self.width = abs(self.x1 - self.x2)
+        self.height = abs(self.y1 - self.y2)
+
+    @property
+    def area(self):
+        """
+        Calculates the surface area. useful for IOU!
+        """
+        return (self.x2 - self.x1 + 1) * (self.y2 - self.y1 + 1)
+
+    def intersect(self, bbox):
+        x1 = max(self.x1, bbox.x1)
+        y1 = max(self.y1, bbox.y1)
+        x2 = min(self.x2, bbox.x2)
+        y2 = min(self.y2, bbox.y2)
+        intersection = max(0, x2 - x1 + 1) * max(0, y2 - y1 + 1)
+        return intersection
+
+    def iou(self, bbox):
+        intersection = self.intersection(bbox)
+
+        iou = intersection / float(self.area + bbox.area - intersection)
+        # return the intersection over union value
+        return iou
+
+
+def intersects(box1:tuple, box2:tuple):
+    # accepts two tuples
+    # tuple[0] = x
+    # tuple[1] = y
+
+    width = 100
+    height = 15
+
+    x1, y1 = box1
+    box1_top_left = (x1,            y1)
+    box1_top_right = (x1 + width,    y1)
+    box1_bottom_left = (x1,            y1 + height)
+    box1_bottom_right = (x1 + width,    y1 + height)
+
+    x2, y2 = box2
+    box2_top_left = (x2,            y2)
+    box2_top_right = (x2 + width,    y2)
+    box2_bottom_left = (x2,            y2 + height)
+    box2_bottom_right = (x2 + width,    y2 + height)
+
+    return not (box1_top_right[0] < box2_bottom_left[0] or box1_bottom_left[0] > box2_top_right[0] or box1_top_right[1] > box2_bottom_left[1] or box1_bottom_left[1] < box2_top_right[1])
+
+
 def plot_results(pil_img, model, scores, labels, boxes, title: str):
     plt.figure(figsize=(8, 5))
     plt.imshow(pil_img)
@@ -44,12 +111,54 @@ def plot_results(pil_img, model, scores, labels, boxes, title: str):
     COLORS = [[0.000, 0.447, 0.741], [0.850, 0.325, 0.098], [0.929, 0.694, 0.125],
               [0.494, 0.184, 0.556], [0.466, 0.674, 0.188], [0.301, 0.745, 0.933]]
     colors = COLORS * 100
-    for score, label, (xmin, ymin, xmax, ymax), c in zip(scores.tolist(), labels.tolist(), boxes.tolist(), colors):
+    drawn_boxes = []
+    for score, label, (xmin, ymin, xmax, ymax), color in zip(scores.tolist(), labels.tolist(), boxes.tolist(), colors):
+        alpha = 0.15
+        linewidth = 1
+        if model.config.id2label[label] == 'table row':
+            text_x = 0-(pil_img.height*0.18)
+            text_y = ((ymin+ymax)/2)
+            color = [0.850, 0.325, 0.098]
+
+        elif model.config.id2label[label] == 'table column':
+            text_x = ((xmin+xmax)/2)-80
+            text_y = ymin-15
+            color = [0.350, 0.925, 0.098]
+
+        elif model.config.id2label[label] == 'table':
+            text_x = xmin+30
+            text_y = ymin-50
+            color = [0.000, 0.447, 0.741]
+
+        else:
+            text_x = ((xmin+xmax)/2)-100
+            text_y = ((ymin+ymax)/2)+3
+            color = [0.033, 0.045, 0.033]
+            alpha = 0.05
+            linewidth = 0
+            ax.add_patch(plt.Rectangle((xmin, ymin), xmax - xmin, ymax - ymin, facecolor=color, alpha=0.3, linewidth=0))
+
         ax.add_patch(plt.Rectangle((xmin, ymin), xmax - xmin, ymax - ymin,
-                                   fill=False, color=c, linewidth=1))
+                                   fill=False, color=color, linewidth=linewidth))
+        '''
+        # check if textbox overlaps with another textbox
+        # not that necessary yet, maybe in future with different type of pdf-tables
+        for drawn_box in drawn_boxes:
+            while intersects(drawn_box, (xmin, ymin)):
+                #if model.config.id2label[label] == 'table':
+                xmin = max(xmin-10, 0)
+                if xmin == 0:
+                    ymin = max(ymin-10, 0)
+
+                if xmin == 0 and ymin == 0:
+                    break
+        '''
+
         text = f'{model.config.id2label[label]}: {score:0.2f}'
-        ax.text(xmin, ymin, text, fontsize=6,
-                bbox=dict(facecolor='yellow', alpha=0.3))
+        ax.text(text_x, text_y, text, fontsize=6,
+                bbox=dict( facecolor=color, alpha=alpha))
+        drawn_boxes.append([xmin, ymin])
+
     plt.axis('on')
     plt.title(title)
     plt.show()

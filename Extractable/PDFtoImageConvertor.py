@@ -21,26 +21,32 @@ class ConvertUsingPDF2image(Pipe):
         # Convert the PDF to an image using pdf2image library (dependency on poppler)
         # Return the image as an object that can be passed to the next step in the pipeline
 
-        images = pdf2image.convert_from_path(dataobj.input_file)
+        pdf2images = pdf2image.convert_from_path(dataobj.input_file)
+        path_to_images = []
 
-        for i, image in enumerate(images):
+        for i, image in enumerate(pdf2images):
+
             image_path = f"{dataobj.input_file.rstrip('.pdf')}_page_{i + 1}.jpg"
             image.save(image_path, "JPEG")
-            dataobj.input_file = image_path #temporary solution! doesnt scale!
+            path_to_images.append(image_path)
 
-        # Display the first image
-        plt.imshow(images[0])
-        plt.title('pdf is transformed to this image')
-        plt.axis('on')  # Optional: Turn off axis labels
-        plt.show()
+            # Display the image
+            image_file = Image.open(image_path).convert("RGB")
+            plt.imshow(image_file)
 
+            plt.title('pdf is transformed to image(s) | number: ' + str(i+1) + '/' + str(len(pdf2images)))
+            plt.axis('on')  # Optional: Turn off axis labels
+            plt.show()
+
+        dataobj.data['pdf_images'] = path_to_images
         dataobj.data[__class__.__name__] = {}
         return dataobj
 
 
-class ConvertUsingPDF2JPG(Pipe):
+class dont_use_ConvertUsingPDF2JPG(Pipe):
     @staticmethod
     def process(dataobj: DataObj):
+        # This one doesnt work (yet) !
         # Convert the PDF to an image using pdf2jpg library dependent (uses cmd commands under the hood)
         # Return the image as an object that can be passed to the next step in the pipeline
 
