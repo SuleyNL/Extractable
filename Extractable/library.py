@@ -50,10 +50,14 @@ class PDFToImageConverter(Pipe):
 
 class Bbox:
     def __init__(self, x1, y1, x2, y2):
-        self.x1 = max(x1, x2)
-        self.x2 = min(x1, x2)
-        self.y1 = max(y1, y2)
+        self.x1 = min(x1, x2)
+        self.x2 = max(x1, x2)
+        self.y1 = min(y1, y2)
         self.y2 = max(y1, y2)
+
+        self.xy1 = (self.x1, self.y1)
+        self.xy2 = (self.x2, self.y2)
+
         self.box = [self.x1, self.y1, self.x2, self.y2]
         self.width = abs(self.x1 - self.x2)
         self.height = abs(self.y1 - self.y2)
@@ -65,7 +69,7 @@ class Bbox:
         """
         return (self.x2 - self.x1 + 1) * (self.y2 - self.y1 + 1)
 
-    def intersect(self, bbox):
+    def intersection_area(self, bbox):
         x1 = max(self.x1, bbox.x1)
         y1 = max(self.y1, bbox.y1)
         x2 = min(self.x2, bbox.x2)
@@ -74,32 +78,32 @@ class Bbox:
         return intersection
 
     def iou(self, bbox):
-        intersection = self.intersection(bbox)
+        intersection = self.intersection_area(bbox)
 
         iou = intersection / float(self.area + bbox.area - intersection)
         # return the intersection over union value
         return iou
 
 
-def intersects(box1:tuple, box2:tuple):
+def intersects(box1: tuple, box2: tuple,
+               box1_width: int = 100, box1_height: int = 15,
+               box2_width: int = 100, box2_height: int = 15):
+
     # accepts two tuples
     # tuple[0] = x
     # tuple[1] = y
 
-    width = 100
-    height = 15
-
     x1, y1 = box1
     box1_top_left = (x1,            y1)
-    box1_top_right = (x1 + width,    y1)
-    box1_bottom_left = (x1,            y1 + height)
-    box1_bottom_right = (x1 + width,    y1 + height)
+    box1_top_right = (x1 + box1_width,    y1)
+    box1_bottom_left = (x1,            y1 + box1_height)
+    box1_bottom_right = (x1 + box1_width,    y1 + box1_height)
 
     x2, y2 = box2
     box2_top_left = (x2,            y2)
-    box2_top_right = (x2 + width,    y2)
-    box2_bottom_left = (x2,            y2 + height)
-    box2_bottom_right = (x2 + width,    y2 + height)
+    box2_top_right = (x2 + box2_width,    y2)
+    box2_bottom_left = (x2,            y2 + box2_height)
+    box2_bottom_right = (x2 + box2_width,    y2 + box2_height)
 
     return not (box1_top_right[0] < box2_bottom_left[0] or box1_bottom_left[0] > box2_top_right[0] or box1_top_right[1] > box2_bottom_left[1] or box1_bottom_left[1] < box2_top_right[1])
 
@@ -140,9 +144,10 @@ def plot_results(pil_img, model, scores, labels, boxes, title: str):
 
         ax.add_patch(plt.Rectangle((xmin, ymin), xmax - xmin, ymax - ymin,
                                    fill=False, color=color, linewidth=linewidth))
+
         '''
+        # not that necessary yet, maybe in future with different type of pdf-tables. But for now adds unnecessary complexity
         # check if textbox overlaps with another textbox
-        # not that necessary yet, maybe in future with different type of pdf-tables
         for drawn_box in drawn_boxes:
             while intersects(drawn_box, (xmin, ymin)):
                 #if model.config.id2label[label] == 'table':
