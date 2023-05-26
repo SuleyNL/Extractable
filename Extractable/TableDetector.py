@@ -6,10 +6,8 @@ from typing import Type
 import torch
 from PIL import Image
 from toolz import compose_left
-from transformers import AutoImageProcessor, TableTransformerForObjectDetection, DetrFeatureExtractor, \
-    DetrForObjectDetection
+from transformers import AutoImageProcessor, TableTransformerForObjectDetection, DetrForObjectDetection, DetrImageProcessor
 import matplotlib.pyplot as plt
-from transformers import TableTransformerForObjectDetection
 import numpy as np
 from enum import Enum
 import scipy
@@ -20,7 +18,6 @@ class TableDetectorTATR(Pipe):
     @staticmethod
     def process(dataobj):
         logger = Extractor.Logger()
-        logger.info('hello', extra={'className': __class__.__name__})
 
         # Detect tables in the image
         # Return the table locations as an object that can be passed to the next step in the pipeline
@@ -55,6 +52,7 @@ class TableDetectorTATR(Pipe):
                 logger.info(
                     f"Detected {model.config.id2label[label.item()]} with confidence " f"{round(score.item(), 3)} at location {box}",
                     extra={'className': __class__.__name__})
+
             if dataobj.mode == Mode.PRESENTATION:
                 plot_results(image, model, results['scores'], results['labels'], results['boxes'], title='Page number: ' + str(i + 1) + '/' + str(len(images)) +' | Tables detected: ' + str(len(results["scores"])))
 
@@ -97,7 +95,7 @@ class TableDetectorDETR(Pipe):
         file_path = dataobj.input_file
         image = Image.open(file_path).convert("RGB")
 
-        feature_extractor = DetrFeatureExtractor.from_pretrained('facebook/detr-resnet-101-dc5')
+        feature_extractor = DetrImageProcessor.from_pretrained('facebook/detr-resnet-101-dc5')
         model = DetrForObjectDetection.from_pretrained('facebook/detr-resnet-101-dc5')
 
         inputs = feature_extractor(images=image, return_tensors="pt")

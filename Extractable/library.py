@@ -5,34 +5,46 @@ from typing import Type
 import torch
 from PIL import Image
 from toolz import compose_left
-from transformers import AutoImageProcessor, TableTransformerForObjectDetection, DetrFeatureExtractor
+from transformers import AutoImageProcessor, TableTransformerForObjectDetection
 import matplotlib.pyplot as plt
-from transformers import TableTransformerForObjectDetection
 import numpy as np
 
 
 class Filetype(Enum):
     PDF = 'pdf'
     IMG = 'img'
+    XML = 'xml'
+    JSON = 'json'
+    CSV = 'csv'
+    HTML = 'html'
+    YAML = 'yaml'
 
 
 class Mode(Enum):
-    PERFORMANCE = 'performance'
-    PRESENTATION = 'presentation'
+    PERFORMANCE = 1     # maximize performance for big data ETL
+    PRESENTATION = 2    # show every visual step in process
+    DEBUG = 3           # same as presentation, but also log debugging-relevant information
 
 
 class DataObj:
-    def __init__(self, data: dict, input_file: str, output_file: str, input_filetype: Filetype = Filetype.PDF, mode: Mode = Mode.PERFORMANCE):
+    def __init__(self, data: dict,
+                 input_file: str,
+                 output_file: str,
+                 output_filetype: Filetype = Filetype.XML,
+                 mode: Mode = Mode.PERFORMANCE):
 
-        data['pdf_images'] = [input_file] if input_filetype is not None else None        # image of each page in pdf
-        data['table_images'] = None                                                      # image of each table in pdf
-        data['table_structures'] = None                                                  # a Table() containing bboxes, for each table in pdf
-        data['tables'] = None                                                            # a Table() containing bboxes and text, for each table in pdf
+        data['pdf_images'] = None if input_file.endswith('.pdf') else [input_file]       # image of each page in pdf
+        data['table_images'] = None                                                      # image of each table
+        data['table_structures'] = None                                                  # a Table() containing bboxes, for each table
+        data['tables'] = None                                                            # a Table() containing bboxes and text, for each table
 
         self.data = data
         self.input_file = input_file    # input pdf or img
-        self.output_file = output_file  # output xml (or other type, yet to be produced)
-        self.mode = mode                # performance or presentation, if presentation: show every visual step in process
+        self.output_file = output_file  # output dir for example 'tables/' produces tables/_table_1.xml
+                                        # if not a dir, like 'tables/hello', it will produce tables/hello_table_1.xml
+        self.output_filetype = output_filetype
+        self.mode = mode
+
 
     def output(self):
         return self.data
@@ -96,7 +108,7 @@ def intersects(box1: tuple, box2: tuple,
                box1_width: int = 100, box1_height: int = 15,
                box2_width: int = 100, box2_height: int = 15):
 
-    # accepts two tuples
+    # accepts two tuples within which:
     # tuple[0] = x
     # tuple[1] = y
 
@@ -153,7 +165,9 @@ def plot_results(pil_img, model, scores, labels, boxes, title: str):
                                    fill=False, color=color, linewidth=linewidth))
 
         '''
-        # not that necessary yet, maybe in future with different type of pdf-tables. But for now adds unnecessary complexity
+        # Below code not that necessary yet, maybe in future with different type of pdf-tables. 
+        # But for now adds unnecessary complexity
+        
         # check if textbox overlaps with another textbox
         for drawn_box in drawn_boxes:
             while intersects(drawn_box, (xmin, ymin)):
@@ -194,103 +208,6 @@ class TableDetector(Pipe):
         return dataobj
 
 
-class TableStructureDetectorTATR(Pipe):
-    @staticmethod
-    def process(dataobj: DataObj):
-        # Detect table structure in a table
-        # Return the table locations as an object that can be passed to the next step in the pipeline
-        file_path = dataobj.input_file
-        image = Image.open(file_path).convert("RGB")
-        width, height = image.size
-        image.resize((int(width * 0.5), int(height * 0.5)))
-
-        feature_extractor = DetrFeatureExtractor()
-        encoding = feature_extractor(image, return_tensors="pt")
-        encoding.keys()
-
-        model = TableTransformerForObjectDetection.from_pretrained("microsoft/table-transformer-structure-recognition")
-
-        with torch.no_grad():
-            outputs = model(**encoding)
-        target_sizes = [image.size[::-1]]
-
-        results = feature_extractor.post_process_object_detection(outputs, threshold=0.9, target_sizes=target_sizes)[0]
-        plot_results(image, model, results['scores'], results['labels'], results['boxes'])
-
-        dataobj.data[__class__.__name__] = {"objects detected: " + str([f"{model.config.id2label[value]}: {np.count_nonzero(results['labels'] == value)}" for value in np.unique(results['labels'])])}
-        return dataobj
-
-
-class TableDetectorTATR(Pipe):
-    @staticmethod
-    def process(dataobj: DataObj):
-        # Detect tables in the image
-        # Return the table locations as an object that can be passed to the next step in the pipeline
-
-        # file_path = hf_hub_download(repo_id="nielsr/example-pdf", repo_type="dataset", filename="example_pdf.png")
-        file_path = dataobj.input_file
-        image = Image.open(file_path).convert("RGB")
-
-        image_processor = AutoImageProcessor.from_pretrained("microsoft/table-transformer-detection")
-        model = TableTransformerForObjectDetection.from_pretrained("microsoft/table-transformer-detection")
-
-        inputs = image_processor(images=image, return_tensors="pt")
-        outputs = model(**inputs)
-
-        # convert outputs (bounding boxes and class logits) to COCO API
-        target_sizes = torch.tensor([image.size[::-1]])
-        results = image_processor.post_process_object_detection(outputs, threshold=0.9, target_sizes=target_sizes)[
-            0
-        ]
-
-        for score, label, box in zip(results["scores"], results["labels"], results["boxes"]):
-            box = [round(i, 2) for i in box.tolist()]
-            dataobj.data[__class__.__name__] = {f"Detected {model.config.id2label[label.item()]} with confidence " +
-                                                f"{round(score.item(), 3)} at location {box}"}
-            print(
-                f"Detected {model.config.id2label[label.item()]} with confidence "
-                f"{round(score.item(), 3)} at location {box}"
-            )
-
-        plot_results(image, model, results['scores'], results['labels'], results['boxes'])
-        return dataobj
-
-
-class TextExtractor(Pipe):
-    @staticmethod
-    def process(dataobj):
-        # Extract text from the cells
-        # Return the text as an object that can be passed to the next step in the pipeline
-        dataobj.data[__class__.__name__] = {}
-        return dataobj
-
-
-class TextExtractorTesseractOCR(Pipe):
-    @staticmethod
-    def process(dataobj):
-        # Extract text from the cells
-        # Return the text as an object that can be passed to the next step in the pipeline
-        dataobj.data[__class__.__name__] = {}
-        return dataobj
-
-
-class TextExtractorPDF(Pipe):
-    '''
-    We process the PDF document into a sequence of
-    characters each with their associated bounding box and use
-    the Needleman-Wunsch algorithm [9] to align this with the
-    character sequence for the text extracted from each table
-    XML
-    '''
-
-    @staticmethod
-    def process(dataobj):
-        # Extract text from the cells
-        # Return the text as an object that can be passed to the next step in the pipeline
-        dataobj.data[__class__.__name__] = {}
-        return dataobj
-
-
 class XMLConverter(Pipe):
     @staticmethod
     def process(dataobj):
@@ -298,36 +215,3 @@ class XMLConverter(Pipe):
         # Return the XML as a string
         dataobj.data[__class__.__name__] = {}
         return dataobj
-
-
-# Define the input and output files
-data_object = DataObj({}, input_file='input.txt', output_file='output.txt')
-
-pipes: list[Type[Pipe]] = [PDFToImageConverter, ImagePreprocessor, TableDetector, TextExtractor, XMLConverter]
-
-
-def Pipeline(dataobj: DataObj, pipes: list[Type[Pipe]]):
-    # Initialize dataobj
-    processed_dataobj = dataobj
-
-    # Apply pipelines in sequence
-    for pipe in pipes:
-        processed_dataobj = pipe.process(processed_dataobj)
-
-    # Return final processed data object
-    return processed_dataobj.output()
-
-
-# Build pipeline of desired functions and order
-pipeline = compose_left(
-    PDFToImageConverter.process,
-    ImagePreprocessor.process,
-    TableDetector.process,
-    TextExtractor.process,
-    XMLConverter.process,
-    DataObj.output
-)
-
-# Start pipeline with desired DataObj
-# print(Pipeline(data_object, pipes))
-# print(pipeline(data_object))

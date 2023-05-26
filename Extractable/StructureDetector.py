@@ -13,7 +13,6 @@ from PIL import Image
 from toolz import compose_left
 from transformers import AutoImageProcessor, TableTransformerForObjectDetection, DetrFeatureExtractor
 import matplotlib.pyplot as plt
-from transformers import TableTransformerForObjectDetection
 import numpy as np
 from enum import Enum
 import xml.etree.ElementTree as ET
@@ -61,11 +60,11 @@ class StructureRecognitionWithTATR(Pipe):
             for label, score, box in zip(results['labels'].tolist(), results['scores'].tolist(), results['boxes'].tolist()):
                 # parameter tuning, TATR is overly sensitive to certain labels
                 # filter out results of table column (1) where confidence is lower than 89%
-                # filter out results of table row (2) where confidence is lower than 74% @lager dan 74aub @niet hoger dan 64
+                # filter out results of table row (2) where confidence is lower than 74% @lager dan 74 @niet hoger dan 64
                 # filter out results of table spanning cell (5) where confidence is lower than 88%
                 if not (label == 1 and score <= .88) and \
                         not (label == 2 and score <= .64) and \
-                        not (label == 5 and score <= .88):
+                        not ((label == 3 or label == 4 or label == 5) and score <= .88):
                     # Add new elements to the respective tensors in the results dictionary
                     filtered_results['boxes'].append(box)
                     filtered_results['scores'].append(score)
