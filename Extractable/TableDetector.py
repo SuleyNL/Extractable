@@ -13,11 +13,15 @@ from transformers import TableTransformerForObjectDetection
 import numpy as np
 from enum import Enum
 import scipy
+from Extractable import Extractor
 
 
 class TableDetectorTATR(Pipe):
     @staticmethod
-    def process(dataobj: DataObj):
+    def process(dataobj):
+        logger = Extractor.Logger()
+        logger.info('hello', extra={'className': __class__.__name__})
+
         # Detect tables in the image
         # Return the table locations as an object that can be passed to the next step in the pipeline
         if dataobj.data['table_images'] is not None and len(dataobj.data['table_images']) > 0:
@@ -48,12 +52,11 @@ class TableDetectorTATR(Pipe):
             for score, label, box in zip(results["scores"], results["labels"], results["boxes"]):
                 box = [round(i, 2) for i in box.tolist()]
                 inner_data['detection'].append(f"Detected {model.config.id2label[label.item()]} with confidence: " +f"{round(score.item(), 3)} at location: {box}")
-                print(
-                    f"Detected {model.config.id2label[label.item()]} with confidence "
-                    f"{round(score.item(), 3)} at location {box}"
-                )
-
-            plot_results(image, model, results['scores'], results['labels'], results['boxes'], title='Page number: ' + str(i + 1) + '/' + str(len(images)) +' | Tables detected: ' + str(len(results["scores"])))
+                logger.info(
+                    f"Detected {model.config.id2label[label.item()]} with confidence " f"{round(score.item(), 3)} at location {box}",
+                    extra={'className': __class__.__name__})
+            if dataobj.mode == Mode.PRESENTATION:
+                plot_results(image, model, results['scores'], results['labels'], results['boxes'], title='Page number: ' + str(i + 1) + '/' + str(len(images)) +' | Tables detected: ' + str(len(results["scores"])))
 
             max_height, max_width = target_sizes[0]
 
@@ -71,10 +74,12 @@ class TableDetectorTATR(Pipe):
                     ]
 
                     table_image = image.crop(bbox_enlarged)
-                    plt.imshow(table_image)
-                    plt.axis('on')
-                    plt.title('cropped image of only table | number ' + str(j + 1) + ' out of ' + str(len(results["scores"])))
-                    plt.show()
+
+                    if dataobj.mode == Mode.PRESENTATION:
+                        plt.imshow(table_image)
+                        plt.axis('on')
+                        plt.title('cropped image of only table | number ' + str(j + 1) + ' out of ' + str(len(results["scores"])))
+                        plt.show()
 
                     image_path = f"{dataobj.input_file.rstrip('.pdf')}_table_{i + 1}{('.' + str(j + 1))if i>0 else ''}.jpg"
                     table_image.save(image_path, "JPEG")
@@ -86,7 +91,9 @@ class TableDetectorTATR(Pipe):
 
 
 class TableDetectorDETR(Pipe):
-    def process(dataobj: DataObj):
+    #unused
+    @staticmethod
+    def process(dataobj):
         file_path = dataobj.input_file
         image = Image.open(file_path).convert("RGB")
 
@@ -103,8 +110,6 @@ class TableDetectorDETR(Pipe):
         # convert outputs (bounding boxes and class logits)
         image_width, image_height = image.size[::-1]
 
-
-
         # Only keep the bounding boxes, not the tensor
         bboxes.squeeze_(0)
 
@@ -116,7 +121,7 @@ class TableDetectorDETR(Pipe):
 
         scores = np.ones((bboxes.shape[0]))
         ids = np.zeros((bboxes.shape[0]))
-        plot_results(image, model, scores, ids, bboxes)
+        plot_results(image, model, scores, ids, bboxes, title='detected tables using DETR')
         return dataobj
 
 

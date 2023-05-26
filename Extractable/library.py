@@ -16,16 +16,23 @@ class Filetype(Enum):
     IMG = 'img'
 
 
+class Mode(Enum):
+    PERFORMANCE = 'performance'
+    PRESENTATION = 'presentation'
+
+
 class DataObj:
-    def __init__(self, data: dict, input_file: str, output_file: str, input_filetype: Filetype = Filetype.PDF):
+    def __init__(self, data: dict, input_file: str, output_file: str, input_filetype: Filetype = Filetype.PDF, mode: Mode = Mode.PERFORMANCE):
 
         data['pdf_images'] = [input_file] if input_filetype is not None else None        # image of each page in pdf
-        data['table_images'] = None                                                    # image of each table in pdf
-        data['xml_labeled_tables'] = None
+        data['table_images'] = None                                                      # image of each table in pdf
+        data['table_structures'] = None                                                  # a Table() containing bboxes, for each table in pdf
+        data['tables'] = None                                                            # a Table() containing bboxes and text, for each table in pdf
 
         self.data = data
-        self.input_file = input_file
-        self.output_file = output_file
+        self.input_file = input_file    # input pdf or img
+        self.output_file = output_file  # output xml (or other type, yet to be produced)
+        self.mode = mode                # performance or presentation, if presentation: show every visual step in process
 
     def output(self):
         return self.data
@@ -35,7 +42,7 @@ class Pipe(abc.ABC):
     @staticmethod
     @abc.abstractmethod
     def process(input_obj: DataObj):
-        pass
+        return data_object
 
 
 class PDFToImageConverter(Pipe):

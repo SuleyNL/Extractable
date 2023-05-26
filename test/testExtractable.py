@@ -1,7 +1,8 @@
 from Extractable import Extractor
-from Extractable.library import Filetype
+from Extractable.library import *
 
-Extractor.extract_using_TATR('files/WNT1.pdf', 'files/WNT1')
+Extractor.extract_using_TATR('tables/default.pdf', 'tables/default', mode=Mode.PRESENTATION)
+
 #Extractor.extract_using_TATR("tables/default.pdf", "")
 
 #Extractor.extract_using_TATR_structure_only("tables/testingnewfunctions.pdf", "")

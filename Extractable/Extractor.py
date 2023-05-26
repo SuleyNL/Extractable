@@ -7,17 +7,23 @@ from Extractable import ImagePreprocessor
 from Extractable import TableDetector
 from Extractable import StructureDetector
 from Extractable import TextExtractor
+import logging
+
+# create logger
+logger = logging.getLogger('Extractor')
+logger.setLevel(logging.DEBUG)
+# create console handler and set level to debug
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+# create formatter
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - [%(className)s] - %(message)s')
+ch.setFormatter(formatter)
+# add ch with formatter to logger
+logger.addHandler(ch)
 
 
-data_object = DataObj({}, input_file='input.txt', output_file='output.txt')
-
-extract_using_test = compose_left(
-        PDFtoImageConvertor.ConvertUsingPDF2image.process,
-        ImagePreprocessor.StandardPreprocessor.process,
-        TableDetector.TableDetectorTATR.process,
-        TextExtractor.TextExtractorTesseractOCR.process,
-        DataObj.output
-    )
+def Logger():
+    return logger
 
 
 def extract_using_TATR_table_only(input_file: str, output_dir: str, filetype: Filetype = Filetype.PDF):
@@ -56,7 +62,7 @@ def extract_using_TATR_structure_only(input_file: str, output_dir: str, filetype
     print(output)
 
 
-def extract_using_TATR(input_file: str, output_dir: str, filetype: Filetype = Filetype.PDF):
+def extract_using_TATR(input_file: str, output_dir: str, filetype: Filetype = Filetype.PDF, mode:Mode = Mode.PERFORMANCE):
     if filetype == Filetype.PDF:
         pipeline = compose_left(
             PDFtoImageConvertor.ConvertUsingPDF2image.process,
@@ -66,10 +72,10 @@ def extract_using_TATR(input_file: str, output_dir: str, filetype: Filetype = Fi
     else:
         pipeline = compose_left(
             TableDetector.TableDetectorTATR.process,
-            StructureDetector.StructureReqcognitionWithTATR.process,
+            StructureDetector.StructureRecognitionWithTATR.process,
             DataObj.output)
 
-    data_object = DataObj({}, input_file=input_file, output_file=output_dir, input_filetype=filetype)
+    data_object = DataObj({}, input_file=input_file, output_file=output_dir, input_filetype=filetype, mode=mode)
 
     output = pipeline(data_object)
 
