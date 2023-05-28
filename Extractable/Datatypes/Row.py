@@ -2,17 +2,21 @@ from typing import List
 from Extractable.Datatypes.Cell import Cell
 import xml.etree.ElementTree as ET
 
+from Extractable.library import Bbox
+
 
 class Row:
     def __init__(
             self,
-            cells: List[Cell],
             row_id: int,
+
+            cells: List[Cell] = [],
             xy1: tuple = None,
-            xy2: tuple = None
+            xy2: tuple = None,
+            bbox: Bbox = None
     ):
-        self.cells = cells
         self.row_id = row_id
+        self.cells = cells
         self.xy1 = xy1 if xy1 is not None else tuple([min(cell.xy1[0] for cell in cells), min(cell.xy1[1] for cell in cells)])
         self.xy2 = xy2 if xy2 is not None else tuple([max(cell.xy2[0] for cell in cells), max(cell.xy2[1] for cell in cells)])
 
@@ -38,3 +42,13 @@ class Row:
         self.cells = cells
         self.xy1 = self.xy1 if self.xy1 is not None else tuple([min(cell.xy1[0] for cell in self.cells), min(cell.xy1[1] for cell in self.cells)])
         self.xy2 = self.xy2 if self.xy2 is not None else tuple([max(cell.xy2[0] for cell in self.cells), max(cell.xy2[1] for cell in self.cells)])
+
+    def intersection_with_column_bbox(self, column_bbox: Bbox):
+        y1 = self.xy1[1]
+        y2 = self.xy2[1]
+
+        x1 = column_bbox.x1
+        x2 = column_bbox.x2
+
+        return Bbox(x1, y1, x2, y2)
+

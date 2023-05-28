@@ -170,7 +170,7 @@ class Table:
                 new_cell = Cell(text, id, xy1, xy2)
                 created_cells.append(new_cell)
 
-            created_rows.append(Row(created_cells, i))
+            created_rows.append(Row(cells=created_cells, row_id=i))
 
         tableu = Table(0, created_rows)
         import xml.etree.ElementTree as ET

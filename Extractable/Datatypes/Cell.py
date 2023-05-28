@@ -7,7 +7,7 @@ class Cell:
             text: str,
             cell_id: int,
             xy1: tuple,
-            xy2: tuple
+            xy2: tuple,
     ):
         self.text = text
         self.cell_id = cell_id

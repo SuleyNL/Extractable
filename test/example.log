@@ -1,0 +1,222 @@
+ INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.97 at location [68.67, 53.63, 1074.82, 402.61]
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.996 at location [212.72, 407.19, 1250.41, 1792.86]
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.999 at location [211.5, 331.92, 1357.85, 1316.7]
+INFO:root:Detected table with confidence 0.999 at location [216.52, 1649.27, 872.2, 2062.32]
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 1.0 at location [212.2, 570.75, 1459.97, 1218.02]
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.97 at location [68.67, 53.63, 1074.82, 402.61]
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.996 at location [212.72, 407.19, 1250.41, 1792.86]
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.999 at location [211.5, 331.92, 1357.85, 1316.7]
+INFO:root:Detected table with confidence 0.999 at location [216.52, 1649.27, 872.2, 2062.32]
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 1.0 at location [212.2, 570.75, 1459.97, 1218.02]
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:hello
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.97 at location [68.67, 53.63, 1074.82, 402.61]
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.996 at location [212.72, 407.19, 1250.41, 1792.86]
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.999 at location [211.5, 331.92, 1357.85, 1316.7]
+INFO:root:Detected table with confidence 0.999 at location [216.52, 1649.27, 872.2, 2062.32]
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 1.0 at location [212.2, 570.75, 1459.97, 1218.02]
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:hello
+CRITICAL:root:BOO
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.97 at location [68.67, 53.63, 1074.82, 402.61]
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.996 at location [212.72, 407.19, 1250.41, 1792.86]
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.999 at location [211.5, 331.92, 1357.85, 1316.7]
+INFO:root:Detected table with confidence 0.999 at location [216.52, 1649.27, 872.2, 2062.32]
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 1.0 at location [212.2, 570.75, 1459.97, 1218.02]
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:hello
+CRITICAL:root:BOO
+WARNING:root:BOO
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.97 at location [68.67, 53.63, 1074.82, 402.61]
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.996 at location [212.72, 407.19, 1250.41, 1792.86]
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.999 at location [211.5, 331.92, 1357.85, 1316.7]
+INFO:root:Detected table with confidence 0.999 at location [216.52, 1649.27, 872.2, 2062.32]
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 1.0 at location [212.2, 570.75, 1459.97, 1218.02]
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:hello
+CRITICAL:root:BOO
+WARNING:root:BOO
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/preprocessor_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.97 at location [68.67, 53.63, 1074.82, 402.61]
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/preprocessor_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/preprocessor_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.996 at location [212.72, 407.19, 1250.41, 1792.86]
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/preprocessor_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.999 at location [211.5, 331.92, 1357.85, 1316.7]
+INFO:root:Detected table with confidence 0.999 at location [216.52, 1649.27, 872.2, 2062.32]
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/preprocessor_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 1.0 at location [212.2, 570.75, 1459.97, 1218.02]
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-structure-recognition/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-structure-recognition/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-structure-recognition/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-structure-recognition/resolve/main/config.json HTTP/1.1" 200 0
+INFO:root:hello
+CRITICAL:root:BOO
+WARNING:root:BOO
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/preprocessor_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.97 at location [68.67, 53.63, 1074.82, 402.61]
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/preprocessor_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/preprocessor_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.996 at location [212.72, 407.19, 1250.41, 1792.86]
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/preprocessor_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.999 at location [211.5, 331.92, 1357.85, 1316.7]
+INFO:root:Detected table with confidence 0.999 at location [216.52, 1649.27, 872.2, 2062.32]
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/preprocessor_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 1.0 at location [212.2, 570.75, 1459.97, 1218.02]
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-structure-recognition/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-structure-recognition/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-structure-recognition/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-structure-recognition/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-structure-recognition/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+DEBUG:ha:aaa
+INFO:root:hello
+CRITICAL:root:BOO
+WARNING:root:BOO
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/preprocessor_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.97 at location [68.67, 53.63, 1074.82, 402.61]
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/preprocessor_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/preprocessor_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.996 at location [212.72, 407.19, 1250.41, 1792.86]
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/preprocessor_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 0.999 at location [211.5, 331.92, 1357.85, 1316.7]
+INFO:root:Detected table with confidence 0.999 at location [216.52, 1649.27, 872.2, 2062.32]
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/preprocessor_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-detection/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+INFO:root:Detected table with confidence 1.0 at location [212.2, 570.75, 1459.97, 1218.02]
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-structure-recognition/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-structure-recognition/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-structure-recognition/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-structure-recognition/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /microsoft/table-transformer-structure-recognition/resolve/main/config.json HTTP/1.1" 200 0
+INFO:timm.models.helpers:Loading pretrained weights from url (https://download.pytorch.org/models/resnet18-5c106cde.pth)
