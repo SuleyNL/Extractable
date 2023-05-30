@@ -130,6 +130,7 @@ class Table:
 
         created_rows = []
 
+        import os
         from Extractable.Datatypes.Table import Table
         from Extractable.Datatypes.Row import Row
         from Extractable.Datatypes.Cell import Cell
@@ -181,8 +182,15 @@ class Table:
         # Create an ElementTree object
         tree = ET.ElementTree(tableu_xml)
 
+        # Get the directory
+        directory = os.path.dirname(self._output_file)
+
+        if not os.path.exists(directory):
+            # Create a new directory if it does not already exist
+            os.makedirs(directory)
+
         # Write the XML object to the file
-        tree.write(self._output_file.rstrip('.pdf') + ".xml", encoding="utf-8")
+        tree.write(self._output_file.rstrip('.pdf').rstrip('.xml') + ".xml", encoding="utf-8")
 
         #print(tableu.toXML(output_file + ".xml"))
 

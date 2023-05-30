@@ -107,7 +107,7 @@ class StructureRecognitionWithTATR(Pipe):
             tree = ET.ElementTree(table_xml)
 
             # Write the XML object to the file
-            output_file = dataobj.output_file.rstrip('.xml') + '_table_' + str(i) + '.xml'
+            output_file = dataobj.output_file.rstrip('.xml') + '_table_' + str(i+1) + '.xml'
             tree.write(output_file, encoding="utf-8")
 
             logger.info('Detected structure saved to: %s', output_file, extra={'className': __class__.__name__})

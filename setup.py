@@ -1,0 +1,42 @@
+from setuptools import setup
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
+setup(
+    name='extractable',
+    version='0.0.1',
+    description='Extract tables from PDFs',
+    py_modules=['Extractable/Extractor', 'TableGenerator/CreatePDFTable'],
+    package_dir={'': 'src'},
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.11",
+        "License :: OSI Approved :: MIT License",
+        "Natural Language :: English"
+    ],
+    extras_require={
+        "dev": [
+            "pytest>=3.7",
+        ],
+    },
+    install_requires=[
+        "blessings ~= 1.7",
+        "toolz ~= 0.12.0",
+        "torch ~= 2.0.1",
+        "Pillow ~= 9.5.0",
+        "transformers ~= 4.29.2",
+        "matplotlib >=3",
+        "pdf2image ~= 1.16.3",
+        "pdf2jpg ~= 1.1",
+        "scipy ~= 1.10.1",
+        "timm",
+        "defusedxml",
+        "Faker ~= 18.9.0"
+
+    ],
+    url="https://github.com/SuleyNL/Extractable",
+    author="Suleymen C. Kandrouch",
+    author_email="suleyleeuw@gmail.com",
+)
