@@ -1,0 +1,14 @@
+toolz~=0.12.0
+torch~=2.0.1
+Pillow~=9.5.0
+transformers~=4.29.2
+matplotlib>=3
+pdf2image~=1.16.3
+pdf2jpg~=1.1
+scipy~=1.10.1
+timm
+defusedxml
+Faker~=18.9.0
+
+[dev]
+pytest>=3.7

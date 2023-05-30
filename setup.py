@@ -3,11 +3,15 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name='extractable',
+    name='Extractable',
     version='0.0.1',
     description='Extract tables from PDFs',
     py_modules=['Extractable/Extractor', 'TableGenerator/CreatePDFTable'],
     package_dir={'': 'src'},
+    include_package_data=True,
+    package_data={
+        'sample': ['package_data.dat'],
+    },
     long_description=long_description,
     long_description_content_type="text/markdown",
     classifiers=[
@@ -22,7 +26,6 @@ setup(
         ],
     },
     install_requires=[
-        "blessings ~= 1.7",
         "toolz ~= 0.12.0",
         "torch ~= 2.0.1",
         "Pillow ~= 9.5.0",
