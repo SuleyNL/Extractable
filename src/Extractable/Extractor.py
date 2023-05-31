@@ -1,14 +1,12 @@
 from toolz import compose_left
 
-from Extractable import *
-from .library import *
-from .PDFtoImageConvertor import *
-from .ImagePreprocessor import *
-from .TableDetector import *
-from .StructureDetector import *
-from .TextExtractor import *
+from Extractable.library import *
 
-
+import Extractable.PDFtoImageConvertor as PDFtoImageConvertor
+import Extractable.ImagePreprocessor as ImagePreprocessor
+import Extractable.TableDetector as TableDetector
+import Extractable.StructureDetector as StructureDetector
+import Extractable.TextExtractor as TextExtractor
 import logging
 
 

@@ -5,8 +5,9 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
+      <excludeFolder url="file://$MODULE_DIR$/src/venv" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.10 (Extractable Project)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.10 (Extractable Project) (2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PyDocumentationSettings">

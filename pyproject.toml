@@ -1,16 +1,16 @@
 [build-system]
 requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+#build-backend = "setuptools.build_meta"
 
 [project]
 name = "Extractable"
-version = "0.0.1"
+version = "0.0.11"
 authors = [
   { name="Suleymen C. Kandrouch ", email="suleyleeuw@gmail.com" },
 ]
 description = "Extracting tables from PDFs"
 readme = {file = "README.md", content-type = "text/markdown"}
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -30,7 +30,7 @@ dependencies = [
     "defusedxml",
     "Faker ~= 18.9.0"
   ]
-
+keywords = ['python', 'table-extraction', 'pdf', 'TATR', 'Table Transformer', 'Computer Vision']
 
 [project.urls]
 "Homepage" = "https://github.com/SuleyNL/Extractable"

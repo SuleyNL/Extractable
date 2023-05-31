@@ -1,12 +1,16 @@
 from setuptools import setup
+
+import src.version as version
+
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
     name='Extractable',
-    version='0.0.1',
+    version= version.__version__,
     description='Extract tables from PDFs',
-    py_modules=['Extractable/Extractor', 'TableGenerator/CreatePDFTable'],
+    packages=['Extractable', 'TableGenerator', 'fpdf', 'genalog'],
+    #py_modules=['Extractable/Extractor', 'Extractable/library', 'TableGenerator/CreatePDFTable', 'TableGenerator/Options'],
     package_dir={'': 'src'},
     include_package_data=True,
     package_data={
@@ -26,6 +30,8 @@ setup(
         ],
     },
     install_requires=[
+        "setuptools >=61.0",
+        "wheel",
         "toolz ~= 0.12.0",
         "torch ~= 2.0.1",
         "Pillow ~= 9.5.0",
