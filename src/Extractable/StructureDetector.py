@@ -1,3 +1,7 @@
+import ntpath
+import os
+from pathlib import Path
+
 from transformers import DetrFeatureExtractor
 
 from Extractable import Extractor
@@ -107,7 +111,16 @@ class StructureRecognitionWithTATR(Pipe):
             tree = ET.ElementTree(table_xml)
 
             # Write the XML object to the file
-            output_file = dataobj.output_file.rstrip('.xml') + '_table_' + str(i+1) + '.xml'
+            file_prefix = os.path.splitext(dataobj.output_file)[0]
+
+            if ntpath.isdir(file_prefix):
+                output_file = file_prefix + '/' + 'table_' + str(i+1) + '.xml'
+            else:
+                output_file = file_prefix + '_table_' + str(i+1) + '.xml'
+
+            if not Path(output_file).parent.exists():
+                os.makedirs(Path(output_file).parent)
+
             tree.write(output_file, encoding="utf-8")
 
             logger.info('Detected structure saved to: %s', output_file, extra={'className': __class__.__name__})

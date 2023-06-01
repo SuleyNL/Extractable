@@ -1,4 +1,6 @@
 import abc
+import os
+import tempfile
 from enum import Enum
 
 import torch
@@ -43,6 +45,10 @@ class DataObj:
                                         # if not a dir, like 'tables/hello', it will produce tables/hello_table_1.xml
         self.output_filetype = output_filetype
         self.mode = mode
+        self.temp_dir = tempfile.gettempdir() + os.path.normpath('/Extractable')
+        self.temp = tempfile.TemporaryDirectory()
+        self.temp_dir = self.temp.name
+
 
 
     def output(self):

@@ -12,6 +12,10 @@ import numpy as np
 from enum import Enum
 import scipy
 from Extractable import Extractor
+import tempfile
+import os
+import ntpath
+from pathlib import Path
 
 
 class TableDetectorTATR(Pipe):
@@ -79,7 +83,12 @@ class TableDetectorTATR(Pipe):
                         plt.title('cropped image of only table | number ' + str(j + 1) + ' out of ' + str(len(results["scores"])))
                         plt.show()
 
-                    image_path = f"{dataobj.input_file.rstrip('.pdf')}_table_{i + 1}{('.' + str(j + 1))if i>0 else ''}.jpg"
+                    image_name = Path(ntpath.basename(dataobj.input_file)).stem
+                    image_path_string = f"{image_name}_table_{i + 1}{('.' + str(j + 1))if i>0 else ''}.jpg"
+                    image_path = dataobj.temp_dir + '\\' + os.path.normpath(image_path_string)
+
+                    print('dir= ' + image_path)
+
                     table_image.save(image_path, "JPEG")
                     table_images.append(image_path)
 
