@@ -1,11 +1,11 @@
 import TableGenerator
 
-#startProcess('tables/')
+#startProcess('files/tables/')
 
 from TableGenerator import *
 options = Options().__default__
 
-TableGenerator.GenerateOneTable('tables/default.pdf', options)
+TableGenerator.GenerateOneTable('files/tables/default.pdf', options)
 
 '''
 options = Options()

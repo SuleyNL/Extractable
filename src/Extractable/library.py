@@ -1,6 +1,5 @@
 import abc
 from enum import Enum
-from typing import Type
 
 import torch
 from PIL import Image
@@ -55,16 +54,6 @@ class Pipe(abc.ABC):
     @abc.abstractmethod
     def process(input_obj: DataObj):
         return data_object
-
-
-class PDFToImageConverter(Pipe):
-    @staticmethod
-    def process(dataobj):
-        # Convert the PDF to an image
-        # Return the image as an object that can be passed to the next step in the pipeline
-        dataobj.data[__class__.__name__] = {}
-
-        return dataobj
 
 
 class Bbox:
@@ -188,30 +177,3 @@ def plot_results(pil_img, model, scores, labels, boxes, title: str):
     plt.axis('on')
     plt.title(title)
     plt.show()
-
-
-class ImagePreprocessor(Pipe):
-    @staticmethod
-    def process(dataobj):
-        # Preprocess the image
-        # Return the preprocessed image as an object that can be passed to the next step in the pipeline
-        dataobj.data[__class__.__name__] = {}
-        return dataobj
-
-
-class TableDetector(Pipe):
-    @staticmethod
-    def process(dataobj):
-        # Detect tables in the image
-        # Return the table locations as an object that can be passed to the next step in the pipeline
-        dataobj.data[__class__.__name__] = {}
-        return dataobj
-
-
-class XMLConverter(Pipe):
-    @staticmethod
-    def process(dataobj):
-        # Convert the extracted text to XML
-        # Return the XML as a string
-        dataobj.data[__class__.__name__] = {}
-        return dataobj
