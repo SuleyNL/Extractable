@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+#build-backend = "setuptools.build_meta"
+
+[project]
+name = "Extractable"
+version = "0.0.11"
+authors = [
+  { name="Suleymen C. Kandrouch ", email="suleyleeuw@gmail.com" },
+]
+description = "Extracting tables from PDFs"
+readme = {file = "README.md", content-type = "text/markdown"}
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+license = {file = "LICENSE.txt"}
+dependencies = [
+    "toolz ~= 0.12.0",
+    "torch ~= 2.0.1",
+    "Pillow ~= 9.5.0",
+    "transformers ~= 4.29.2",
+    "matplotlib >=3",
+    "pdf2image ~= 1.16.3",
+    "pdf2jpg ~= 1.1",
+    "scipy ~= 1.10.1",
+    "timm",
+    "defusedxml",
+    "Faker ~= 18.9.0"
+  ]
+keywords = ['python', 'table-extraction', 'pdf', 'TATR', 'Table Transformer', 'Computer Vision']
+
+[project.urls]
+"Homepage" = "https://github.com/SuleyNL/Extractable"
+"Bug Tracker" = "https://github.com/SuleyNL/Extractable/issues"

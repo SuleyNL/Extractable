@@ -1,24 +1,60 @@
 from toolz import compose_left
 
 from Extractable import *
-from Extractable.library import *
-from Extractable import PDFtoImageConvertor
-from Extractable import ImagePreprocessor
-from Extractable import TableDetector
-from Extractable import StructureDetector
-from Extractable import TextExtractor
+from .library import *
+from .PDFtoImageConvertor import *
+from .ImagePreprocessor import *
+from .TableDetector import *
+from .StructureDetector import *
+from .TextExtractor import *
+
+
 import logging
 
 
-# create logger
-logger = logging.getLogger('Extractor')
-# create console handler
-console_handler = logging.StreamHandler()
-# create formatter
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - [%(className)s] - %(message)s')
-console_handler.setFormatter(formatter)
-# add console_handler to logger so it logs to console
-logger.addHandler(console_handler)
+class CustomFormatter(logging.Formatter):
+
+    grey = "\x1b[38;20m"
+    yellow = "\x1b[33;20m"
+    green = "\x1b[0;32m"
+    green_intense = "\x1b[0;92m"
+    red = "\x1b[31;20m"
+    bold_red = "\x1b[31;1m"
+    blue = "\x1b[0;94m"
+    reset = "\x1b[0m"
+    format = '%(asctime)s - %(name)s - %(levelname)s - [%(className)s] - %(message)s'
+
+    FORMATS = {
+        logging.DEBUG: grey + format + reset,
+        logging.INFO: green_intense + format + reset,
+        logging.WARNING: yellow + format + reset,
+        logging.ERROR: red + format + reset,
+        logging.CRITICAL: bold_red + format + reset
+    }
+
+    def format(self, record):
+        log_fmt = self.FORMATS.get(record.levelno)
+        formatter = logging.Formatter(log_fmt)
+        return formatter.format(record)
+
+
+def setup_logger():
+    # create logger
+    logger = logging.getLogger('Extractor')
+    # create console handler
+    console_handler = logging.StreamHandler()
+    # create formatter
+    formatter = CustomFormatter()
+    console_handler.setFormatter(formatter)
+    # add console_handler to logger so it logs to console
+    logger.addHandler(console_handler)
+
+    logger.setLevel(logging.DEBUG)
+
+    return logger
+
+
+logger = setup_logger()
 
 
 def Logger():
@@ -63,7 +99,7 @@ def extract_using_TATR_structure_only(input_file: str, output_dir: str, output_f
 
 def extract_using_TATR(input_file: str, output_dir: str, output_filetype: Filetype = Filetype.XML, mode:Mode = Mode.PERFORMANCE):
     if mode == Mode.DEBUG:
-        logger.setLevel(logging.DEBUG)
+        logger.setLevel(logging.INFO)
 
     pipeline = compose_left(
             TableDetector.TableDetectorTATR.process,
