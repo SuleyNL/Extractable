@@ -1,3 +1,6 @@
+import ntpath
+from pathlib import Path
+
 from Extractable import Extractor
 from Extractable.library import *
 import pdf2image
@@ -28,7 +31,10 @@ class ConvertUsingPDF2image(Pipe):
 
         for i, image in enumerate(pdf2images):
 
-            image_path = f"{dataobj.input_file.rstrip('.pdf')}_page_{i + 1}.jpg"
+            image_name = Path(ntpath.basename(dataobj.input_file)).stem
+            image_path_string = f"{image_name}_page_{i + 1}.jpg"
+            image_path = dataobj.temp_dir + '\\' + os.path.normpath(image_path_string)
+
             image.save(image_path, "JPEG")
             path_to_images.append(image_path)
 
