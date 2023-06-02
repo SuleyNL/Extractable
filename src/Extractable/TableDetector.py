@@ -87,8 +87,6 @@ class TableDetectorTATR(Pipe):
                     image_path_string = f"{image_name}_table_{i + 1}{('.' + str(j + 1))if i>0 else ''}.jpg"
                     image_path = dataobj.temp_dir + '\\' + os.path.normpath(image_path_string)
 
-                    print('dir= ' + image_path)
-
                     table_image.save(image_path, "JPEG")
                     table_images.append(image_path)
 

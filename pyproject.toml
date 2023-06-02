@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0"]
 
 [project]
 name = "Extractable"
-version = "0.0.11"
+version = "0.0.17"
 authors = [
   { name="Suleymen C. Kandrouch ", email="suleyleeuw@gmail.com" },
 ]
@@ -27,7 +27,8 @@ dependencies = [
     "scipy ~= 1.10.1",
     "timm",
     "defusedxml",
-    "Faker ~= 18.9.0"
+    "Faker ~= 18.9.0",
+    "build"
   ]
 keywords = ['python', 'table-extraction', 'pdf', 'TATR', 'Table Transformer', 'Computer Vision']
 
