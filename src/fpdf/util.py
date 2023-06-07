@@ -47,13 +47,13 @@ def get_scale_factor(unit: Union[str, Number]) -> float:
         return float(unit)
 
     if unit == "pt":
-        return 1
+        return 1 * (72/200)
     if unit == "mm":
-        return 72 / 25.4
+        return 200 / 25.4
     if unit == "cm":
-        return 72 / 2.54
+        return 200 / 2.54
     if unit == "in":
-        return 72.0
+        return 200.0
     raise ValueError(f"Incorrect unit: {unit}")
 
 

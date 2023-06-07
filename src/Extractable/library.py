@@ -69,12 +69,25 @@ class Bbox:
         self.y1 = min(y1, y2)
         self.y2 = max(y1, y2)
 
-        self.xy1 = (self.x1, self.y1)
-        self.xy2 = (self.x2, self.y2)
+    @property
+    def xy1(self):
+        return self.x1, self.y1
 
-        self.box = [self.x1, self.y1, self.x2, self.y2]
-        self.width = abs(self.x1 - self.x2)
-        self.height = abs(self.y1 - self.y2)
+    @property
+    def xy2(self):
+        return self.x2, self.y2
+
+    @property
+    def box(self):
+        return [self.x1, self.y1, self.x2, self.y2]
+
+    @property
+    def width(self):
+        return abs(self.x1 - self.x2)
+
+    @property
+    def height(self):
+        return abs(self.y1 - self.y2)
 
     @property
     def area(self):

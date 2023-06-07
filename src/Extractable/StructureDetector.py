@@ -39,6 +39,8 @@ class StructureRecognitionWithTATR(Pipe):
             pass
         table_corrections = []
         table_structures = []
+        table_locations = dataobj.data['table_locations']
+
         for i, image in enumerate(images):
             image = Image.open(image).convert("RGB")
             width, height = image.size
@@ -62,6 +64,15 @@ class StructureRecognitionWithTATR(Pipe):
                 'labels': []
             }
 
+            # Save the difference between detected table by StructureDetector compared to TableDetector
+            table_index = torch.where(results['labels'] == 0)[0].item()
+            box = results['boxes'][table_index]
+            x1, y1 = box[:2]
+            diff_x = x1 - 40  # 40 because TableDetector zoomed out by 40px
+            diff_y = y1 - 40  # 40 because TableDetector zoomed out by 40px
+            table_corrections.append((diff_x, diff_y))
+            logger.info('Table correction: ' + str((diff_x, diff_y)), extra={'className': __class__.__name__})
+
             for label, score, box in zip(results['labels'].tolist(), results['scores'].tolist(), results['boxes'].tolist()):
                 # parameter tuning, TATR is overly sensitive to certain labels
                 # 0: 'table',
@@ -76,16 +87,22 @@ class StructureRecognitionWithTATR(Pipe):
                 if not (label == 1 and score <= .88) and \
                         not (label == 2 and score <= .64) and \
                         not ((label == 3 or label == 4 or label == 5) and score <= .88):
+
+                    # Perform table coordinate corrections on each unit
+                    table_x = table_locations[i]['x']
+                    table_y = table_locations[i]['y']
+
+                    unit_bbox = Bbox(*box)
+
+                    unit_bbox.x1 += table_corrections[-1][0] + table_x
+                    unit_bbox.x2 += table_corrections[-1][0] + table_x
+                    unit_bbox.y1 += table_corrections[-1][1] + table_y
+                    unit_bbox.y2 += table_corrections[-1][1] + table_y
+
                     # Add new elements to the respective tensors in the results dictionary
-                    filtered_results['boxes'].append(box)
                     filtered_results['scores'].append(score)
                     filtered_results['labels'].append(label)
-                if label == 0:
-                    x1, y1 = box[:2]
-                    diff_x = x1 - 40
-                    diff_y = y1 - 40
-                    table_corrections.append((diff_x, diff_y))
-                    logger.info('Table correction: ' + str((diff_x, diff_y)), extra={'className': __class__.__name__})
+                    filtered_results['boxes'].append(unit_bbox.box)
 
             results['boxes'] = torch.Tensor(filtered_results['boxes'])
             results['scores'] = torch.Tensor(filtered_results['scores'])
@@ -151,10 +168,25 @@ class StructureRecognitionWithTATR(Pipe):
                     if intersects((bbox_column.x2, bbox_column.y2), (bbox_row.x2, bbox_row.y2),
                                   box1_width=bbox_column.width, box1_height=bbox_column.height,
                                        box2_width=bbox_row.width, box2_height=bbox_row.height):
-                        print('intersects')
+                        pass
+                        # TODO: only add cell if it intersects
                     else:
-                        print('doesnt intersect')
+                        pass
+                        # TODO: Error log or Warning log
+                        #  that is weird? every column should intersect with a row
+
                     cell_bbox = row.intersection_with_column_bbox(bbox_column)
+
+                    '''
+                    table_x = table_locations[i]['x']
+                    table_y = table_locations[i]['y']
+                    
+                    cell_bbox.x1 += table_corrections[-1][0] + table_x
+                    cell_bbox.x2 += table_corrections[-1][0] + table_x
+                    cell_bbox.y1 += table_corrections[-1][1] + table_y
+                    cell_bbox.y2 += table_corrections[-1][1] + table_y
+                    '''
+
                     row.add_one_cell(Cell('', len(row.cells), cell_bbox.xy1, cell_bbox.xy2))
 
                 rows.append(row)

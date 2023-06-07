@@ -141,7 +141,7 @@ class Table:
             if row_layout_info.triggers_page_jump:
                 # pylint: disable=protected-access
                 self._fpdf._perform_page_break()
-                if self._first_row_as_headings: # repeat headings on top:
+                if self._first_row_as_headings:  # repeat headings on top:
                     self._render_table_row(0)
 
             row = self.rows[i]
@@ -181,6 +181,9 @@ class Table:
 
         # Create an ElementTree object
         tree = ET.ElementTree(tableu_xml)
+
+        # Prettify XML output
+        ET.indent(tree, space="\t", level=0)
 
         # Get the directory
         directory = os.path.dirname(self._output_file)

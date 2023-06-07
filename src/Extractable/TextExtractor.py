@@ -128,6 +128,9 @@ class PyPDF2Textport(Pipe):
 
             for row in table_xml.rows:
                 for cell_nr, cell in enumerate(row.cells):
+                    '''
+                    # Correction for table location is now done inside StructureDetector instead of here
+                    # Leaving the code still here commented out just in case it is useful to revert
                     x_correction = table_correction[0]
                     y_correction = table_correction[1]
 
@@ -143,6 +146,8 @@ class PyPDF2Textport(Pipe):
                     x2 += table_locations[table_nr]['x']
                     y1 += table_locations[table_nr]['y']
                     y2 += table_locations[table_nr]['y']
+                    '''
+                    (x1, y1), (x2, y2) = (cell.xy1, cell.xy2)
 
                     words_in_bounds = {
                         'x': [],

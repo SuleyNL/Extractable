@@ -1,9 +1,10 @@
 import TableGenerator
 
-#startProcess('files/tables/')
+#  startProcess('files/tables/')
 
 from TableGenerator import *
 options = Options().__default__
+# TableGenerator.startProcess('test/generated_tables')
 
 TableGenerator.GenerateOneTable('files/tables/default.pdf', options)
 
@@ -22,10 +23,6 @@ options_example[OptionsENUM.LINES_WIDTH.value] = 1
 GenerateOneTable('tables/default.pdf', options_example)
 '''
 
-
-
-
-
 # Define the text values
 table_data = np.array([
     ["OOOOO3LINE OOOOO3LINE OOOOO3LINE OOOOO3LINE OOOOO3LINE OOOOO3LINE OOOOO3LINE", "i", "How", "Are", "Youuuuuu"],
@@ -37,7 +34,7 @@ table_data = np.array([
     ["Let's", "i", "the", "Array", "Worldcc"]
 ])
 options_example = options
-#GeneratePDFTable(table_data, 'tables/debug.pdf', options_example)
+# GeneratePDFTable(table_data, 'tables/debug.pdf', options_example)
 
 
 
@@ -54,5 +51,5 @@ options_example[OptionsENUM.CENSOR_BARS.value] = 0.001
 options_example[OptionsENUM.TEXT_UNDERSCORE.value] = True
 options_example[OptionsENUM.ROW_AMOUNT.value] = 4
 options_example[OptionsENUM.LINES_WIDTH.value] = 3
-#GenerateOneTable('tables/testingnewfunctions', options_example)
+#  GenerateOneTable('tables/testingnewfunctions', options_example)
 
