@@ -17,6 +17,7 @@ classifiers = [
 ]
 license = {file = "LICENSE.txt"}
 dependencies = [
+    "setuptools >=61.0",
     "toolz ~= 0.12.0",
     "torch ~= 2.0.1",
     "Pillow ~= 9.5.0",
@@ -28,7 +29,10 @@ dependencies = [
     "timm",
     "defusedxml",
     "Faker ~= 18.9.0",
-    "build"
+    "build",
+    "wheel",
+    "mkdocs",
+    "pytesseract"
   ]
 keywords = ['python', 'table-extraction', 'pdf', 'TATR', 'Table Transformer', 'Computer Vision']
 

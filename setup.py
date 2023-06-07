@@ -31,7 +31,6 @@ setup(
     },
     install_requires=[
         "setuptools >=61.0",
-        "wheel",
         "toolz ~= 0.12.0",
         "torch ~= 2.0.1",
         "Pillow ~= 9.5.0",
@@ -42,8 +41,13 @@ setup(
         "scipy ~= 1.10.1",
         "timm",
         "defusedxml",
-        "Faker ~= 18.9.0"
-
+        "Faker ~= 18.9.0",
+        "build",
+        "wheel",
+        "mkdocs",
+        "pytesseract",
+        "PyPDF2",
+        "svgwrite",
     ],
     url="https://github.com/SuleyNL/Extractable",
     author="Suleymen C. Kandrouch",

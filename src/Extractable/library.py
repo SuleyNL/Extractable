@@ -35,23 +35,23 @@ class DataObj:
                  mode: Mode = Mode.PERFORMANCE):
 
         data['pdf_images'] = None if input_file.endswith('.pdf') else [input_file]       # image of each page in pdf
+        data['table_locations'] = None                                                   # a list of dicts, each sublist containing the leftupper x,y value of the table-cropped image, aswell as the page it belongs to and table_id
+        data['table_corrections'] = None                                                 # for each table, the difference between detected table (topleft xy tuple) by TableDetector vs by StructureDetector, so this can be used to find true location of words on page
         data['table_images'] = None                                                      # image of each table
         data['table_structures'] = None                                                  # a Table() containing bboxes, for each table
-        data['tables'] = None                                                            # a Table() containing bboxes and text, for each table
+        data['final_tables'] = None                                                      # a Table() containing bboxes and text, for each table
 
         self.data = data
         self.input_file = input_file    # input pdf or img
         self.output_file = output_file  # output dir for example 'tables/' produces tables/_table_1.xml
-                                        # if not a dir, like 'tables/hello', it will produce tables/hello_table_1.xml
+                                        # if not a dir, like 'tables/hello', it will be treated as prefix
+                                        # so it will produce tables/hello_table_1.xml
         self.output_filetype = output_filetype
         self.mode = mode
-        self.temp_dir = tempfile.gettempdir() + os.path.normpath('/Extractable')
         self.temp = tempfile.TemporaryDirectory()
         self.temp_dir = self.temp.name
 
-
-
-    def output(self):
+    def output(self) -> dict:
         return self.data
 
 
@@ -59,7 +59,7 @@ class Pipe(abc.ABC):
     @staticmethod
     @abc.abstractmethod
     def process(input_obj: DataObj):
-        return data_object
+        return input_obj
 
 
 class Bbox:

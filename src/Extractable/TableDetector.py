@@ -1,7 +1,7 @@
 from Extractable.library import *
 
 import abc
-from typing import Type
+from typing import Type, List
 
 import torch
 from PIL import Image
@@ -22,6 +22,8 @@ class TableDetectorTATR(Pipe):
     @staticmethod
     def process(dataobj):
         logger = Extractor.Logger()
+
+        table_locations:  List[dict] = []
 
         # Detect tables in the image
         # Return the table locations as an object that can be passed to the next step in the pipeline
@@ -67,14 +69,14 @@ class TableDetectorTATR(Pipe):
                     # Extract the bounding box values as a list
                     bbox = bbox.int().tolist()
 
-                    # Increase the bounding box size by 5 pixels on all sides so that
+                    # Increase the bounding boxes by 40 pixels to zoom out a bit to give the table a loose fit
                     bbox_enlarged = [
                         max(bbox[0] - 40, 0),  # expanded_x_min
                         max(bbox[1] - 40, 0),  # expanded_y_min
                         min(bbox[2] + 40, max_width.item()),  # expanded_x_max
                         min(bbox[3] + 40, max_height.item())  # expanded_y_max
                     ]
-
+                    table_locations.append({'x': bbox_enlarged[0], 'y': bbox_enlarged[1], 'page': i})
                     table_image = image.crop(bbox_enlarged)
 
                     if dataobj.mode == Mode.PRESENTATION:
@@ -87,9 +89,12 @@ class TableDetectorTATR(Pipe):
                     image_path_string = f"{image_name}_table_{i + 1}{('.' + str(j + 1))if i>0 else ''}.jpg"
                     image_path = dataobj.temp_dir + '\\' + os.path.normpath(image_path_string)
 
+                    logger.info('Saved image to: ' + image_path, extra={'className': __class__.__name__})
+
                     table_image.save(image_path, "JPEG")
                     table_images.append(image_path)
 
+        dataobj.data['table_locations'] = table_locations
         dataobj.data['table_images'] = table_images
         dataobj.data[__class__.__name__] = inner_data
         return dataobj

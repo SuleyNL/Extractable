@@ -25,9 +25,10 @@ import xml.etree.ElementTree as ET
 class StructureRecognitionWithTATR(Pipe):
     @staticmethod
     def process(dataobj):
-        logger = Extractor.Logger()
         # Detect structure in a table_image
         # Return the table locations as an object that can be passed to the next step in the pipeline
+        logger = Extractor.Logger()
+
         if dataobj.data['table_images'] is not None and len(dataobj.data['table_images']) > 0:
             images = dataobj.data['table_images']
         elif dataobj.data['pdf_images'] is not None and len(dataobj.data['pdf_images']) > 0:
@@ -36,7 +37,7 @@ class StructureRecognitionWithTATR(Pipe):
             images = None
             #TODO: raise error no image found
             pass
-
+        table_corrections = []
         table_structures = []
         for i, image in enumerate(images):
             image = Image.open(image).convert("RGB")
@@ -63,6 +64,12 @@ class StructureRecognitionWithTATR(Pipe):
 
             for label, score, box in zip(results['labels'].tolist(), results['scores'].tolist(), results['boxes'].tolist()):
                 # parameter tuning, TATR is overly sensitive to certain labels
+                # 0: 'table',
+                # 1: 'table column',
+                # 2: 'table row',
+                # 3: 'table column header',
+                # 4: 'table projected row header',
+                # 5: 'table spanning cell'
                 # filter out results of table column (1) where confidence is lower than 89%
                 # filter out results of table row (2) where confidence is lower than 74% @lager dan 74 @niet hoger dan 64
                 # filter out results of table spanning cell (5) where confidence is lower than 88%
@@ -73,33 +80,84 @@ class StructureRecognitionWithTATR(Pipe):
                     filtered_results['boxes'].append(box)
                     filtered_results['scores'].append(score)
                     filtered_results['labels'].append(label)
+                if label == 0:
+                    x1, y1 = box[:2]
+                    diff_x = x1 - 40
+                    diff_y = y1 - 40
+                    table_corrections.append((diff_x, diff_y))
+                    logger.info('Table correction: ' + str((diff_x, diff_y)), extra={'className': __class__.__name__})
 
             results['boxes'] = torch.Tensor(filtered_results['boxes'])
             results['scores'] = torch.Tensor(filtered_results['scores'])
             results['labels'] = torch.Tensor(filtered_results['labels'])
 
+            # SORT BOXES BY HORIZONTAL POSITION LEFT TO RIGHT
+            # Get the X-min values from the 'boxes' tensor
+            xmins = results['boxes'][:, 0]
+            # Use torch.argsort() to get the indices that would sort the 'xmins' tensor
+            sorted_indices = torch.argsort(xmins)
+            # Sort
+            results['boxes'] = results['boxes'][sorted_indices]
+            results['scores'] = results['scores'][sorted_indices]
+            results['labels'] = results['labels'][sorted_indices]
+
+            # SORT BOXES BY VERTICAL POSITION TOP TO BOTTOM
+            # Get the Y-min values from the 'boxes' tensor
+            ymins = results['boxes'][:, 1]
+            # Use torch.argsort() to get the indices that would sort the 'ymins' tensor
+            sorted_indices = torch.argsort(ymins)
+            # Sort the 'boxes', 'scores', and 'labels' tensors based on the sorted indices
+            results['boxes'] = results['boxes'][sorted_indices]
+            results['scores'] = results['scores'][sorted_indices]
+            results['labels'] = results['labels'][sorted_indices]
+
+            # SPLIT INTO COLUMNS AND ROWS
+            labels = results['labels']
+            indices_row = (labels == 2).nonzero().squeeze()
+            indices_column = (labels == 1).nonzero().squeeze()
+            # Split the 'boxes', 'scores', and 'labels' tensors based on the indices
+            results_rows = {'boxes': results['boxes'][indices_row],
+                         'scores': results['scores'][indices_row],
+                         'labels': results['labels'][indices_row]}
+
+            results_columns = {'boxes': results['boxes'][indices_column],
+                         'scores': results['scores'][indices_column],
+                         'labels': results['labels'][indices_column]}
+
+            # SORT COLUMN BOXES BY HORIZONTAL POSITION LEFT TO RIGHT
+            # Get the X-min values from the 'boxes' tensor
+            xmins = results_columns['boxes'][:, 0]
+            # Use torch.argsort() to get the indices that would sort the 'xmins' tensor
+            sorted_indices = torch.argsort(xmins)
+            # Sort
+            results_columns['boxes'] = results_columns['boxes'][sorted_indices]
+            results_columns['scores'] = results_columns['scores'][sorted_indices]
+            results_columns['labels'] = results_columns['labels'][sorted_indices]
+
             rows = []
 
             # make an XML Cell() for every recognized cell and add to a Row() and Table()
+
             # for every row
-            for score, label, (xmin1, ymin1, xmax1, ymax1) in zip(results['scores'].tolist(), results['labels'].tolist(), results['boxes'].tolist()):
-                if model.config.id2label[label] == 'table row': #TODO this can be done more efficiently than looping twice
+            for score, label, (xmin1, ymin1, xmax1, ymax1) in zip(results_rows['scores'].tolist(), results_rows['labels'].tolist(), results_rows['boxes'].tolist()):
+                bbox_row = Bbox(x1=xmin1, y1=ymin1, x2=xmax1, y2=ymax1)
+                row = Row(len(rows), xy1=(bbox_row.x1, bbox_row.y1), xy2=(bbox_row.x2, bbox_row.y2))
 
-                    bbox_row = Bbox(x1=xmin1, y1=ymin1, x2=xmax1, y2=ymax1)
-                    row = Row(len(rows), xy1=(bbox_row.x1, bbox_row.y1), xy2=(bbox_row.x2, bbox_row.y2))
+                #for every column
+                for score, label, (xmin2, ymin2, xmax2, ymax2) in zip(results_columns['scores'].tolist(), results_columns['labels'].tolist(), results_columns['boxes'].tolist()):
 
-                    #for every column
-                    for score, label, (xmin2, ymin2, xmax2, ymax2) in zip(results['scores'].tolist(), results['labels'].tolist(), results['boxes'].tolist()):
-                        if model.config.id2label[label] == 'table column':
-
-                            # add every intersection with a column as seperate cell
-                            bbox_column = Bbox(x1=xmin2, y1=ymin2, x2=xmax2, y2=ymax2)
-                            if intersects((bbox_column.x2, bbox_column.y2), (bbox_row.x2, bbox_row.y2),
-                                       box1_width=bbox_column.width, box1_height=bbox_column.height,
+                    # add every intersection with a column as seperate cell
+                    bbox_column = Bbox(x1=xmin2, y1=ymin2, x2=xmax2, y2=ymax2)
+                    if intersects((bbox_column.x2, bbox_column.y2), (bbox_row.x2, bbox_row.y2),
+                                  box1_width=bbox_column.width, box1_height=bbox_column.height,
                                        box2_width=bbox_row.width, box2_height=bbox_row.height):
-                                cell_bbox = row.intersection_with_column_bbox(bbox_column)
-                                row.add_one_cell(Cell('', len(row.cells), cell_bbox.xy1, cell_bbox.xy2))
-                    rows.append(row)
+                        print('intersects')
+                    else:
+                        print('doesnt intersect')
+                    cell_bbox = row.intersection_with_column_bbox(bbox_column)
+                    row.add_one_cell(Cell('', len(row.cells), cell_bbox.xy1, cell_bbox.xy2))
+
+                rows.append(row)
 
             table = Table(i, rows=rows)
             table_structures.append(table)
@@ -109,6 +167,9 @@ class StructureRecognitionWithTATR(Pipe):
 
             # Create an ElementTree object
             tree = ET.ElementTree(table_xml)
+
+            # Prettify XML output
+            ET.indent(tree, space="\t", level=0)
 
             # Write the XML object to the file
             file_prefix = os.path.splitext(dataobj.output_file)[0]
@@ -128,6 +189,7 @@ class StructureRecognitionWithTATR(Pipe):
             if dataobj.mode == Mode.PRESENTATION:
                 plot_results(image, model, results['scores'], results['labels'], results['boxes'], 'Recognized structure | table number ' + str(i+1) + ' out of ' + str(len(images)))
         dataobj.data['table_structures'] = table_structures
+        dataobj.data['table_corrections'] = table_corrections
 
         dataobj.data[__class__.__name__] = {"objects detected: " + str([f"{model.config.id2label[value]}: {np.count_nonzero(results['labels'] == value)}" for value in np.unique(results['labels'])])}
         return dataobj

@@ -34,6 +34,7 @@ class ConvertUsingPDF2image(Pipe):
             image_name = Path(ntpath.basename(dataobj.input_file)).stem
             image_path_string = f"{image_name}_page_{i + 1}.jpg"
             image_path = dataobj.temp_dir + '\\' + os.path.normpath(image_path_string)
+            logger.info('Saved image to: ' + image_path, extra={'className': __class__.__name__})
 
             image.save(image_path, "JPEG")
             path_to_images.append(image_path)

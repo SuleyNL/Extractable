@@ -13,8 +13,8 @@ class Table:
     ):
         self.table_id = table_id
         self.rows = rows
-        self.xy1 = xy1 if xy1 is not None else tuple([min(row.xy1[0] for row in rows), min(row.xy1[1] for row in rows)])
-        self.xy2 = xy2 if xy2 is not None else tuple([max(row.xy2[0] for row in rows), max(row.xy2[1] for row in rows)])
+        self.xy1 = (round(xy1[0], 2), round(xy1[1], 2)) if xy1 is not None else tuple([round(min(row.xy1[0] for row in rows), 2), round(min(row.xy1[1] for row in rows), 2)])
+        self.xy2 = (round(xy2[0], 2), round(xy2[1], 2)) if xy2 is not None else tuple([round(max(row.xy2[0] for row in rows), 2), round(max(row.xy2[1] for row in rows), 2)])
 
     def toXML(self):
         # Create an XML object
@@ -32,10 +32,14 @@ class Table:
 
     def add_one_row(self, row: Row):
         self.rows.append(row)
-        self.xy1 = self.xy1 if self.xy1 is not None else tuple([min(row.xy1[0] for row in self.rows), min(row.xy1[1] for row in self.rows)])
-        self.xy2 = self.xy2 if self.xy2 is not None else tuple([max(row.xy2[0] for row in self.rows), max(row.xy2[1] for row in self.rows)])
+        self.xy1 = self.xy1 if self.xy1 is not None else tuple([round(min(row.xy1[0] for row in self.rows)), round(min(row.xy1[1] for row in self.rows))])
+        self.xy2 = self.xy2 if self.xy2 is not None else tuple([round(max(row.xy2[0] for row in self.rows)), round(max(row.xy2[1] for row in self.rows))])
 
     def set_rows(self, rows: List[Row]):
         self.rows = rows
-        self.xy1 = self.xy1 if self.xy1 is not None else tuple([min(row.xy1[0] for row in self.rows), min(row.xy1[1] for row in self.rows)])
-        self.xy2 = self.xy2 if self.xy2 is not None else tuple([max(row.xy2[0] for row in self.rows), max(row.xy2[1] for row in self.rows)])
+        self.xy1 = self.xy1 if self.xy1 is not None else tuple([round(min(row.xy1[0] for row in self.rows)), round(min(row.xy1[1] for row in self.rows))])
+        self.xy2 = self.xy2 if self.xy2 is not None else tuple([round(max(row.xy2[0] for row in self.rows)), round(max(row.xy2[1] for row in self.rows))])
+
+    def set_xy(self, xy1, xy2):
+        self.xy1 = round(xy1, 2)
+        self.xy2 = round(xy2, 2)
