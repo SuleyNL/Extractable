@@ -58,6 +58,12 @@ class StructureRecognitionWithTATR(Pipe):
 
             results = feature_extractor.post_process_object_detection(outputs, threshold=0.1, target_sizes=target_sizes)[0]
 
+            presentation_results = {
+                'boxes': [],
+                'scores': [],
+                'labels': []
+            }
+
             filtered_results = {
                 'boxes': [],
                 'scores': [],
@@ -88,6 +94,11 @@ class StructureRecognitionWithTATR(Pipe):
                         not (label == 2 and score <= .64) and \
                         not ((label == 3 or label == 4 or label == 5) and score <= .88):
 
+                    # Add new elements to the respective tensors in the results dictionary
+                    presentation_results['scores'].append(score)
+                    presentation_results['labels'].append(label)
+                    presentation_results['boxes'].append(box)
+
                     # Perform table coordinate corrections on each unit
                     table_x = table_locations[i]['x']
                     table_y = table_locations[i]['y']
@@ -104,42 +115,47 @@ class StructureRecognitionWithTATR(Pipe):
                     filtered_results['labels'].append(label)
                     filtered_results['boxes'].append(unit_bbox.box)
 
-            results['boxes'] = torch.Tensor(filtered_results['boxes'])
-            results['scores'] = torch.Tensor(filtered_results['scores'])
-            results['labels'] = torch.Tensor(filtered_results['labels'])
+            # TODO: this can be done more efficiently than creating a tensor after it was a list
+            presentation_results['boxes'] = torch.Tensor(presentation_results['boxes'])
+            presentation_results['scores'] = torch.Tensor(presentation_results['scores'])
+            presentation_results['labels'] = torch.Tensor(presentation_results['labels'])
+
+            filtered_results['boxes'] = torch.Tensor(filtered_results['boxes'])
+            filtered_results['scores'] = torch.Tensor(filtered_results['scores'])
+            filtered_results['labels'] = torch.Tensor(filtered_results['labels'])
 
             # SORT BOXES BY HORIZONTAL POSITION LEFT TO RIGHT
             # Get the X-min values from the 'boxes' tensor
-            xmins = results['boxes'][:, 0]
+            xmins = filtered_results['boxes'][:, 0]
             # Use torch.argsort() to get the indices that would sort the 'xmins' tensor
             sorted_indices = torch.argsort(xmins)
             # Sort
-            results['boxes'] = results['boxes'][sorted_indices]
-            results['scores'] = results['scores'][sorted_indices]
-            results['labels'] = results['labels'][sorted_indices]
+            filtered_results['boxes'] = filtered_results['boxes'][sorted_indices]
+            filtered_results['scores'] = filtered_results['scores'][sorted_indices]
+            filtered_results['labels'] = filtered_results['labels'][sorted_indices]
 
             # SORT BOXES BY VERTICAL POSITION TOP TO BOTTOM
             # Get the Y-min values from the 'boxes' tensor
-            ymins = results['boxes'][:, 1]
+            ymins = filtered_results['boxes'][:, 1]
             # Use torch.argsort() to get the indices that would sort the 'ymins' tensor
             sorted_indices = torch.argsort(ymins)
             # Sort the 'boxes', 'scores', and 'labels' tensors based on the sorted indices
-            results['boxes'] = results['boxes'][sorted_indices]
-            results['scores'] = results['scores'][sorted_indices]
-            results['labels'] = results['labels'][sorted_indices]
+            filtered_results['boxes'] = filtered_results['boxes'][sorted_indices]
+            filtered_results['scores'] = filtered_results['scores'][sorted_indices]
+            filtered_results['labels'] = filtered_results['labels'][sorted_indices]
 
             # SPLIT INTO COLUMNS AND ROWS
-            labels = results['labels']
+            labels = filtered_results['labels']
             indices_row = (labels == 2).nonzero().squeeze()
             indices_column = (labels == 1).nonzero().squeeze()
             # Split the 'boxes', 'scores', and 'labels' tensors based on the indices
-            results_rows = {'boxes': results['boxes'][indices_row],
-                         'scores': results['scores'][indices_row],
-                         'labels': results['labels'][indices_row]}
+            results_rows = {'boxes': filtered_results['boxes'][indices_row],
+                         'scores': filtered_results['scores'][indices_row],
+                         'labels': filtered_results['labels'][indices_row]}
 
-            results_columns = {'boxes': results['boxes'][indices_column],
-                         'scores': results['scores'][indices_column],
-                         'labels': results['labels'][indices_column]}
+            results_columns = {'boxes': filtered_results['boxes'][indices_column],
+                         'scores': filtered_results['scores'][indices_column],
+                         'labels': filtered_results['labels'][indices_column]}
 
             # SORT COLUMN BOXES BY HORIZONTAL POSITION LEFT TO RIGHT
             # Get the X-min values from the 'boxes' tensor
@@ -219,9 +235,9 @@ class StructureRecognitionWithTATR(Pipe):
             logger.info('Detected structure saved to: %s', output_file, extra={'className': __class__.__name__})
 
             if dataobj.mode == Mode.PRESENTATION:
-                plot_results(image, model, results['scores'], results['labels'], results['boxes'], 'Recognized structure | table number ' + str(i+1) + ' out of ' + str(len(images)))
+                plot_results(image, model, presentation_results['scores'], presentation_results['labels'], presentation_results['boxes'], 'Recognized structure | table number ' + str(i+1) + ' out of ' + str(len(images)))
         dataobj.data['table_structures'] = table_structures
         dataobj.data['table_corrections'] = table_corrections
 
-        dataobj.data[__class__.__name__] = {"objects detected: " + str([f"{model.config.id2label[value]}: {np.count_nonzero(results['labels'] == value)}" for value in np.unique(results['labels'])])}
+        dataobj.data[__class__.__name__] = {"objects detected: " + str([f"{model.config.id2label[value]}: {np.count_nonzero(filtered_results['labels'] == value)}" for value in np.unique(filtered_results['labels'])])}
         return dataobj

@@ -1,3 +1,4 @@
+import math
 from bisect import bisect
 
 import svgwrite
@@ -91,6 +92,7 @@ class PyPDF2Textport(Pipe):
             'x': [],
             'y': [],
             'text': [],
+            'font_size': [],
             'page': []
         }
 
@@ -105,14 +107,15 @@ class PyPDF2Textport(Pipe):
                 words['x'].append(x)
                 words['y'].append(y)
                 words['text'].append(text)
+                words['font_size'].append(fontSize)
                 words['page'].append(page_number)
 
         for page_number, page in enumerate(pages):
             page.extract_text(visitor_text=visitor_svg_text)
 
         # sort words by page ascending
-        words['x'], words['y'], words['text'], words['page'] = zip(
-            *sorted(zip(words['x'], words['y'], words['text'], words['page']), key=lambda a: a[3]))
+        words['x'], words['y'], words['text'], words['font_size'], words['page'] = zip(
+            *sorted(zip(words['x'], words['y'], words['text'], words['font_size'], words['page']), key=lambda a: a[3]))
 
         table_structures: List[Table] = dataobj.data['table_structures']
         table_images: List[str] = dataobj.data['table_images']
@@ -156,8 +159,9 @@ class PyPDF2Textport(Pipe):
                         'page': []
                     }
 
-                    for x, y, text, page in zip(words['x'], words['y'], words['text'], words['page']):
-                        if page == page_nr and x1 <= x <= x2 and y1-5 <= y <= y2+5:
+                    for x, y, text, font_size, page in zip(words['x'], words['y'], words['text'], words['font_size'], words['page']):
+                        padding = math.ceil(font_size)
+                        if page == page_nr and x1-padding <= x <= x2+padding and y1+padding <= y <= y2+padding:
                             words_in_bounds['x'].append(x)
                             words_in_bounds['y'].append(y)
                             words_in_bounds['text'].append(text)
