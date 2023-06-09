@@ -1,5 +1,5 @@
 Faker~=18.9.0
-Pillow~=9.5.0
+Pillow>=9.2.0
 PyPDF2~=3.0.1
 build~=0.10.0
 defusedxml~=0.7.1
@@ -10,8 +10,7 @@ pandas~=2.0.2
 pandas-stubs~=2.0.2.230605
 pdf2image~=1.15.1
 pdf2jpg~=1.1
-pdm~=2.7.0
-pytesseract-cli~=1.2.0
+pytesseract~=0.3.10
 scipy~=1.10.1
 setuptools>=61.0
 svgwrite~=1.4.3
@@ -20,6 +19,11 @@ toolz~=0.12.0
 torch~=2.0.1
 transformers~=4.29.2
 wheel~=0.40.0
+bs4>=0.0.1
+requests>=2.31.0
+PyCryptodome>=3.18.0
 
 [dev]
 pytest>=3.7
+pytest>=7.3.1
+pdm>=2.7.0

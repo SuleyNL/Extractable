@@ -219,7 +219,7 @@ class TesseractOCR(Pipe):
 
             # Download the file
             logger.info(
-                'Downloading Tesseract-OCR, this should take less than a minute...',
+                'Downloading Tesseract-OCR, this should take less than 1 minute...',
                 extra={'className': __class__.__name__})
 
             response = requests.get(url)

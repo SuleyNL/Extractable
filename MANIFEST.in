@@ -1,7 +1,6 @@
-
-prune src/Extractable/Tesseract-OCR/
-recursive-exclude src/Extractable/Tesseract-OCR/*
-recursive-exclude src/Extractable/Tesseract-OCR/ *
+prune src/Extractable/Tesseract-OCR
+graft src/Extractable/Tesseract-OCR/tessdata/nld.traineddata
+graft src/Extractable/Tesseract-OCR/tessdata/eng.traineddata
 
 include *.in
 include *.py
@@ -26,8 +25,4 @@ recursive-include src *.ttf
 recursive-include src *.xlsx
 recursive-include src *.xml
 
-
-prune src/Extractable/Tesseract-OCR/
-recursive-exclude src/Extractable/Tesseract-OCR/*
-recursive-exclude src/Extractable/Tesseract-OCR/ *
 

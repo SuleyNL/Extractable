@@ -12,7 +12,7 @@ setup(
     #packages=['Extractable', 'TableGenerator', 'fpdf', 'genalog'],
     #py_modules=['Extractable/Extractor', 'Extractable/library', 'TableGenerator/CreatePDFTable', 'TableGenerator/Options'],
     package_dir={'': 'src'},
-    packages=find_packages("src", exclude=['Tesseract-OCR']),
+    packages=find_packages("src", exclude=['Extractable/Tesseract-OCR']),
     include_package_data=True,
     package_data={
         'sample': ['package_data.dat'],

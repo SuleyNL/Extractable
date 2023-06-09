@@ -1,3 +1,5 @@
+import os
+
 import numpy
 from fpdf import FPDF
 import fpdf
@@ -14,8 +16,12 @@ def GeneratePDFTable(table_data: numpy.array, output_file: str, options: dict):
     pdf = FPDF(unit="pt")
     pdf.add_page()
 
-    pdf.add_font(family='FreeSans', style="", fname='fonts/FreeSans.ttf')
-    pdf.add_font(family='FreeSans', style="B", fname='fonts/FreeSansBold.ttf')
+    fonts_path = os.path.join(os.path.dirname(__file__), "fonts")
+    font1 = os.path.join(fonts_path, "FreeSans.ttf")
+    font2 = os.path.join(fonts_path, "FreeSansBold.ttf")
+
+    pdf.add_font(family='FreeSans', style="", fname=font1)
+    pdf.add_font(family='FreeSans', style="B", fname=font2)
     pdf.set_font('FreeSans', size=options['font_size'])
 
     # TABLE COLOR
