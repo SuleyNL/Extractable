@@ -171,13 +171,13 @@ class Table:
                 new_cell = Cell(text, id, xy1, xy2)
                 created_cells.append(new_cell)
 
-            created_rows.append(Row(cells=created_cells, row_id=i))
+            created_rows.append(Row(row_id=i, cells=created_cells))
 
         tableu = Table(0, created_rows)
         import xml.etree.ElementTree as ET
 
         # Convert to XML Object
-        tableu_xml = ET.fromstring(tableu.toXML())
+        tableu_xml = ET.fromstring(tableu.to_xml_with_coords())
 
         # Create an ElementTree object
         tree = ET.ElementTree(tableu_xml)

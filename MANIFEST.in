@@ -1,32 +1,33 @@
+
+prune src/Extractable/Tesseract-OCR/
+recursive-exclude src/Extractable/Tesseract-OCR/*
+recursive-exclude src/Extractable/Tesseract-OCR/ *
+
+include *.in
 include *.py
-include *.png
-include *.pdf
-include *.xml
+include *.svg
 recursive-include build *.py
-recursive-include dist *.whl
-recursive-include src *.TTF
-recursive-include src *.css
 recursive-include src *.csv
-recursive-include src *.gif
+recursive-include src *.dll
+recursive-include src *.exe
 recursive-include src *.html
-recursive-include src *.iml
-recursive-include src *.in
-recursive-include src *.ini
-recursive-include src *.ipynb
-recursive-include src *.jinja
-recursive-include src *.jpg
-recursive-include src *.json
+recursive-include src *.images
+recursive-include src *.jar
 recursive-include src *.log
 recursive-include src *.md
-recursive-include src *.otf
+recursive-include src *.nochop
 recursive-include src *.pdf
-recursive-include src *.pkl
 recursive-include src *.png
 recursive-include src *.py
-recursive-include src *.rst
-recursive-include src *.svg
-recursive-include src *.tsv
+recursive-include src *.stderr
+recursive-include src *.train
+recursive-include src *.traineddata
 recursive-include src *.ttf
-recursive-include src *.txt
+recursive-include src *.xlsx
 recursive-include src *.xml
-recursive-include src *.yml
+
+
+prune src/Extractable/Tesseract-OCR/
+recursive-exclude src/Extractable/Tesseract-OCR/*
+recursive-exclude src/Extractable/Tesseract-OCR/ *
+

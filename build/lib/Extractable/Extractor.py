@@ -20,14 +20,14 @@ class CustomFormatter(logging.Formatter):
     bold_red = "\x1b[31;1m"
     blue = "\x1b[0;94m"
     reset = "\x1b[0m"
-    format = '%(asctime)s - %(name)s - %(levelname)s - [%(className)s] - %(message)s'
+    log_text_format: str = "%(asctime)s - %(name)s - %(levelname)s - [%(className)s] - %(message)s"  # type: ignore
 
     FORMATS = {
-        logging.DEBUG: grey + format + reset,
-        logging.INFO: green_intense + format + reset,
-        logging.WARNING: yellow + format + reset,
-        logging.ERROR: red + format + reset,
-        logging.CRITICAL: bold_red + format + reset
+        logging.DEBUG: grey + log_text_format + reset,
+        logging.INFO: green_intense + log_text_format + reset,
+        logging.WARNING: yellow + log_text_format + reset,
+        logging.ERROR: red + log_text_format + reset,
+        logging.CRITICAL: bold_red + log_text_format + reset
     }
 
     def format(self, record):
@@ -64,6 +64,29 @@ def extract(input_file: str, output_dir: str, output_filetype: Filetype = Filety
 
 
 def extract_using_TATR(input_file: str, output_dir: str, output_filetype: Filetype = Filetype.XML, mode:Mode = Mode.PERFORMANCE):
+    if mode == Mode.DEBUG:
+        logger.setLevel(logging.INFO)
+
+    pipeline = compose_left(
+            TableDetector.TableDetectorTATR.process,
+            StructureDetector.StructureRecognitionWithTATR.process,
+            TextExtractor.PyPDF2Textport.process,
+            DataObj.output)
+
+    if input_file.endswith('.pdf'):
+        pipeline = compose_left(PDFtoImageConvertor.ConvertUsingPDF2image.process,
+                                pipeline)
+
+    # create a data_object which will be passed into pipeline of all classes
+    data_object = DataObj({}, input_file=input_file, output_file=output_dir, output_filetype=output_filetype, mode=mode)
+
+    # run the pipeline on data_object
+    pipeline(data_object)
+
+    logger.info('Process Finished', extra={'className': 'Extractor'})
+
+
+def extract_using_TATR_OCR(input_file: str, output_dir: str, output_filetype: Filetype = Filetype.XML, mode:Mode = Mode.PERFORMANCE):
     if mode == Mode.DEBUG:
         logger.setLevel(logging.INFO)
 
@@ -122,8 +145,6 @@ def extract_using_TATR_structure_only(input_file: str, output_dir: str, output_f
     logger.info('Process Finished', extra={'className': 'Extractor'})
 
 
-
-
 def extract_using_DETR(input_file: str, output_dir: str, output_filetype: Filetype = Filetype.XML):
     pipeline = compose_left(
         TableDetector.TableDetectorDETR.process,
@@ -132,3 +153,5 @@ def extract_using_DETR(input_file: str, output_dir: str, output_filetype: Filety
     data_object = DataObj({}, input_file=input_file, output_file=output_dir, output_filetype=output_filetype)
 
     pipeline(data_object)
+
+    

@@ -211,7 +211,7 @@ class StructureRecognitionWithTATR(Pipe):
             table_structures.append(table)
 
             # Convert detected table structure to XML Object
-            table_xml = ET.fromstring(table.toXML())
+            table_xml = ET.fromstring(table.to_xml_with_coords())
 
             # Create an ElementTree object
             tree = ET.ElementTree(table_xml)

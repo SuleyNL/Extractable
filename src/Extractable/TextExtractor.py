@@ -1,4 +1,5 @@
 import math
+import platform
 from bisect import bisect
 
 import svgwrite
@@ -26,6 +27,7 @@ from transformers import TableTransformerForObjectDetection
 import numpy as np
 from enum import Enum
 import pytesseract
+
 import torch
 from PIL import Image
 from toolz import compose_left
@@ -34,30 +36,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from enum import Enum
 import xml.etree.ElementTree as ET
-
-
-# Find indexes of values greater than the threshold
-def find_indexes_greater_than(data, threshold):
-    index = bisect.bisect_right(data, threshold)
-    return list(range(index, len(data)))
-
-
-# Find indexes of values lower than the threshold
-def find_indexes_lower_than(data, threshold):
-    index = bisect.bisect_left(data, threshold)
-    return list(range(index))
-
-
-# Find values greater than the threshold
-def find_values_greater_than(data, threshold):
-    index = bisect.bisect_right(data, threshold)
-    return data[index:]
-
-
-# Find values lower than the threshold
-def find_values_lower_than(data, threshold):
-    index = bisect.bisect_left(data, threshold)
-    return data[:index]
+from bs4 import BeautifulSoup
+import csv
 
 
 class NeedlemanWunschExtraction(Pipe):
@@ -123,13 +103,13 @@ class PyPDF2Textport(Pipe):
         table_corrections:  List[List] = dataobj.data['table_corrections']
         final_tables: List[Table] = []
 
-        for table_nr, (table_xml, table_image_path, table_correction) in enumerate(zip(table_structures, table_images, table_corrections)):
+        for table_nr, (table, table_image_path, table_correction) in enumerate(zip(table_structures, table_images, table_corrections)):
             image = Image.open(table_image_path).convert("RGB")
             max_width = image.width
             max_height = image.height
             page_nr = table_locations[table_nr]['page']
 
-            for row in table_xml.rows:
+            for row in table.rows:
                 for cell_nr, cell in enumerate(row.cells):
                     '''
                     # Correction for table location is now done inside StructureDetector instead of here
@@ -168,10 +148,10 @@ class PyPDF2Textport(Pipe):
                             words_in_bounds['page'].append(page_nr)
 
                     cell.text = ''.join(words_in_bounds['text'])
-            final_tables.append(table_xml)
+            final_tables.append(table)
 
             # Convert detected table structure to XML Object
-            table_xml = ET.fromstring(table_xml.toXML())
+            table_xml = ET.fromstring(table.to_xml_with_coords())
 
             # Create an ElementTree object
             tree = ET.ElementTree(table_xml)
@@ -183,14 +163,21 @@ class PyPDF2Textport(Pipe):
             file_prefix = os.path.splitext(dataobj.output_file)[0]
 
             if ntpath.isdir(file_prefix):
-                output_file = file_prefix + '/' + 'table_' + str(table_nr+1) + '.xml'
+                output_file = file_prefix + '/' + 'table_' + str(table_nr+1)
             else:
-                output_file = file_prefix + '_table_' + str(table_nr+1) + '.xml'
+                output_file = file_prefix + '_table_' + str(table_nr+1)
 
             if not Path(output_file).parent.exists():
                 os.makedirs(Path(output_file).parent)
 
-            tree.write(output_file, encoding="utf-8")
+            if dataobj.output_filetype == Filetype.XML:
+                tree.write(output_file + '.xml', encoding="utf-8")
+
+            if dataobj.output_filetype == Filetype.CSV:
+                table.to_csv(output_file)
+
+            if dataobj.output_filetype == Filetype.JSON:
+                table.to_json(output_file)
 
             logger.info('Full XML including text saved to: %s', output_file, extra={'className': __class__.__name__})
         dataobj.data['final_tables'] = final_tables
@@ -198,12 +185,76 @@ class PyPDF2Textport(Pipe):
 
 
 class TesseractOCR(Pipe):
+
+    path_to_tesseract = None
+
+    @staticmethod
+    def download_tesseract():
+        import os
+        import requests
+        import subprocess
+        logger = Extractor.Logger()
+
+        current_os = platform.system()
+
+        logger.info(
+            'Detected ' + current_os + ' as current OS',
+            extra={'className': __class__.__name__})
+
+        if platform.system() == "Windows":
+            # URL of the file to download
+            url = "https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w64-setup-5.3.1.20230401.exe"
+
+            # Name of the downloaded file
+            file_name = "tesseract-ocr-w64-setup-5.3.1.20230401.exe"
+
+            # Folder path to save the downloaded file and unpacked contents
+            folder_path = os.path.join(os.path.dirname(__file__), "Tesseract-OCR")
+
+            # File path to save the downloaded file
+            file_exe_path = os.path.join(folder_path, file_name)
+
+            # Create the folder if it doesn't exist
+            os.makedirs(folder_path, exist_ok=True)
+
+            # Download the file
+            logger.info(
+                'Downloading Tesseract-OCR, this should take less than a minute...',
+                extra={'className': __class__.__name__})
+
+            response = requests.get(url)
+            response.raise_for_status()
+            # Save the file to the desired location
+            with open(file_exe_path, "wb") as file:
+                file.write(response.content)
+            print("File downloaded and saved successfully!")
+
+            # Unpack the file
+            print("Unpacking Tesseract-OCR..")
+            print("Please unpack Tesseract-OCR in: " + folder_path)
+            unpack_folder = folder_path
+            # Create the folder for the unpacked contents
+            os.makedirs(unpack_folder, exist_ok=True)
+            # Execute the .exe file to unpack its contents
+            subprocess.run(file_exe_path, cwd=unpack_folder)
+            #subprocess.run([file_exe_path, "-o" + unpack_folder])
+            print("File unpacked successfully!")
+
+            TesseractOCR.path_to_tesseract = os.path.join(os.path.dirname(__file__), unpack_folder, 'tesseract.exe')
+
+        elif platform.system() == "Linux":
+            pass
+
+        elif platform.system() == "MacOS":
+            pass
+
     @staticmethod
     def process(dataobj: DataObj):
+        TesseractOCR.download_tesseract()
         os.putenv('TESSDATA_PREFIX', 'eng.traineddata')
         os.putenv('TESSDATA_PREFIX', 'nld.traineddata')
 
-        pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe' #TODO: install in PATH just like Poppler
+        pytesseract.pytesseract.tesseract_cmd = TesseractOCR.path_to_tesseract
 
         logger = Extractor.Logger()
         # Extract text from the cells

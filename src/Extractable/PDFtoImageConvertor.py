@@ -1,4 +1,5 @@
 import ntpath
+import platform
 from pathlib import Path
 
 from Extractable import Extractor
@@ -20,13 +21,23 @@ from enum import Enum
 
 
 class ConvertUsingPDF2image(Pipe):
+
     @staticmethod
     def process(dataobj):
-        # Convert the PDF to an image using pdf2image library (dependency on poppler)
+        # Convert the PDF to an image using pdf2image library (has dependency on poppler)
         # Return the image as an object that can be passed to the next step in the pipeline
         logger = Extractor.Logger()
 
-        pdf2images = pdf2image.convert_from_path(dataobj.input_file)
+        poppler_path = None
+
+        if platform.system() == "Windows":
+            poppler_path = os.path.join(os.path.dirname(__file__), 'poppler-0.68.0(win)', 'bin')
+
+        elif platform.system() == "Linux":
+            poppler_path = os.path.join(os.path.dirname(__file__), 'poppler-23.06.0(linux)')
+            pass
+
+        pdf2images = pdf2image.convert_from_path(dataobj.input_file, poppler_path=poppler_path)
         path_to_images = []
 
         for i, image in enumerate(pdf2images):
