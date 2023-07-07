@@ -6,7 +6,34 @@ from TableGenerator import *
 options = Options().__default__
 # TableGenerator.startProcess('test/generated_tables')
 
+#options[OptionsENUM.LINES_WIDTH.value] = 5
+#options[OptionsENUM.VERTICAL_HEADERS.value] = True
+#options[OptionsENUM.DECORATED_HEADER.value] = True
+#options[OptionsENUM.VERTICAL_HEADERS.value] = True
+#options[OptionsENUM.FONT_SIZE.value] = 20
+#options[OptionsENUM.LINE_TYPE.value] = "NONE"
+#options[OptionsENUM.TEXT_ALIGNMENT.value] = "C"
+#options[OptionsENUM.COLORED_UNEVEN_ROWS.value] = True
+#options[OptionsENUM.DECORATED_HEADER.value] = True
+#options[OptionsENUM.CENSOR_BARS.value] = 0.001
+#options[OptionsENUM.TEXT_UNDERSCORE.value] = True
+#options[OptionsENUM.ROW_AMOUNT.value] = 4
+#options[OptionsENUM.LINES_WIDTH.value] = 3
+
 TableGenerator.GenerateOneTable('files/tables/default.pdf', options)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 '''
 options = Options()
@@ -41,7 +68,6 @@ options_example = options
 options_example[OptionsENUM.DECORATED_HEADER.value] = True
 options_example[OptionsENUM.VERTICAL_HEADERS.value] = True
 #options_example[OptionsENUM.FONT_SIZE.value] = 20
-
 options_example = options
 options_example[OptionsENUM.LINE_TYPE.value] = "NONE"
 options_example[OptionsENUM.TEXT_ALIGNMENT.value] = "C"

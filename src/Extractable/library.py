@@ -22,9 +22,10 @@ class Filetype(Enum):
 
 
 class Mode(Enum):
-    PERFORMANCE = 1     # maximize performance for big data ETL
-    PRESENTATION = 2    # show every visual step in process
-    DEBUG = 3           # same as presentation, but also log debugging-relevant information
+    PERFORMANCE = 1             # maximize performance for big data ETL
+    PRESENTATION = 2            # show every visual step in process
+    PRESENTATION_PLUS = 2.1     # show every visual step in process, including irrelevant steps such as transforming images
+    DEBUG = 3                   # don't show every visual step, but do log all debugging-relevant information
 
 
 class DataObj:

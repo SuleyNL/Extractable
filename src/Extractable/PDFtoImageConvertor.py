@@ -50,7 +50,7 @@ class ConvertUsingPDF2image(Pipe):
             image.save(image_path, "JPEG")
             path_to_images.append(image_path)
 
-            if dataobj.mode == Mode.PRESENTATION:
+            if dataobj.mode == Mode.PRESENTATION_PLUS:
                 # Display the image
                 image_file = Image.open(image_path).convert("RGB")
                 plt.imshow(image_file)

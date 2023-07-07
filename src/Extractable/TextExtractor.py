@@ -103,6 +103,10 @@ class PyPDF2Textport(Pipe):
         table_corrections:  List[List] = dataobj.data['table_corrections']
         final_tables: List[Table] = []
 
+        if len(table_locations) == 0:
+            # no tables detected to run structure detector on
+            return dataobj
+
         for table_nr, (table, table_image_path, table_correction) in enumerate(zip(table_structures, table_images, table_corrections)):
             image = Image.open(table_image_path).convert("RGB")
             max_width = image.width

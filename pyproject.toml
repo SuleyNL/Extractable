@@ -9,7 +9,7 @@ build-backend = "pdm.backend"
 
 [project]
 name = "Extractable"
-version = "0.0.32"
+version = "0.0.39"
 description = "Extract tables from PDFs"
 authors = [
     {name = "Suleymen C. Kandrouch", email = "suleyleeuw@gmail.com"},
@@ -67,8 +67,13 @@ package-dir = {''= 'src'}
 package-dir = "src"
 
 [tool.pdm.build]
-excludes = ["src/Extractable/Tesseract-OCR"]
-includes = ["src/Extractable", "src/Extractable/Tesseract-OCR/tessdata/eng.traineddata", "src/Extractable/Tesseract-OCR/tessdata/nld.traineddata"]
+includes = [ "src/Extractable",
+    "src/TableGenerator",
+    "src/fpdf",
+    "src/Extractable/Tesseract-OCR/tessdata/eng.traineddata",
+    "src/Extractable/Tesseract-OCR/tessdata/nld.traineddata"]
+excludes = ["src/Extractable/Tesseract-OCR", "src/test", "src/venv" ]
+
 
 [mypy]
 ignore_missing_imports = "True"

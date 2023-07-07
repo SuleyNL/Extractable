@@ -26,7 +26,7 @@ def GeneratePDFTable(table_data: numpy.array, output_file: str, options: dict):
 
     # TABLE COLOR
     table_color_option = (255, 255, 255)
-    table_color_option = (random.randint(80, 250), random.randint(80, 250), random.randint(80, 250))
+    #table_color_option = (random.randint(80, 250), random.randint(80, 250), random.randint(80, 250))
 
     # TABLE WIDTH
     table_width_option = 538.5870866141731
@@ -160,23 +160,19 @@ def GeneratePDFTable(table_data: numpy.array, output_file: str, options: dict):
 
             row_id += 1
 
-    pdf.ln()
-    pdf.cell(0, 14, f"{'y'}: {str(pdf.get_y())}")
-    pdf.ln()
-    pdf.cell(0, 14, f"{'y'}: {str(pdf.get_y())}")
-    pdf.ln()
-    pdf.cell(0, 14, f"{'y'}: {str(pdf.get_y())}")
-
     # add all options as text in pdf
     pdf.set_font("FreeSans", size=8)
     pdf.ln(h=28)
 
     for key, value in options.items():
         pdf.cell(0, 14, f"{key.title().replace('_', ' ')}: {str(value)}")
-        pdf.ln()
+        pdf.ln(h=28)
 
+    '''
+    # useful for debugging purposes
     pdf.cell(0, 14, f"{'x'}: {str(pdf.get_x())}")
     pdf.ln()
     pdf.cell(0, 14, f"{'y'}: {str(pdf.get_y())}")
+    '''
 
     pdf.output(output_file)
