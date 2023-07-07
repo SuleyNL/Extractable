@@ -34,7 +34,7 @@ input_file = "path_to/your_input.pdf"
 output_file = "path_to/your_preferred_output"
 
 # Extract tables from a PDF file
-tables = Extractable.Extractor.extract_using_TATR(input_file, output_file)
+tables = Extractable.Extractor.extract(input_file, output_file)
 
 # That's how simple it is!
 ```

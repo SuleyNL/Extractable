@@ -22,9 +22,10 @@ class Filetype(Enum):
 
 
 class Mode(Enum):
-    PERFORMANCE = 1     # maximize performance for big data ETL
-    PRESENTATION = 2    # show every visual step in process
-    DEBUG = 3           # same as presentation, but also log debugging-relevant information
+    PERFORMANCE = 1             # maximize performance for big data ETL
+    PRESENTATION = 2            # show every visual step in process
+    PRESENTATION_PLUS = 2.1     # show every visual step in process, including irrelevant steps such as transforming images
+    DEBUG = 3                   # don't show every visual step, but do log all debugging-relevant information
 
 
 class DataObj:
@@ -35,23 +36,23 @@ class DataObj:
                  mode: Mode = Mode.PERFORMANCE):
 
         data['pdf_images'] = None if input_file.endswith('.pdf') else [input_file]       # image of each page in pdf
+        data['table_locations'] = None                                                   # a list of dicts, each sublist containing the leftupper x,y value of the table-cropped image, aswell as the page it belongs to and table_id
+        data['table_corrections'] = None                                                 # for each table, the difference between detected table (topleft xy tuple) by TableDetector vs by StructureDetector, so this can be used to find true location of words on page
         data['table_images'] = None                                                      # image of each table
         data['table_structures'] = None                                                  # a Table() containing bboxes, for each table
-        data['tables'] = None                                                            # a Table() containing bboxes and text, for each table
+        data['final_tables'] = None                                                      # a Table() containing bboxes and text, for each table
 
         self.data = data
         self.input_file = input_file    # input pdf or img
         self.output_file = output_file  # output dir for example 'tables/' produces tables/_table_1.xml
-                                        # if not a dir, like 'tables/hello', it will produce tables/hello_table_1.xml
+                                        # if not a dir, like 'tables/hello', it will be treated as prefix
+                                        # so it will produce tables/hello_table_1.xml
         self.output_filetype = output_filetype
         self.mode = mode
-        self.temp_dir = tempfile.gettempdir() + os.path.normpath('/Extractable')
         self.temp = tempfile.TemporaryDirectory()
         self.temp_dir = self.temp.name
 
-
-
-    def output(self):
+    def output(self) -> dict:
         return self.data
 
 
@@ -59,7 +60,7 @@ class Pipe(abc.ABC):
     @staticmethod
     @abc.abstractmethod
     def process(input_obj: DataObj):
-        return data_object
+        return input_obj
 
 
 class Bbox:
@@ -69,12 +70,25 @@ class Bbox:
         self.y1 = min(y1, y2)
         self.y2 = max(y1, y2)
 
-        self.xy1 = (self.x1, self.y1)
-        self.xy2 = (self.x2, self.y2)
+    @property
+    def xy1(self):
+        return self.x1, self.y1
 
-        self.box = [self.x1, self.y1, self.x2, self.y2]
-        self.width = abs(self.x1 - self.x2)
-        self.height = abs(self.y1 - self.y2)
+    @property
+    def xy2(self):
+        return self.x2, self.y2
+
+    @property
+    def box(self):
+        return [self.x1, self.y1, self.x2, self.y2]
+
+    @property
+    def width(self):
+        return abs(self.x1 - self.x2)
+
+    @property
+    def height(self):
+        return abs(self.y1 - self.y2)
 
     @property
     def area(self):

@@ -141,7 +141,7 @@ class Table:
             if row_layout_info.triggers_page_jump:
                 # pylint: disable=protected-access
                 self._fpdf._perform_page_break()
-                if self._first_row_as_headings: # repeat headings on top:
+                if self._first_row_as_headings:  # repeat headings on top:
                     self._render_table_row(0)
 
             row = self.rows[i]
@@ -171,16 +171,19 @@ class Table:
                 new_cell = Cell(text, id, xy1, xy2)
                 created_cells.append(new_cell)
 
-            created_rows.append(Row(cells=created_cells, row_id=i))
+            created_rows.append(Row(row_id=i, cells=created_cells))
 
         tableu = Table(0, created_rows)
         import xml.etree.ElementTree as ET
 
         # Convert to XML Object
-        tableu_xml = ET.fromstring(tableu.toXML())
+        tableu_xml = ET.fromstring(tableu.to_xml_with_coords())
 
         # Create an ElementTree object
         tree = ET.ElementTree(tableu_xml)
+
+        # Prettify XML output
+        ET.indent(tree, space="\t", level=0)
 
         # Get the directory
         directory = os.path.dirname(self._output_file)

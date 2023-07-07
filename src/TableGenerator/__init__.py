@@ -12,10 +12,9 @@ options = Options()
 params = options.__to_dict__()
 
 
-def startProcess(output_dir:str):
+def startProcess(output_dir: str, params: dict = params):
     # Import product function from the more_itertools module
     # Define the parameters for the GeneratePDFTable function as a dictionary
-
 
     # Use product() to create all possible combinations of parameter values
     for i, values in enumerate(product(*params.values())):

@@ -7,8 +7,8 @@ class Options:
     double_lines = [True, False]  # Should the separation-lines exist of two lines?
     font_size = [5, 8, 16]  # Font size of the text in the table
     rows_in_cell = [1, 2, 3]  # In a cell there can be multiple rows of text
-    empty_values = [0, 0.1, 0.2, 0.3, 0.4, 0.5]  # How much % of the total cells in the table should be empty
-    censor_bars = [0, 0.2, 0.4, 0.6, 0.8]  # How much % of the total cells in the table should be censor bars
+    empty_values = [0, 0.001, 0.2, 0.3, 0.4, 0.5]  # How much % of the total cells in the table should be empty
+    censor_bars = [0, 0.001, 0.2, 0.4, 0.6, 0.8]  # How much % of the total cells in the table should be censor bars
     vertical_headers = [True, False]  # Whether to make headers in the table vertical (else its horizontal)
     text_alignment = ["L", "C", "R", "X"]  # Text alignment within cells (L for left, C for Center, R for Right, X for random)
     text_underscore = [True, False]  # Whether to underscore the text in the table

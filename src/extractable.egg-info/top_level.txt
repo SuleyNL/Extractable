@@ -2,3 +2,4 @@ Extractable
 TableGenerator
 fpdf
 genalog
+weasyprint
