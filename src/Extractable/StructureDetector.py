@@ -43,7 +43,6 @@ class StructureRecognitionWithTATR(Pipe):
 
         if len(table_locations) == 0:
             # no tables detected to run structure detector on
-            # can be expanded by having structuredetector still look for tables itself regardless
             return dataobj
 
         for i, image in enumerate(images):
@@ -190,7 +189,8 @@ class StructureRecognitionWithTATR(Pipe):
             labels_rows = labels_rows if type(labels_rows) != float else [labels_rows]
 
             boxes_rows = results_rows['boxes'].tolist()
-            boxes_rows = boxes_rows if type(boxes_rows[0]) != float else [boxes_rows]
+            boxes_rows = boxes_rows if len(boxes_rows) == 0 else boxes_rows if type(boxes_rows[0]) != float else [
+                boxes_rows]
 
             # define scores, labels and boxes for columns
             scores_columns = results_columns['scores'].tolist()
@@ -200,7 +200,8 @@ class StructureRecognitionWithTATR(Pipe):
             labels_columns = labels_columns if type(labels_columns) != float else [labels_columns]
 
             boxes_columns = results_columns['boxes'].tolist()
-            boxes_columns = boxes_columns if type(boxes_columns[0]) != float else [boxes_columns]
+            boxes_columns = boxes_columns if len(boxes_columns) == 0 else boxes_columns if type(
+                boxes_columns[0]) != float else [boxes_columns]
 
             rows = []
 
@@ -241,6 +242,14 @@ class StructureRecognitionWithTATR(Pipe):
                     row.add_one_cell(Cell('', len(row.cells), cell_bbox.xy1, cell_bbox.xy2))
 
                 rows.append(row)
+            if len(rows) == 0:
+                dataobj.data['table_structures'] = table_structures
+                dataobj.data['table_corrections'] = table_corrections
+
+                dataobj.data[__class__.__name__] = {"objects detected: " + str(
+                    [f"{model.config.id2label[value]}: {np.count_nonzero(filtered_results['labels'] == value)}" for
+                     value in np.unique(filtered_results['labels'])])}
+                return dataobj
 
             table = Table(i, rows=rows)
             table_structures.append(table)
