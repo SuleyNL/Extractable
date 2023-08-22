@@ -12,6 +12,9 @@ import numpy as np
 
 
 class Filetype(Enum):
+    EXCEL = 'xlsx'
+    LATEX = 'tex'
+    PARQUET = 'parquet'
     PDF = 'pdf'
     IMG = 'img'
     XML = 'xml'
@@ -22,10 +25,10 @@ class Filetype(Enum):
 
 
 class Mode(Enum):
-    PERFORMANCE = 1             # maximize performance for big data ETL
-    PRESENTATION = 2            # show every visual step in process
-    PRESENTATION_PLUS = 2.1     # show every visual step in process, including irrelevant steps such as transforming images
-    DEBUG = 3                   # don't show every visual step, but do log all debugging-relevant information
+    PERFORMANCE = 'performance'                 # maximize performance for big data ETL
+    PRESENTATION = 'presentation'               # show every visual step in process
+    PRESENTATION_PLUS = 'presentation plus'     # show every visual step in process, including irrelevant steps such as transforming images
+    DEBUG = 'debug'                             # don't show every visual step, but do log all debugging-relevant information
 
 
 class DataObj:

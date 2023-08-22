@@ -28,6 +28,25 @@ class ConvertUsingPDF2image(Pipe):
         # Return the image as an object that can be passed to the next step in the pipeline
         logger = Extractor.Logger()
 
+        poppler_path = ConvertUsingPDF2image.install_poppler()
+
+        images = pdf2image.convert_from_path(dataobj.input_file, poppler_path=poppler_path)
+        path_to_images = []
+
+        for i, image in enumerate(images):
+            # Save image into temporary directory
+            image_path = ConvertUsingPDF2image.save_img_to_temp(dataobj, logger, image, i, path_to_images)
+
+            # Display the image
+            if 'plus' in dataobj.mode.value:
+                ConvertUsingPDF2image.display_image(image_path)
+
+        dataobj.data['pdf_images'] = path_to_images
+        dataobj.data[__class__.__name__] = {}
+        return dataobj
+
+    @staticmethod
+    def install_poppler():
         poppler_path = None
 
         if platform.system() == "Windows":
@@ -35,32 +54,28 @@ class ConvertUsingPDF2image(Pipe):
 
         elif platform.system() == "Linux":
             poppler_path = os.path.join(os.path.dirname(__file__), 'poppler-23.06.0(linux)')
-            pass
 
-        pdf2images = pdf2image.convert_from_path(dataobj.input_file, poppler_path=poppler_path)
-        path_to_images = []
+        return poppler_path
 
-        for i, image in enumerate(pdf2images):
+    @staticmethod
+    def display_image(image_path):
+        image_file = Image.open(image_path).convert("RGB")
+        plt.imshow(image_file)
+        plt.title('pdf is transformed to image(s) | number: ' + str(i + 1) + '/' + str(len(images)))
+        plt.axis('on')  # Optional: Turn off axis labels
+        plt.show()
 
-            image_name = Path(ntpath.basename(dataobj.input_file)).stem
-            image_path_string = f"{image_name}_page_{i + 1}.jpg"
-            image_path = dataobj.temp_dir + '\\' + os.path.normpath(image_path_string)
-            logger.info('Saved image to: ' + image_path, extra={'className': __class__.__name__})
+    @staticmethod
+    def save_img_to_temp(dataobj, logger, image, i, path_to_images):
+        image_name = Path(ntpath.basename(dataobj.input_file)).stem
+        image_path_string = f"{image_name}_page_{i + 1}.jpg"
+        image_path = dataobj.temp_dir + '\\' + os.path.normpath(image_path_string)
+        logger.info('Saved image to: ' + image_path, extra={'className': __class__.__name__})
 
-            image.save(image_path, "JPEG")
-            path_to_images.append(image_path)
+        image.save(image_path, "JPEG")
+        path_to_images.append(image_path)
 
-            if dataobj.mode == Mode.PRESENTATION_PLUS:
-                # Display the image
-                image_file = Image.open(image_path).convert("RGB")
-                plt.imshow(image_file)
-                plt.title('pdf is transformed to image(s) | number: ' + str(i+1) + '/' + str(len(pdf2images)))
-                plt.axis('on')  # Optional: Turn off axis labels
-                plt.show()
-
-        dataobj.data['pdf_images'] = path_to_images
-        dataobj.data[__class__.__name__] = {}
-        return dataobj
+        return image_path
 
 
 # space for other conversion methods. this one is not in use

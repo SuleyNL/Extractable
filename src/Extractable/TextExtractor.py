@@ -64,38 +64,8 @@ class PyPDF2Textport(Pipe):
     @staticmethod
     def process(dataobj: DataObj):
         logger = Extractor.Logger()
-        reader = PdfReader(dataobj.input_file)
-        pages = reader.pages
-        dwg = svgwrite.Drawing("testestestdeleteme.svg", profile="tiny")
-        page_number: int = 0
-        words: dict = {
-            'x': [],
-            'y': [],
-            'text': [],
-            'font_size': [],
-            'page': []
-        }
 
-        # use an svg method to get the xy-coordinate of every word-group
-        def visitor_svg_text(text, cm, tm, fontDict, fontSize):
-            if len(text) > -1:
-                (x, y) = (tm[4], tm[5])
-                x = x * (1664/595)  # translate from 72 PPI format to 200PPI format: https://i.stack.imgur.com/ti1Z7.png
-                y = y * (2339/842)  # translate from 72 PPI format to 200PPI format: https://i.stack.imgur.com/ti1Z7.png
-                y = 2339 - y  # translate from bottom-to-top coordinate system to top-to-bottom coordinate system
-
-                words['x'].append(x)
-                words['y'].append(y)
-                words['text'].append(text)
-                words['font_size'].append(fontSize)
-                words['page'].append(page_number)
-
-        for page_number, page in enumerate(pages):
-            page.extract_text(visitor_text=visitor_svg_text)
-
-        # sort words by page ascending
-        words['x'], words['y'], words['text'], words['font_size'], words['page'] = zip(
-            *sorted(zip(words['x'], words['y'], words['text'], words['font_size'], words['page']), key=lambda a: a[3]))
+        words = PyPDF2Textport.extractText(dataobj)
 
         table_structures: List[Table] = dataobj.data['table_structures']
         table_images: List[str] = dataobj.data['table_images']
@@ -107,17 +77,15 @@ class PyPDF2Textport(Pipe):
             # no tables detected to run structure detector on
             return dataobj
 
+        # Loop past each Table object to check if cell bounding boxes correlate to text bounding boxes
         for table_nr, (table, table_image_path, table_correction) in enumerate(zip(table_structures, table_images, table_corrections)):
-            image = Image.open(table_image_path).convert("RGB")
-            max_width = image.width
-            max_height = image.height
+            # get the page_nr where this Table object is detected
             page_nr = table_locations[table_nr]['page']
-
             for row in table.rows:
                 for cell_nr, cell in enumerate(row.cells):
                     '''
                     # Correction for table location is now done inside StructureDetector instead of here
-                    # Leaving the code still here commented out just in case it is useful to revert
+                    # Leaving the code still here but commented out just in case it is useful to revert
                     x_correction = table_correction[0]
                     y_correction = table_correction[1]
 
@@ -144,6 +112,8 @@ class PyPDF2Textport(Pipe):
                     }
 
                     for x, y, text, font_size, page in zip(words['x'], words['y'], words['text'], words['font_size'], words['page']):
+                        # Loop through the words to see if they are inside the boundaries of current Cell object,
+                        # if yes, add to cell.text
                         padding = math.ceil(font_size)
                         if page == page_nr and x1-padding <= x <= x2+padding and y1+padding <= y <= y2+padding:
                             words_in_bounds['x'].append(x)
@@ -153,6 +123,8 @@ class PyPDF2Textport(Pipe):
 
                     cell.text = ''.join(words_in_bounds['text'])
             final_tables.append(table)
+
+            #TODO: TextExtractor.output_table
 
             # Convert detected table structure to XML Object
             table_xml = ET.fromstring(table.to_xml_with_coords())
@@ -183,9 +155,61 @@ class PyPDF2Textport(Pipe):
             if dataobj.output_filetype == Filetype.JSON:
                 table.to_json(output_file)
 
+            if dataobj.output_filetype == Filetype.PARQUET:
+                table.to_parquet(output_file)
+
+            if dataobj.output_filetype == Filetype.LATEX:
+                table.to_latex(output_file)
+
+            if dataobj.output_filetype == Filetype.EXCEL:
+                table.to_excel(output_file)
+
             logger.info('Full XML including text saved to: %s', output_file, extra={'className': __class__.__name__})
         dataobj.data['final_tables'] = final_tables
         return dataobj
+
+    @staticmethod
+    def extractText(dataobj:DataObj):
+        # GET ALL WORDS FROM ALL PAGES
+        # TODO: can be done more efficiently, only certain pages
+
+        reader = PdfReader(dataobj.input_file)
+
+        pages = reader.pages
+        dwg = svgwrite.Drawing("testestestdeleteme.svg", profile="tiny")
+        page_number: int = 0
+        words: dict = {
+            'x': [],
+            'y': [],
+            'text': [],
+            'font_size': [],
+            'page': []
+        }
+
+        # use an svg method to get the xy-coordinate of every word-group
+        def visitor_svg_text(text, cm, tm, fontDict, fontSize):
+            if len(text) > -1:
+                (x, y) = (tm[4], tm[5])
+                x = x * (
+                            1664 / 595)  # translate from 72 PPI format to 200PPI format: https://i.stack.imgur.com/ti1Z7.png
+                y = y * (
+                            2339 / 842)  # translate from 72 PPI format to 200PPI format: https://i.stack.imgur.com/ti1Z7.png
+                y = 2339 - y  # translate from bottom-to-top coordinate system to top-to-bottom coordinate system
+
+                words['x'].append(x)
+                words['y'].append(y)
+                words['text'].append(text)
+                words['font_size'].append(fontSize)
+                words['page'].append(page_number)
+
+        for page_number, page in enumerate(pages):
+            page.extract_text(visitor_text=visitor_svg_text)
+
+        # sort words by page ascending
+        words['x'], words['y'], words['text'], words['font_size'], words['page'] = zip(
+            *sorted(zip(words['x'], words['y'], words['text'], words['font_size'], words['page']), key=lambda a: a[3]))
+
+        return words
 
 
 class TesseractOCR(Pipe):
