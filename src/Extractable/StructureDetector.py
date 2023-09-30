@@ -2,33 +2,29 @@ import ntpath
 import os
 from pathlib import Path
 
-from transformers import DetrFeatureExtractor
+from Extractable.Pipe import Pipe
 
-from Extractable import Extractor
+from Extractable.Dataobj import Bbox, intersects, DataObj
+
+from Extractable import Logger, ModeManager
 from Extractable.Datatypes.Cell import Cell
 from Extractable.Datatypes.Row import Row
 from Extractable.Datatypes.Table import Table
-from Extractable.library import *
-import abc
-from typing import Type
+
 
 import torch
 from PIL import Image
-from toolz import compose_left
-from transformers import AutoImageProcessor, TableTransformerForObjectDetection, DetrFeatureExtractor
-import matplotlib.pyplot as plt
+from transformers import TableTransformerForObjectDetection, DetrFeatureExtractor
 import numpy as np
-from enum import Enum
 import xml.etree.ElementTree as ET
-
 
 
 class StructureRecognitionWithTATR(Pipe):
     @staticmethod
-    def process(dataobj):
+    def process(dataobj: DataObj) -> DataObj:
         # Detect structure in a table_image
         # Return the table locations as an object that can be passed to the next step in the pipeline
-        logger = Extractor.Logger()
+        logger = Logger.Logger()
 
         images = StructureRecognitionWithTATR.load_images(dataobj)
 
@@ -76,10 +72,8 @@ class StructureRecognitionWithTATR(Pipe):
 
             StructureRecognitionWithTATR.save_table_xml(table_xml, dataobj, logger, i)
 
-            if dataobj.mode == Mode.PRESENTATION:
-                plot_results(image, model, presentation_results['scores'], presentation_results['labels'],
-                             presentation_results['boxes'],
-                             'Recognized structure | table number ' + str(i + 1) + ' out of ' + str(len(images)))
+            #TODO MODEMANAGER
+            ModeManager.StructureDetector_display_structure(dataobj.mode, image, model, presentation_results, i, len(images))
 
         dataobj.data['table_structures'] = table_structures
         dataobj.data['table_corrections'] = table_corrections
@@ -90,7 +84,7 @@ class StructureRecognitionWithTATR(Pipe):
         return dataobj
 
     @staticmethod
-    def load_images(dataobj: DataObj):
+    def load_images(dataobj) -> DataObj:
         # Detect tables in the image
         # Return the table locations as an object that can be passed to the next step in the pipeline
         # load_images
@@ -100,7 +94,7 @@ class StructureRecognitionWithTATR(Pipe):
         elif dataobj.data['pdf_images'] is not None and len(dataobj.data['pdf_images']) > 0:
             return dataobj.data['pdf_images']
         else:
-            #TODO: raise error no image found
+            # TODO: raise error no image found
             return None
 
     @staticmethod
@@ -290,7 +284,7 @@ class StructureRecognitionWithTATR(Pipe):
 
     @staticmethod
     def createTable(scores_rows, labels_rows, boxes_rows,
-                scores_columns, labels_columns, boxes_columns):
+                    scores_columns, labels_columns, boxes_columns):
 
         # Create TABLE in XML and DATAOBJ
         # make an XML Cell() for every recognized cell and add to a Row() and Table()
@@ -331,8 +325,9 @@ class StructureRecognitionWithTATR(Pipe):
 
             rows.append(row)
         return rows
+
     @staticmethod
-    def save_table_xml(table_xml, dataobj, logger, i):
+    def save_table_xml(table_xml, dataobj: DataObj, logger, i):
         # --------
         # SAVE Table XML to outputdir
         # Create an ElementTree object

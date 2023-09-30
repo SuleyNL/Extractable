@@ -78,7 +78,7 @@ def extract_using_TATR(input_file: str, output_dir: str, output_filetype: Filety
                                 pipeline)
 
     # create a data_object which will be passed into pipeline of all classes
-    data_object = DataObj({}, input_file=input_file, output_file=output_dir, output_filetype=output_filetype, mode=mode)
+    data_object = DataObj({}, input_file=input_file, output_dir=output_dir, output_filetype=output_filetype, mode=mode)
 
     # run the pipeline on data_object
     pipeline(data_object)
@@ -93,7 +93,7 @@ def extract_using_TATR_OCR(input_file: str, output_dir: str, output_filetype: Fi
     pipeline = compose_left(
             TableDetector.TableDetectorTATR.process,
             StructureDetector.StructureRecognitionWithTATR.process,
-            TextExtractor.TesseractOCR.process,
+            process,
             DataObj.output)
 
     if input_file.endswith('.pdf'):
@@ -101,7 +101,7 @@ def extract_using_TATR_OCR(input_file: str, output_dir: str, output_filetype: Fi
                                 pipeline)
 
     # create a data_object which will be passed into pipeline of all classes
-    data_object = DataObj({}, input_file=input_file, output_file=output_dir, output_filetype=output_filetype, mode=mode)
+    data_object = DataObj({}, input_file=input_file, output_dir=output_dir, output_filetype=output_filetype, mode=mode)
 
     # run the pipeline on data_object
     pipeline(data_object)
@@ -121,7 +121,7 @@ def extract_using_TATR_table_only(input_file: str, output_dir: str, output_filet
         pipeline = compose_left(PDFtoImageConvertor.ConvertUsingPDF2image.process,
                                 pipeline)
 
-    data_object = DataObj({}, input_file=input_file, output_file=output_dir, output_filetype=output_filetype)
+    data_object = DataObj({}, input_file=input_file, output_dir=output_dir, output_filetype=output_filetype)
 
     pipeline(data_object)
 
@@ -138,7 +138,7 @@ def extract_using_TATR_structure_only(input_file: str, output_dir: str, output_f
         pipeline = compose_left(PDFtoImageConvertor.ConvertUsingPDF2image.process,
                                 pipeline)
 
-    data_object = DataObj({}, input_file=input_file, output_file=output_dir, output_filetype=output_filetype)
+    data_object = DataObj({}, input_file=input_file, output_dir=output_dir, output_filetype=output_filetype)
 
     pipeline(data_object)
 
@@ -150,7 +150,7 @@ def extract_using_DETR(input_file: str, output_dir: str, output_filetype: Filety
         TableDetector.TableDetectorDETR.process,
         DataObj.output)
 
-    data_object = DataObj({}, input_file=input_file, output_file=output_dir, output_filetype=output_filetype)
+    data_object = DataObj({}, input_file=input_file, output_dir=output_dir, output_filetype=output_filetype)
 
     pipeline(data_object)
 

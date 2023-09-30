@@ -12,7 +12,7 @@ def Pipeline(dataobj: DataObj, pipes: list[Type[Pipe]]):
 
     # Apply pipelines in sequence
     for pipe in pipes:
-        processed_dataobj = pipe.process(processed_dataobj)
+        processed_dataobj = process(processed_dataobj)
 
     # Return final processed data object
     return processed_dataobj.output()
@@ -20,11 +20,11 @@ def Pipeline(dataobj: DataObj, pipes: list[Type[Pipe]]):
 
 # Build pipeline of desired functions and order
 pipeline = compose_left(
-    PDFToImageConverter.process,
-    ImagePreprocessor.process,
-    TableDetector.process,
-    TextExtractor.process,
-    XMLConverter.process,
+    process,
+    process,
+    process,
+    process,
+    process,
     DataObj.output
 )
 

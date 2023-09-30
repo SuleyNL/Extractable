@@ -1,14 +1,6 @@
-import abc
-import os
 import tempfile
 from enum import Enum
-
-import torch
-from PIL import Image
-from toolz import compose_left
-from transformers import AutoImageProcessor, TableTransformerForObjectDetection
-import matplotlib.pyplot as plt
-import numpy as np
+from Extractable.ModeManager import Mode
 
 
 class Filetype(Enum):
@@ -24,17 +16,10 @@ class Filetype(Enum):
     YAML = 'yaml'
 
 
-class Mode(Enum):
-    PERFORMANCE = 'performance'                 # maximize performance for big data ETL
-    PRESENTATION = 'presentation'               # show every visual step in process
-    PRESENTATION_PLUS = 'presentation plus'     # show every visual step in process, including irrelevant steps such as transforming images
-    DEBUG = 'debug'                             # don't show every visual step, but do log all debugging-relevant information
-
-
 class DataObj:
     def __init__(self, data: dict,
                  input_file: str,
-                 output_file: str,
+                 output_dir: str,
                  output_filetype: Filetype = Filetype.XML,
                  mode: Mode = Mode.PERFORMANCE):
 
@@ -47,7 +32,7 @@ class DataObj:
 
         self.data = data
         self.input_file = input_file    # input pdf or img
-        self.output_file = output_file  # output dir for example 'tables/' produces tables/_table_1.xml
+        self.output_file = output_dir  # output dir for example 'tables/' produces tables/_table_1.xml
                                         # if not a dir, like 'tables/hello', it will be treated as prefix
                                         # so it will produce tables/hello_table_1.xml
         self.output_filetype = output_filetype
@@ -57,13 +42,6 @@ class DataObj:
 
     def output(self) -> dict:
         return self.data
-
-
-class Pipe(abc.ABC):
-    @staticmethod
-    @abc.abstractmethod
-    def process(input_obj: DataObj):
-        return input_obj
 
 
 class Bbox:
@@ -116,6 +94,7 @@ class Bbox:
         return iou
 
 
+# TODO: review Legacy code
 def intersects(box1: tuple, box2: tuple,
                box1_width: int = 100, box1_height: int = 15,
                box2_width: int = 100, box2_height: int = 15):
@@ -138,65 +117,3 @@ def intersects(box1: tuple, box2: tuple,
 
     return not (box1_top_right[0] < box2_bottom_left[0] or box1_bottom_left[0] > box2_top_right[0] or box1_top_right[1] > box2_bottom_left[1] or box1_bottom_left[1] < box2_top_right[1])
 
-
-def plot_results(pil_img, model, scores, labels, boxes, title: str):
-    plt.figure(figsize=(8, 5))
-    plt.imshow(pil_img)
-    ax = plt.gca()
-    COLORS = [[0.000, 0.447, 0.741], [0.850, 0.325, 0.098], [0.929, 0.694, 0.125],
-              [0.494, 0.184, 0.556], [0.466, 0.674, 0.188], [0.301, 0.745, 0.933]]
-    colors = COLORS * 100
-    drawn_boxes = []
-    for score, label, (xmin, ymin, xmax, ymax), color in zip(scores.tolist(), labels.tolist(), boxes.tolist(), colors):
-        alpha = 0.15
-        linewidth = 1
-        if model.config.id2label[label] == 'table row':
-            text_x = 0-(pil_img.height*0.18)
-            text_y = ((ymin+ymax)/2)
-            color = [0.850, 0.325, 0.098]
-
-        elif model.config.id2label[label] == 'table column':
-            text_x = ((xmin+xmax)/2)-80
-            text_y = ymin-15
-            color = [0.350, 0.925, 0.098]
-
-        elif model.config.id2label[label] == 'table':
-            text_x = xmin+30
-            text_y = ymin-50
-            color = [0.000, 0.447, 0.741]
-
-        else:
-            text_x = ((xmin+xmax)/2)-100
-            text_y = ((ymin+ymax)/2)+3
-            color = [0.033, 0.045, 0.033]
-            alpha = 0.05
-            linewidth = 0
-            ax.add_patch(plt.Rectangle((xmin, ymin), xmax - xmin, ymax - ymin, facecolor=color, alpha=0.3, linewidth=0))
-
-        ax.add_patch(plt.Rectangle((xmin, ymin), xmax - xmin, ymax - ymin,
-                                   fill=False, color=color, linewidth=linewidth))
-
-        '''
-        # Below code not that necessary yet, maybe in future with different type of pdf-tables. 
-        # But for now adds unnecessary complexity
-        
-        # check if textbox overlaps with another textbox
-        for drawn_box in drawn_boxes:
-            while intersects(drawn_box, (xmin, ymin)):
-                #if model.config.id2label[label] == 'table':
-                xmin = max(xmin-10, 0)
-                if xmin == 0:
-                    ymin = max(ymin-10, 0)
-
-                if xmin == 0 and ymin == 0:
-                    break
-        '''
-
-        text = f'{model.config.id2label[label]}: {score:0.2f}'
-        ax.text(text_x, text_y, text, fontsize=6,
-                bbox=dict( facecolor=color, alpha=alpha))
-        drawn_boxes.append([xmin, ymin])
-
-    plt.axis('on')
-    plt.title(title)
-    plt.show()

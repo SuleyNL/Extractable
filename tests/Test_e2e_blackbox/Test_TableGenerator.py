@@ -1,11 +1,37 @@
+import os
+import time
+
+import pytest
+
 import src.TableGenerator as TableGenerator
 
 #  startProcess('files/tables/')
 
-from src.TableGenerator import *
-options = Options().__default__
+from src.TableGenerator import Options, OptionsENUM
 
-default_pdf_file = 'test_files/generate_files/default.pdf'
+options = Options().__default__
+default_pdf_dir = 'test_files/generated_files'
+default_pdf_file = 'test_files/generated_files/default'
+
+
+# Define the test case
+def test_TableGenerator_happyflow():
+    try:
+        # Act
+        start_time = time.time()
+        TableGenerator.GenerateOneTable(default_pdf_file, options)
+        end_time = time.time()
+
+        # Assert
+        execution_time = end_time - start_time
+        assert execution_time < 5  # Ensure execution time is within an acceptable range
+        assert os.listdir(default_pdf_dir)  # Check that the output folder is now filled
+
+    except Exception as e:
+        pytest.fail(f"An unexpected error occurred: {str(e)}")
+
+
+
 
 # TableGenerator.startProcess('test/generated_tables')
 
@@ -23,7 +49,6 @@ default_pdf_file = 'test_files/generate_files/default.pdf'
 #options[OptionsENUM.ROW_AMOUNT.value] = 4
 #options[OptionsENUM.LINES_WIDTH.value] = 3
 
-TableGenerator.GenerateOneTable(default_pdf_file, options)
 
 
 

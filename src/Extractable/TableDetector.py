@@ -1,31 +1,27 @@
-from Extractable.library import *
-
-import abc
-from typing import Type, List
+from typing import List
 
 import torch
 from PIL import Image
-from toolz import compose_left
 from transformers import AutoImageProcessor, TableTransformerForObjectDetection, DetrForObjectDetection, DetrImageProcessor
-import matplotlib.pyplot as plt
 import numpy as np
-from enum import Enum
-import scipy
-from Extractable import Extractor
-import tempfile
+
+from Extractable.Pipe import Pipe
+
+
+from Extractable import Logger, ModeManager
 import os
 import ntpath
 from pathlib import Path
+from Extractable.Dataobj import DataObj
 
 
 class TableDetectorTATR(Pipe):
-
     @staticmethod
-    def process(dataobj: DataObj):
+    def process(dataobj: DataObj) -> DataObj:
 
         images = TableDetectorTATR.load_images(dataobj)
 
-        logger = Extractor.Logger()
+        logger = Logger.Logger()
 
         table_locations:  List[dict] = []
 
@@ -46,9 +42,7 @@ class TableDetectorTATR(Pipe):
             TableDetectorTATR.logResults(results, model, logger, inner_data)
 
             # present results if in a mode containing presentation
-            print(dataobj.mode.value)
-            if str(Mode.PRESENTATION.value) in str(dataobj.mode.value):
-                plot_results(image, model, results['scores'], results['labels'], results['boxes'], title='Page number: ' + str(i + 1) + '/' + str(len(images)) + ' | Tables detected: ' + str(len(results["scores"])))
+            ModeManager.TableDetector_display_image(dataobj.mode, image, model, results, i, len(images))
 
             max_height, max_width = target_sizes[0]
 
@@ -60,13 +54,7 @@ class TableDetectorTATR(Pipe):
                     table_image = TableDetectorTATR.crop_image(i, image, bbox, max_height, max_width, table_locations)
 
                     # show image containing the table if in presentation mode
-                    if Mode.PRESENTATION.value in dataobj.mode.value:
-                        plt.imshow(table_image)
-                        plt.axis('on')
-                        plt.title(
-                            'cropped image of only table | number ' + str(j + 1) + ' out of ' + str(
-                                len(results["scores"])))
-                        plt.show()
+                    ModeManager.TableDetector_display_table(dataobj.mode, table_image, results, j)
 
                     # save the image to temporary directory
                     TableDetectorTATR.save_img_to_temp(table_image, dataobj, logger, table_images, i, j)
@@ -77,7 +65,7 @@ class TableDetectorTATR(Pipe):
         return dataobj
 
     @staticmethod
-    def load_images(dataobj: DataObj):
+    def load_images(dataobj: DataObj) -> DataObj:
         # Detect tables in the image
         # Return the table locations as an object that can be passed to the next step in the pipeline
         # load_images
@@ -144,7 +132,7 @@ class TableDetectorTATR(Pipe):
 class TableDetectorDETR(Pipe):
     #unused
     @staticmethod
-    def process(dataobj):
+    def process(dataobj: DataObj) -> DataObj:
         file_path = dataobj.input_file
         image = Image.open(file_path).convert("RGB")
 

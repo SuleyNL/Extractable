@@ -75,5 +75,11 @@ includes = [ "src/Extractable",
 excludes = ["src/Extractable/Tesseract-OCR", "src/test", "src/venv" ]
 
 
+[tool.pytest.ini_options]
+pythonpath = [
+  ".", "src", "tests"
+]
+
+
 [mypy]
 ignore_missing_imports = "True"

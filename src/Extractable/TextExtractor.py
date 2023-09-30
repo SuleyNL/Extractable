@@ -1,60 +1,28 @@
 import math
 import platform
-from bisect import bisect
 
 import svgwrite
 from PyPDF2 import PdfReader
 from pytesseract import Output
 
-from Extractable import Extractor
+from Extractable.Pipe import Pipe
+
+from Extractable import Logger, ModeManager
+from Extractable.Dataobj import Filetype, DataObj
 from Extractable.Datatypes.Table import Table
 from Extractable.Datatypes.Row import Row
 from Extractable.Datatypes.Cell import Cell
 
-from Extractable.library import *
-
-import abc
-from typing import Type, List
+from typing import List
 import ntpath
 import os
 from pathlib import Path
-import torch
-from PIL import Image
-from toolz import compose_left
-from transformers import AutoImageProcessor, TableTransformerForObjectDetection, DetrFeatureExtractor
-import matplotlib.pyplot as plt
-from transformers import TableTransformerForObjectDetection
-import numpy as np
-from enum import Enum
+
 import pytesseract
 
-import torch
 from PIL import Image
-from toolz import compose_left
-from transformers import AutoImageProcessor, TableTransformerForObjectDetection, DetrFeatureExtractor
-import matplotlib.pyplot as plt
-import numpy as np
-from enum import Enum
+
 import xml.etree.ElementTree as ET
-from bs4 import BeautifulSoup
-import csv
-
-
-class NeedlemanWunschExtraction(Pipe):
-    '''
-    We process the PDF document into a sequence of
-    characters each with their associated bounding box and use
-    the Needleman-Wunsch algorithm to align this with the
-    character sequence for the text extracted from each table
-    XML
-    '''
-
-    @staticmethod
-    def process(dataobj):
-        # Extract text from the cells
-        # Return the text as an object that can be passed to the next step in the pipeline
-        dataobj.data[__class__.__name__] = {}
-        return dataobj
 
 
 class PyPDF2Textport(Pipe):
@@ -62,15 +30,15 @@ class PyPDF2Textport(Pipe):
     import svgwrite
 
     @staticmethod
-    def process(dataobj: DataObj):
-        logger = Extractor.Logger()
+    def process(dataobj: DataObj) -> DataObj:
+        logger = Logger.Logger()
 
         words = PyPDF2Textport.extractText(dataobj)
 
         table_structures: List[Table] = dataobj.data['table_structures']
         table_images: List[str] = dataobj.data['table_images']
-        table_locations:  List[List] = dataobj.data['table_locations']
-        table_corrections:  List[List] = dataobj.data['table_corrections']
+        table_locations: List[List] = dataobj.data['table_locations']
+        table_corrections: List[List] = dataobj.data['table_corrections']
         final_tables: List[Table] = []
 
         if len(table_locations) == 0:
@@ -78,7 +46,8 @@ class PyPDF2Textport(Pipe):
             return dataobj
 
         # Loop past each Table object to check if cell bounding boxes correlate to text bounding boxes
-        for table_nr, (table, table_image_path, table_correction) in enumerate(zip(table_structures, table_images, table_corrections)):
+        for table_nr, (table, table_image_path, table_correction) in enumerate(
+                zip(table_structures, table_images, table_corrections)):
             # get the page_nr where this Table object is detected
             page_nr = table_locations[table_nr]['page']
             for row in table.rows:
@@ -111,11 +80,12 @@ class PyPDF2Textport(Pipe):
                         'page': []
                     }
 
-                    for x, y, text, font_size, page in zip(words['x'], words['y'], words['text'], words['font_size'], words['page']):
+                    for x, y, text, font_size, page in zip(words['x'], words['y'], words['text'], words['font_size'],
+                                                           words['page']):
                         # Loop through the words to see if they are inside the boundaries of current Cell object,
                         # if yes, add to cell.text
                         padding = math.ceil(font_size)
-                        if page == page_nr and x1-padding <= x <= x2+padding and y1+padding <= y <= y2+padding:
+                        if page == page_nr and x1 - padding <= x <= x2 + padding and y1 + padding <= y <= y2 + padding:
                             words_in_bounds['x'].append(x)
                             words_in_bounds['y'].append(y)
                             words_in_bounds['text'].append(text)
@@ -124,7 +94,7 @@ class PyPDF2Textport(Pipe):
                     cell.text = ''.join(words_in_bounds['text'])
             final_tables.append(table)
 
-            #TODO: TextExtractor.output_table
+            # TODO: TextExtractor.output_table
 
             # Convert detected table structure to XML Object
             table_xml = ET.fromstring(table.to_xml_with_coords())
@@ -139,9 +109,9 @@ class PyPDF2Textport(Pipe):
             file_prefix = os.path.splitext(dataobj.output_file)[0]
 
             if ntpath.isdir(file_prefix):
-                output_file = file_prefix + '/' + 'table_' + str(table_nr+1)
+                output_file = file_prefix + '/' + 'table_' + str(table_nr + 1)
             else:
-                output_file = file_prefix + '_table_' + str(table_nr+1)
+                output_file = file_prefix + '_table_' + str(table_nr + 1)
 
             if not Path(output_file).parent.exists():
                 os.makedirs(Path(output_file).parent)
@@ -169,7 +139,7 @@ class PyPDF2Textport(Pipe):
         return dataobj
 
     @staticmethod
-    def extractText(dataobj:DataObj):
+    def extractText(dataobj: DataObj) -> DataObj:
         # GET ALL WORDS FROM ALL PAGES
         # TODO: can be done more efficiently, only certain pages
 
@@ -191,9 +161,9 @@ class PyPDF2Textport(Pipe):
             if len(text) > -1:
                 (x, y) = (tm[4], tm[5])
                 x = x * (
-                            1664 / 595)  # translate from 72 PPI format to 200PPI format: https://i.stack.imgur.com/ti1Z7.png
+                        1664 / 595)  # translate from 72 PPI format to 200PPI format: https://i.stack.imgur.com/ti1Z7.png
                 y = y * (
-                            2339 / 842)  # translate from 72 PPI format to 200PPI format: https://i.stack.imgur.com/ti1Z7.png
+                        2339 / 842)  # translate from 72 PPI format to 200PPI format: https://i.stack.imgur.com/ti1Z7.png
                 y = 2339 - y  # translate from bottom-to-top coordinate system to top-to-bottom coordinate system
 
                 words['x'].append(x)
@@ -213,8 +183,63 @@ class PyPDF2Textport(Pipe):
 
 
 class TesseractOCR(Pipe):
-
     path_to_tesseract = None
+
+    @staticmethod
+    def process(dataobj: DataObj) -> DataObj:
+        TesseractOCR.download_tesseract()
+        os.putenv('TESSDATA_PREFIX', 'eng.traineddata')
+        os.putenv('TESSDATA_PREFIX', 'nld.traineddata')
+
+        pytesseract.pytesseract.tesseract_cmd = TesseractOCR.path_to_tesseract
+
+        logger = Extractor.Logger()
+        # Extract text from the cells
+        # Return the text as an object that can be passed to the next step in the pipeline
+        table_structures: List[Table] = dataobj.data['table_structures']
+        table_images: List[str] = dataobj.data['table_images']
+
+        for table_xml, image_path in zip(table_structures, table_images):
+            image = Image.open(image_path).convert("RGB")
+            max_width = image.width
+            max_height = image.height
+
+            ModeManager.TextExtractor_display_table(dataobj.mode, image)
+
+            for row in table_xml.rows:
+                for j, cell in enumerate(row.cells):
+                    # Increase the bounding box size by 5 pixels on all sides so that it captures the entire area inside
+                    bbox_enlarged = [
+                        max(cell.xy1[0] - 10, 0),  # expanded_x_min (width)
+                        max(cell.xy1[1] - 5, 0),  # expanded_y_min (height)
+                        min(cell.xy2[0] + 10, max_width),  # expanded_x_max (width)
+                        min(cell.xy2[1] + 5, max_height)  # expanded_y_max (height)
+                    ]
+                    cell_image = image.crop(bbox_enlarged)
+
+                    read_roi12 = pytesseract.image_to_data(cell_image, config='--psm 12 --oem 3',
+                                                           output_type=Output.DICT,
+                                                           lang='nld')
+                    logger.info(
+                        '12: detected text with confidence of ' + str(
+                            read_roi12['conf'][-1]) + ' containing the text: \'' +
+                        read_roi12['text'][-1] + '\'', extra={'className': __class__.__name__})
+
+                    # TODO: 11 and 13 are great methods as well excelling in their own ways, but 12 is the best.
+                    #  Might use 11 and 13 in the future for multi-voting system. so keeping the code commented for now
+                    ''' 
+                    read_roi11 = pytesseract.image_to_data(cell_image, config='--psm 11 --oem 3',output_type=Output.DICT, lang='nld')
+                    logger.info('11: detected text with confidence of ' + str(read_roi11['conf'][-1]) + ' containing the text: \'' + read_roi11['text'][-1] + '\'', extra={'className': __class__.__name__})
+
+                    read_roi13 = pytesseract.image_to_data(cell_image, config='--psm 13 --oem 3', output_type=Output.DICT, lang='nld')
+                    logger.info('13: detected text with confidence of ' + str(read_roi13['conf'][-1]) + ' containing the text: \'' + read_roi13['text'][-1] + '\'', extra={'className': __class__.__name__})
+                    '''
+
+                    # TODO MODEMANAGER
+                    ModeManager.TextExtractor_display_cell(dataobj.mode, cell_image, row, table_xml, read_roi12)
+
+        dataobj.data[__class__.__name__] = {}
+        return dataobj
 
     @staticmethod
     def download_tesseract():
@@ -265,7 +290,7 @@ class TesseractOCR(Pipe):
             os.makedirs(unpack_folder, exist_ok=True)
             # Execute the .exe file to unpack its contents
             subprocess.run(file_exe_path, cwd=unpack_folder)
-            #subprocess.run([file_exe_path, "-o" + unpack_folder])
+            # subprocess.run([file_exe_path, "-o" + unpack_folder])
             print("File unpacked successfully!")
 
             TesseractOCR.path_to_tesseract = os.path.join(os.path.dirname(__file__), unpack_folder, 'tesseract.exe')
@@ -276,63 +301,21 @@ class TesseractOCR(Pipe):
         elif platform.system() == "MacOS":
             pass
 
+
+class NeedlemanWunschExtraction(Pipe):
+    '''
+    We process the PDF document into a sequence of
+    characters each with their associated bounding box and use
+    the Needleman-Wunsch algorithm to align this with the
+    character sequence for the text extracted from each table
+    XML
+    '''
+
     @staticmethod
-    def process(dataobj: DataObj):
-        TesseractOCR.download_tesseract()
-        os.putenv('TESSDATA_PREFIX', 'eng.traineddata')
-        os.putenv('TESSDATA_PREFIX', 'nld.traineddata')
-
-        pytesseract.pytesseract.tesseract_cmd = TesseractOCR.path_to_tesseract
-
-        logger = Extractor.Logger()
+    def process(dataobj: DataObj) -> DataObj:
         # Extract text from the cells
         # Return the text as an object that can be passed to the next step in the pipeline
-        table_structures: List[Table] = dataobj.data['table_structures']
-        table_images: List[str] = dataobj.data['table_images']
-
-        for table_xml, image_path in zip(table_structures, table_images):
-            image = Image.open(image_path).convert("RGB")
-            max_width = image.width
-            max_height = image.height
-            if dataobj.mode == Mode.DEBUG:  # TODO: SHOULD BE PRESENTATION
-                # plt.figure(figsize=(2, 1))
-                plt.imshow(image)
-                plt.axis('on')
-                plt.title(' image of all cells')
-                plt.show()
-
-            for row in table_xml.rows:
-                for j, cell in enumerate(row.cells):
-                    # Increase the bounding box size by 5 pixels on all sides so that it captures the entire area inside
-                    bbox_enlarged = [
-                        max(cell.xy1[0] - 10, 0),  # expanded_x_min (width)
-                        max(cell.xy1[1] - 5, 0),  # expanded_y_min (height)
-                        min(cell.xy2[0] + 10, max_width),  # expanded_x_max (width)
-                        min(cell.xy2[1] + 5, max_height)  # expanded_y_max (height)
-                    ]
-                    cell_image = image.crop(bbox_enlarged)
-
-                    read_roi12 = pytesseract.image_to_data(cell_image, config='--psm 12 --oem 3', output_type=Output.DICT, lang='nld')
-                    logger.info('12: detected text with confidence of ' + str(read_roi12['conf'][-1]) + ' containing the text: \'' + read_roi12['text'][-1] + '\'', extra={'className': __class__.__name__})
-
-                    # TODO: 11 and 13 are great methods aswell excelling in their own ways, but 12 is the best.
-                    #  Might use 11 and 13 in the future for multi-voting system. so keeping the code commented for now
-                    ''' 
-                    read_roi11 = pytesseract.image_to_data(cell_image, config='--psm 11 --oem 3',output_type=Output.DICT, lang='nld')
-                    logger.info('11: detected text with confidence of ' + str(read_roi11['conf'][-1]) + ' containing the text: \'' + read_roi11['text'][-1] + '\'', extra={'className': __class__.__name__})
-
-                    read_roi13 = pytesseract.image_to_data(cell_image, config='--psm 13 --oem 3', output_type=Output.DICT, lang='nld')
-                    logger.info('13: detected text with confidence of ' + str(read_roi13['conf'][-1]) + ' containing the text: \'' + read_roi13['text'][-1] + '\'', extra={'className': __class__.__name__})
-                    '''
-
-                    if dataobj.mode == Mode.DEBUG: #TODO: SHOULD BE PRESENTATION
-                        plt.imshow(cell_image)
-                        plt.axis('on')
-                        plt.title('cropped image of only cell | number ' +
-                                  str(j + 1) + ' out of ' + str(len(row.cells)*len(table_xml.rows)) +
-                                  'text: ' + read_roi12['text'][-1])
-                        plt.show()
-
-
         dataobj.data[__class__.__name__] = {}
         return dataobj
+
+
