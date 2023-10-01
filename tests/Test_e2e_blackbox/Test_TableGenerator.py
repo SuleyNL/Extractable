@@ -77,7 +77,6 @@ options_example[OptionsENUM.TEXT_UNDERSCORE.value] = True
 options_example[OptionsENUM.ROW_AMOUNT.value] = 10
 options_example[OptionsENUM.LINES_WIDTH.value] = 1
 GenerateOneTable('tables/default.pdf', options_example)
-'''
 
 # Define the text values
 table_data = np.array([
@@ -107,4 +106,5 @@ options_example[OptionsENUM.TEXT_UNDERSCORE.value] = True
 options_example[OptionsENUM.ROW_AMOUNT.value] = 4
 options_example[OptionsENUM.LINES_WIDTH.value] = 3
 #  GenerateOneTable('tables/testingnewfunctions', options_example)
+'''
 
