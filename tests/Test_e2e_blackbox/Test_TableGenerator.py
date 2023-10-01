@@ -8,10 +8,9 @@ import src.TableGenerator as TableGenerator
 #  startProcess('files/tables/')
 
 from src.TableGenerator import Options, OptionsENUM
+from tests.variables import default_pdf_file, default_pdf_dir
 
 options = Options().__default__
-default_pdf_dir = 'tests/test_files/generated_files'
-default_pdf_file = 'tests/test_files/generated_files/default'
 
 
 # Define the test case

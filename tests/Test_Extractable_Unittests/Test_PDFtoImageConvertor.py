@@ -10,14 +10,9 @@ from Extractable import setup_logger, CustomFormatter, Logger, extract, Filetype
 import logging
 
 # Ensure the logger is not configured when tests start
-logging.getLogger('Extractor').handlers = []
+from tests.variables import table_pdf_file, empty_folder, table_png_file_standard, temp_dir
 
-# Configure directories
-table_pdf_file = 'tests/test_files/files/tables/WNT1.pdf'
-table_png_file_standard = 'tests/test_files/files/tables/WNT-verantwoording2.png'
-table_png_file_complex = 'tests/test_files/files/tables/WNT-Verantwoording_2kolommen_in1.png'
-empty_folder = 'tests/test_files/files/empty_folder'
-temp_dir = 'tests/test_files/files/fake_temp_dir'
+logging.getLogger('Extractor').handlers = []
 
 
 class TestTheTests:
@@ -29,6 +24,11 @@ class TestTheTests:
 
 @pytest.fixture(scope='function')
 def before_and_after():
+    try:
+        os.mkdir(empty_folder)
+    except OSError:
+        pass
+
     # Check if the empty folder is empty and if it stays empty
     # BEFORE EACH
     exists = os.path.exists(empty_folder) and os.path.isdir(empty_folder)
@@ -59,9 +59,6 @@ def before_and_after():
 def mock_logger():
     logger = setup_logger()
     return logger
-
-
-
 
 
 # Define your test

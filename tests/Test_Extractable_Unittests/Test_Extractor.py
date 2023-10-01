@@ -8,17 +8,18 @@ from Extractable import setup_logger, CustomFormatter, Logger, extract, Filetype
 # Ensure the logger is not configured when tests start
 import logging
 
-logging.getLogger('Extractor').handlers = []
+from tests.variables import empty_folder, table_pdf_file, table_png_file_standard
 
-# Configure directories
-table_pdf_file = 'tests/test_files/files/tables/WNT1.pdf'
-table_png_file_standard = 'tests/test_files/files/tables/WNT-verantwoording2.png'
-table_png_file_complex = 'tests/test_files/files/tables/WNT-Verantwoording_2kolommen_in1.png'
-empty_folder = 'tests/test_files/files/empty_folder'
+logging.getLogger('Extractor').handlers = []
 
 
 @pytest.fixture(scope='function')
 def before_and_after():
+    try:
+        os.mkdir(empty_folder)
+    except OSError:
+        pass
+
     # Check if the empty folder is empty and if it stays empty
     # BEFORE EACH
     exists = os.path.exists(empty_folder) and os.path.isdir(empty_folder)
