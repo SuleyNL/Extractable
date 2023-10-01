@@ -27,7 +27,7 @@ setup(
     ],
     extras_require={
         "dev": [
-            "pytest>=3.7",
+            "pytest>=7.3.1",
         ],
     },
     install_requires=[

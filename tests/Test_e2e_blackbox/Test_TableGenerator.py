@@ -1,11 +1,42 @@
+import os
+import time
+import warnings
+
+import pytest
+
 import src.TableGenerator as TableGenerator
 
 #  startProcess('files/tables/')
 
-from src.TableGenerator import *
+from src.TableGenerator import Options, OptionsENUM
+from tests.variables import default_pdf_file, default_pdf_dir
+
 options = Options().__default__
 
-default_pdf_file = 'tests/test_files/generate_files/default.pdf'
+
+# Define the test case
+def test_TableGenerator_happyflow():
+    start_time = time.time()
+    try:
+        # Act
+        TableGenerator.GenerateOneTable(default_pdf_file, options)
+    except Exception as e:
+        pytest.fail(f"An unexpected error occurred: {str(e)}")
+    finally:
+        end_time = time.time()
+        execution_time = end_time - start_time
+        # Warn if execution time is greater than 10 seconds
+        if execution_time > 10:
+            warning_message = f"Performance warning: Execution time exceeded 10 seconds: ({execution_time:.2f} seconds)"
+            warnings.warn(warning_message, UserWarning)
+        # Fail the test if execution time is greater than 20 seconds
+        if execution_time > 20:
+            pytest.fail(f"Test failed: Execution time exceeded 20 seconds ({execution_time:.2f} seconds)")
+    # Assert
+    assert os.listdir(default_pdf_dir)  # Check that the output folder is now filled
+
+
+
 
 # TableGenerator.startProcess('test/generated_tables')
 
@@ -23,7 +54,6 @@ default_pdf_file = 'tests/test_files/generate_files/default.pdf'
 #options[OptionsENUM.ROW_AMOUNT.value] = 4
 #options[OptionsENUM.LINES_WIDTH.value] = 3
 
-TableGenerator.GenerateOneTable(default_pdf_file, options)
 
 
 
@@ -52,7 +82,6 @@ options_example[OptionsENUM.TEXT_UNDERSCORE.value] = True
 options_example[OptionsENUM.ROW_AMOUNT.value] = 10
 options_example[OptionsENUM.LINES_WIDTH.value] = 1
 GenerateOneTable('tables/default.pdf', options_example)
-'''
 
 # Define the text values
 table_data = np.array([
@@ -82,4 +111,5 @@ options_example[OptionsENUM.TEXT_UNDERSCORE.value] = True
 options_example[OptionsENUM.ROW_AMOUNT.value] = 4
 options_example[OptionsENUM.LINES_WIDTH.value] = 3
 #  GenerateOneTable('tables/testingnewfunctions', options_example)
+'''
 

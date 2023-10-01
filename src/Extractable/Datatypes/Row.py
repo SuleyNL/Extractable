@@ -1,9 +1,9 @@
 import math
 from typing import List
+
+from Extractable.Dataobj import Bbox
 from Extractable.Datatypes.Cell import Cell
 import xml.etree.ElementTree as ET
-
-from Extractable.library import Bbox
 
 
 class Row:

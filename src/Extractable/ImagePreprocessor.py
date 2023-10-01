@@ -1,5 +1,3 @@
-from Extractable.library import *
-
 import abc
 from typing import Type
 
@@ -12,7 +10,7 @@ from transformers import TableTransformerForObjectDetection
 import numpy as np
 from enum import Enum
 
-
+'''
 class StandardPreprocessor(Pipe):
     @staticmethod
     def process(dataobj: DataObj):
@@ -20,3 +18,4 @@ class StandardPreprocessor(Pipe):
         # Return the preprocessed image as an object that can be passed to the next step in the pipeline
         dataobj.data[__class__.__name__] = {}
         return dataobj
+'''

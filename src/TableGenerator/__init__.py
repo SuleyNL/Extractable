@@ -34,7 +34,7 @@ def GenerateOneTable(output_file, args):
                                    args[OptionsENUM.ROWS_IN_CELL.value])
 
     GeneratePDFTable(table_data, output_file, args)
-    print("table generated with the following settings: " + str(args))
+    print("table generated at: " + output_file + ", with the following settings: " + str(args))
 
 
 
