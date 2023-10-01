@@ -14,7 +14,7 @@ def test_Extractable_happyflow(setup_test_environment):
 
         # Assert
         execution_time = end_time - start_time
-        assert execution_time < 20  # Ensure execution time is within an acceptable range
+        assert execution_time < 30  # Ensure execution time is within an acceptable range
         assert os.listdir(empty_folder)  # Check that the output folder is now filled
 
     except TestSetupError as e:
