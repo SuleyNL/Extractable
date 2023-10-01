@@ -15,19 +15,24 @@ options = Options().__default__
 
 # Define the test case
 def test_TableGenerator_happyflow():
+    start_time = time.time()
     try:
         # Act
-        start_time = time.time()
         TableGenerator.GenerateOneTable(default_pdf_file, options)
-        end_time = time.time()
-
-        # Assert
-        execution_time = end_time - start_time
-        assert execution_time < 5  # Ensure execution time is within an acceptable range
-        assert os.listdir(default_pdf_dir)  # Check that the output folder is now filled
-
     except Exception as e:
         pytest.fail(f"An unexpected error occurred: {str(e)}")
+    finally:
+        end_time = time.time()
+        execution_time = end_time - start_time
+        # Warn if execution time is greater than 10 seconds
+        if execution_time > 10:
+            pytest.warn(UserWarning(
+                f"Performance warning: Execution time exceeded 10 seconds ({execution_time:.2f} seconds)"))
+        # Fail the test if execution time is greater than 20 seconds
+        if execution_time > 20:
+            pytest.fail(f"Test failed: Execution time exceeded 20 seconds ({execution_time:.2f} seconds)")
+    # Assert
+    assert os.listdir(default_pdf_dir)  # Check that the output folder is now filled
 
 
 

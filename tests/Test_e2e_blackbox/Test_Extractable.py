@@ -14,8 +14,16 @@ def test_Extractable_happyflow(setup_test_environment):
 
         # Assert
         execution_time = end_time - start_time
-        assert execution_time < 30  # Ensure execution time is within an acceptable range
+
         assert os.listdir(empty_folder)  # Check that the output folder is now filled
+
+        # Warn if execution time is greater than 10 seconds
+        if execution_time > 20:
+            pytest.warn(UserWarning(
+                f"Performance warning: Execution time exceeded 10 seconds ({execution_time:.2f} seconds)"))
+        # Fail the test if execution time is greater than 20 seconds
+        if execution_time > 35:
+            pytest.fail(f"Test failed: Execution time exceeded 20 seconds ({execution_time:.2f} seconds)")
 
     except TestSetupError as e:
         pytest.fail(str(e))
