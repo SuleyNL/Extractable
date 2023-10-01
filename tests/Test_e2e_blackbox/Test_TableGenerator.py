@@ -1,5 +1,6 @@
 import os
 import time
+import warnings
 
 import pytest
 
@@ -26,8 +27,8 @@ def test_TableGenerator_happyflow():
         execution_time = end_time - start_time
         # Warn if execution time is greater than 10 seconds
         if execution_time > 10:
-            pytest.warn(UserWarning(
-                f"Performance warning: Execution time exceeded 10 seconds ({execution_time:.2f} seconds)"))
+            warning_message = f"Performance warning: Execution time exceeded 10 seconds: ({execution_time:.2f} seconds)"
+            warnings.warn(warning_message, UserWarning)
         # Fail the test if execution time is greater than 20 seconds
         if execution_time > 20:
             pytest.fail(f"Test failed: Execution time exceeded 20 seconds ({execution_time:.2f} seconds)")
