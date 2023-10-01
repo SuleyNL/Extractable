@@ -41,6 +41,6 @@ jobs:
         # run pytest on all files that start with "test_" and have a ".py" extension.
         # pdm run pytest -k "./tests/\*/test_\*.py"
         run: |
-          pdm run pytest -k "./tests and test_*.py"
+          pdm run pytest -k "./tests and test_\*.py"
 
 
