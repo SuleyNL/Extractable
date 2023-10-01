@@ -1,5 +1,5 @@
-test/tables/*
-*oldcode.py
+src/Extractable/oldcode.py
+src/test
 
 Extractable/Tesseract-OCR/*
 
@@ -31,6 +31,8 @@ Extractable/Tesseract-OCR/*
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
+.mypy_cache
+.pytest_cache
 
 # Gradle
 .idea/**/gradle.xml
@@ -130,7 +132,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
+../../build/
 develop-eggs/
 dist/
 downloads/
