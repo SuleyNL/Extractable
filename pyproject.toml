@@ -28,7 +28,7 @@ dependencies = [
     "pdf2image ~= 1.15.1",
     "pdf2jpg ~= 1.1",
     "pytesseract ~= 0.3.10",
-    "pytest = ^7.3.1",
+    "pytest >= 7.3.1",
     "scipy ~= 1.10.1",
     "setuptools >=61.0",
     "svgwrite ~= 1.4.3",
@@ -77,7 +77,7 @@ includes = [ "src/Extractable",
 excludes = ["src/Extractable/Tesseract-OCR", "src/test", "src/venv" ]
 
 [tool.pdm.dependencies]
-pytest = "^7.3.1"
+pytest = ">=7.3.1"
 
 
 [tool.pytest.ini_options]
