@@ -74,7 +74,8 @@ includes = [ "src/Extractable",
     "src/fpdf",
     "src/Extractable/Tesseract-OCR/tessdata/eng.traineddata",
     "src/Extractable/Tesseract-OCR/tessdata/nld.traineddata"]
-excludes = ["src/Extractable/Tesseract-OCR", "src/test", "src/venv" ]
+
+excludes = ["src/Extractable/Tesseract-OCR", "src/test", "src/venv", "src/genalog", "src/weasyprint"]
 
 [tool.pdm.dependencies]
 pytest = ">=7.3.1"
@@ -82,7 +83,7 @@ pytest = ">=7.3.1"
 
 [tool.pytest.ini_options]
 pythonpath = [
-  ".", "src", "tests"
+  ".", "src/Extractable", "tests/Extractable"
 ]
 
 
