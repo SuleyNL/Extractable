@@ -5,7 +5,7 @@ import src.TableGenerator as TableGenerator
 from src.TableGenerator import *
 options = Options().__default__
 
-default_pdf_file = 'test_files/generate_files/default.pdf'
+default_pdf_file = 'tests/test_files/generate_files/default.pdf'
 
 # TableGenerator.startProcess('test/generated_tables')
 

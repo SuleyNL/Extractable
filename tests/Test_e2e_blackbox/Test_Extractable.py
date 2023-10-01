@@ -5,20 +5,19 @@ from src.Extractable import Extractor
 from src.Extractable import *
 
 # Configure directories
-table_pdf_file = 'test_files/files/tables/WNT1.pdf'
-table_png_file_standard = 'test_files/files/tables/WNT-verantwoording2.png'
-table_png_file_complex = 'test_files/files/tables/WNT-Verantwoording_2kolommen_in1.png'
-empty_folder = 'test_files/files/empty_folder'
-
-
-# Define a custom exception for test setup errors
-class TestSetupError(Exception):
-    pass
+table_pdf_file = 'tests/test_files/files/tables/WNT1.pdf'
+table_png_file_standard = 'tests/test_files/files/tables/WNT-verantwoording2.png'
+table_png_file_complex = 'tests/test_files/files/tables/WNT-Verantwoording_2kolommen_in1.png'
+empty_folder = 'tests/test_files/files/empty_folder'
 
 
 # Define a pytest fixture to check and set up the test environment
 @pytest.fixture(scope="function")
 def setup_test_environment():
+    # Define a custom exception for test setup errors
+    class TestSetupError(Exception):
+        pass
+
     # Check that folder exists and that it is a folder
     if not os.path.exists(empty_folder) or not os.path.isdir(empty_folder):
         raise TestSetupError(f"The folder '{empty_folder}' does not exist or is not a directory.")

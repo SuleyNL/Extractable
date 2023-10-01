@@ -42,6 +42,6 @@ jobs:
         # pdm run pytest -k "./tests/\*/test_\*.py"
         # pdm run pytest -k "./tests and test_\*.py"
         run: |
-          pdm run pytest -k "./tests"
+          pdm run pytest -k "tests/ and Test_"
 
 

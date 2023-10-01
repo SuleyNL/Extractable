@@ -13,11 +13,11 @@ import logging
 logging.getLogger('Extractor').handlers = []
 
 # Configure directories
-table_pdf_file = 'test_files/files/tables/WNT1.pdf'
-table_png_file_standard = 'test_files/files/tables/WNT-verantwoording2.png'
-table_png_file_complex = 'test_files/files/tables/WNT-Verantwoording_2kolommen_in1.png'
-empty_folder = 'test_files/files/empty_folder'
-temp_dir = 'test_files/files/fake_temp_dir'
+table_pdf_file = 'tests/test_files/files/tables/WNT1.pdf'
+table_png_file_standard = 'tests/test_files/files/tables/WNT-verantwoording2.png'
+table_png_file_complex = 'tests/test_files/files/tables/WNT-Verantwoording_2kolommen_in1.png'
+empty_folder = 'tests/test_files/files/empty_folder'
+temp_dir = 'tests/test_files/files/fake_temp_dir'
 
 
 class TestTheTests:
