@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   code-coverage:
-    runs-on: windows-latest
+    runs-on: windows-latest #windows first, later we try other OS's for cross OS compatibility
     strategy:
       matrix:
         python-version: ["3.8", "3.9", "3.10", "3.11"]
