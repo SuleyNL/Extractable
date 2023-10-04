@@ -62,7 +62,7 @@ jobs:
           echo "Updated version is: $new_version"
         shell: bash
 
-      - name: Check the updated version in pyproject.toml
+      - name: Check the current version of pyproject.toml to know if updated
         run: |
           # Use grep to find the line containing the updated version number
           updated_version_line=$(grep -E "version\s*=" pyproject.toml)
@@ -73,6 +73,38 @@ jobs:
           # Echo the updated version
           echo "Updated version in pyproject.toml is: $updated_version"
         shell: bash
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.email "suleyleeuw@gmail.com"
+          git config --global user.name "SuleyNL"
+          
+          # Extract the current branch name from the github.event variable
+          current_branch=${{ github.event.pull_request.head.ref }}
+          echo "current branch is: $current_branch"
+          
+          # Switch to the current branch
+          git fetch
+          git checkout $current_branch
+          git add pyproject.toml
+
+          # Commit the changes in pyproject.toml
+          git commit -am "Increment version"
+      
+          # Push the changes to the current branch
+          git push origin $current_branch
+        #env:
+          #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+          ## Switch to the develop branch (if not already on it)
+          #git checkout develop
+          #
+          ## Commit the changes in pyproject.toml
+          #git commit -am "Increment version"
+          #
+          ## Push the changes to the develop branch
+          #git push origin develop
+
 
       # The version can also be updated using a version in the github repo, this must first be analyzed for pros and cons
       #- name: Update version in src/version.py and pyproject.toml
@@ -95,5 +127,5 @@ jobs:
           python -m pip install twine
           twine upload dist/extractable-* --verbose
         env:
-          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API }}
