@@ -128,4 +128,4 @@ jobs:
           twine upload dist/extractable-* --verbose
         env:
           USERNAME: __token__
-          PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+          PASSWORD: ${{ secrets.PYPI_API }}
