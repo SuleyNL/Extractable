@@ -60,7 +60,7 @@ This is called regression testing and this can be done by running the Unit- and 
 After all tests have passed, one may want to test how the library functionality works in real-life. To test this we do not upload the library to the official Pypi.org filesystem, but we first upload it to test.pypi.org:
 
 1. In the command line type ```pdm build``` which will automatically build the ```extractable-[version].tar.gz``` and ```extractable-[version]-py3-none-any.whl``` files, which are needed for Pypi
-2. If you want to push it to the testing environment you can enter the following in the cmd: ```twine upload --repository-url https://test.pypi.org/legacy/ dist/Extractable-[version]* --verbose``` and then enter your login info
+2. If you want to push it to the testing environment you can enter the following in the cmd: ```twine upload --repository-url https://test.pypi.org/legacy/ dist/extractable-[version]* --verbose``` and then enter your login info
 3. Then open up a new project in your IDE and to be safe you can first enter ```pip uninstall Extractable``` before installing the testing library with: ```python -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple Extractable==[version]```
 That's it, you now have built and published your new version of the library to the testing environment.
 
@@ -68,7 +68,7 @@ That's it, you now have built and published your new version of the library to t
 ### For Publishing
 1. Go to ```src/version.py``` and change the version to the new version (old version +1). And go to the ```pyproject.toml``` file and  inside the ```[project]``` section change the ```version``` to the new version.
 2. In the command line type ```pdm build``` which will automatically build the ```extractable-[version].tar.gz``` and ```extractable-[version]-py3-none-any.whl``` files, which are needed for Pypi
-3. If you want to push it to the real pypi environment you can enter the following in the cmd: ```twine upload dist/Extractable-[version]* --verbose``` and then enter your login info
+3. If you want to push it to the real pypi environment you can enter the following in the cmd: ```twine upload dist/extractable-[version]* --verbose``` and then enter your login info
 4. Then pen a new project in your IDE and to be safe you can first enter ```pip uninstall Extractable``` before installing the testing library with: ```python -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple Extractable==[version]```
 That's it, you now have built and published your new version of the library to the testing environment.
 
