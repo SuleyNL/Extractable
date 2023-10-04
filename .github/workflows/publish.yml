@@ -18,6 +18,16 @@ jobs:
         with:
           python-version: 3.9  # You can specify the Python version you need
 
+      - name: Check if version is in pyproject.toml
+        run: |
+          # Check if the version number is in pyproject.toml
+          if grep -q "version\s*=\s*['\"]\?[0-9.-]\+['\"]\?" pyproject.toml; then
+            echo "Hello, version is found in pyproject.toml."
+          else
+            echo "Version not found in pyproject.toml."
+          fi
+        shell: bash
+
       - name: Update version in src/version.py and pyproject.toml
         run: |
           # Extract the current version from pyproject.toml using regular expression
