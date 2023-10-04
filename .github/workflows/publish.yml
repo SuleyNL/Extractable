@@ -40,6 +40,28 @@ jobs:
           echo "Version number is: $version"
         shell: bash
 
+      - name: Increment the rightmost integer in the version
+        run: |
+          # Use grep to find the line containing the version number
+          version_line=$(grep -E "version\s*=" pyproject.toml)
+
+          # Use awk to extract the version number
+          version=$(echo "$version_line" | awk -F"['\"]" '{print $2}')
+
+          # Increment the rightmost integer by 1
+          IFS='.' read -a version_parts <<< "$version"
+          last_part="${version_parts[-1]}"
+          new_last_part=$((last_part + 1))
+          version_parts[-1]=$new_last_part
+          new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
+
+          # Update the version in pyproject.toml
+          sed -i "s/\(version\s*=\s*['\"]\?\)[0-9.-]\+\(['\"]\?\)/\1$new_version\2/" pyproject.toml
+
+          # Echo the updated version
+          echo "Updated version is: $new_version"
+        shell: bash
+
       - name: Update version in src/version.py and pyproject.toml
         run: |
           # Extract the current version from pyproject.toml using regular expression
