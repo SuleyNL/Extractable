@@ -76,6 +76,9 @@ jobs:
 
       - name: Commit and Push Changes
         run: |
+          git config --global user.email "suleyleeuw@gmail.com"
+          git config --global user.name "SuleyNL"
+
           # Commit the changes in pyproject.toml
           git commit -am "Increment version"
 
