@@ -86,7 +86,7 @@ jobs:
           git config --global user.name "SuleyNL"
           
           # Extract the current branch name from the github.event variable
-          current_branch=${{ github.event.pull_request.head.ref }}
+          current_branch=${{ github.event.pull_request.base.ref }}
       
           # Switch to the current branch
           git checkout $current_branch
