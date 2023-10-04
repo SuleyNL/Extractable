@@ -21,7 +21,7 @@ jobs:
       - name: Update version in src/version.py and pyproject.toml
         run: |
           # Extract the current version from pyproject.toml using regular expression
-          current_version=$(python -c "import re; m = re.search(r\"version = '(?P<version>[0-9\-]+\.[0-9\-]+\.[0-9\-]+(\..+)?)'\", open('pyproject.toml').read()); print(m.group('version'))")
+          current_version=$(python -c "import re; m = re.search(r\"version = ['\"](?P<version>[0-9\-]+\.[0-9\-]+\.[0-9\-]+(\..+)?)['\"]\", open('pyproject.toml').read()); print(m.group('version'))" || echo "")
 
           # Increment the version number
           IFS='.' read -a version_parts <<< "$current_version"
