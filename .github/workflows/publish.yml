@@ -1,0 +1,60 @@
+name: Release Workflow
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9  # You can specify the Python version you need
+
+      - name: Update version in src/version.py and pyproject.toml
+        run: |
+          # Extract the current version from pyproject.toml using regular expression
+          current_version=$(python -c "import re; m = re.search(r\"version = '(?P<version>[0-9\-]+\.[0-9\-]+\.[0-9\-]+(\..+)?)'\", open('pyproject.toml').read()); print(m.group('version'))")
+
+          # Increment the version number
+          IFS='.' read -a version_parts <<< "$current_version"
+          last_part="${version_parts[-1]}"
+          new_last_part=$((last_part + 1))
+          new_version="${version_parts[0]}.${version_parts[1]}.$new_last_part"
+
+          # Update the version in src/version.py
+          sed -i "s/\(version = '\)[0-9.]*\('\)/\1$new_version\2/" src/version.py
+          # Update the version in pyproject.toml
+          sed -i "s/\(version = '\)[0-9.]*\('\)/\1$new_version\2/" pyproject.toml
+        shell: bash
+
+      # The version can also be updated using a version in the github repo, this must first be analyzed for pros and cons
+      #- name: Update version in src/version.py and pyproject.toml
+      #  run: |
+      #    # Increment the version in src/version.py
+      #    python -c "import re; f=open('src/version.py', 'r+'); v=re.sub(r'(\d+)', lambda x: str(int(x.group(0))+1), f.read()); f.seek(0); f.write(v); f.truncate(); f.close()"
+      #    # Update the version in pyproject.toml
+      #    sed -i 's/\(version = "\)[0-9.]*\(".*\)/\1NEW_VERSION\2/' pyproject.toml
+      #  env:
+      #    NEW_VERSION: ${{ github.run_number }}
+
+      - name: Build package
+        run: |
+          python -m pip install --upgrade pdm
+          pdm build
+        working-directory: ./  # Specify the directory where pyproject.toml is located
+
+      - name: Upload package to PyPI
+        run: |
+          python -m pip install twine
+          twine upload dist/Extractable-* --verbose
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
