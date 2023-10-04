@@ -21,27 +21,23 @@ jobs:
       - name: Update version in src/version.py and pyproject.toml
         run: |
           # Extract the current version from pyproject.toml using regular expression
-          current_version=$(python -c "import re; m = re.search(r\"version = ['\"](?P<version>[0-9\-]+\.[0-9\-]+\.[0-9\-]+(\..+)?)['\"]\", open('pyproject.toml').read()); print(m.group('version'))" || echo "")
-          
-          # Check If Version Found: It checks if the current_version variable is empty (indicating that the version was not found in pyproject.toml). If not found, it adds an initial version of '0.0.1' to pyproject.toml and sets current_version to '0.0.1'
+          current_version=$(python -c "import re; m = re.search(r\"version = ['\"](?P<version>[0-9\-]+\.[0-9\-]+\.[0-9\-]+(\..+)?)['\"]\", open('pyproject.toml').read()); print(m.group('version'))")
+
+          # Check if the version was not found in pyproject.toml
           if [ -z "$current_version" ]; then
-            echo "Version not found in pyproject.toml. Adding version..."
-            echo "version = '0.0.1'" >> pyproject.toml  # You can specify the initial version here
-            current_version='0.0.1'
+            echo "Error: Version not found in pyproject.toml."
+            exit 1
           fi
 
           # Increment the version number
-          # Increment Version: It splits the current version into parts (e.g., major, minor, and patch), increments the last part (patch), and creates a new version string with the updated patch level.
           IFS='.' read -a version_parts <<< "$current_version"
           last_part="${version_parts[-1]}"
           new_last_part=$((last_part + 1))
           new_version="${version_parts[0]}.${version_parts[1]}.$new_last_part"
 
-          
-          # Update the version in src/version.py
-          # Update src/version.py and pyproject.toml: It uses sed to update the src/version.py and pyproject.toml files with the new version string. This update applies regardless of whether single or double quotes were used in the original version string.
+          # Update the version in src/version.py (handles single or double quotes)
           sed -i "s/\(version = ['\"]\)[0-9.]*\(['\"]\)/\1$new_version\2/" src/version.py
-          # Update the version in pyproject.toml
+          # Update the version in pyproject.toml (handles single or double quotes)
           sed -i "s/\(version = ['\"]\)[0-9.]*\(['\"]\)/\1$new_version\2/" pyproject.toml
         shell: bash
 
