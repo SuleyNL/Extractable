@@ -28,6 +28,18 @@ jobs:
           fi
         shell: bash
 
+      - name: Extract and echo version number from pyproject.toml
+        run: |
+          # Use grep to find the line containing the version number
+          version_line=$(grep -E "version\s*=" pyproject.toml)
+
+          # Use awk to extract the version number
+          version=$(echo "$version_line" | awk -F"['\"]" '{print $2}')
+
+          # Echo the extracted version number
+          echo "Version number is: $version"
+        shell: bash
+
       - name: Update version in src/version.py and pyproject.toml
         run: |
           # Extract the current version from pyproject.toml using regular expression
