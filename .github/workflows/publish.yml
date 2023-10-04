@@ -79,11 +79,8 @@ jobs:
           git config --global user.email "suleyleeuw@gmail.com"
           git config --global user.name "SuleyNL"
           
-          # Extract the current branch name from the github.ref variable
-          current_branch=${{ github.ref }}
-          
-          # Remove the refs/heads/ prefix to get just the branch name
-          current_branch=${current_branch#refs/heads/}
+          # Extract the current branch name from the github.event variable
+          current_branch=${{ github.event.pull_request.head.ref }}
       
           # Switch to the current branch
           git checkout $current_branch
