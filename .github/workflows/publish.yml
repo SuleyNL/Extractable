@@ -127,5 +127,5 @@ jobs:
           python -m pip install twine
           twine upload dist/extractable-* --verbose
         env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+          USERNAME: __token__
+          PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
