@@ -62,6 +62,18 @@ jobs:
           echo "Updated version is: $new_version"
         shell: bash
 
+      - name: Check the updated version in pyproject.toml
+        run: |
+          # Use grep to find the line containing the updated version number
+          updated_version_line=$(grep -E "version\s*=" pyproject.toml)
+
+          # Use awk to extract the updated version number
+          updated_version=$(echo "$updated_version_line" | awk -F"['\"]" '{print $2}')
+
+          # Echo the updated version
+          echo "Updated version in pyproject.toml is: $updated_version"
+        shell: bash
+
       - name: Update version in src/version.py and pyproject.toml
         run: |
           # Extract the current version from pyproject.toml using regular expression
