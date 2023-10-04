@@ -1,4 +1,4 @@
-name: Release Workflow
+name: Publish to pip
 
 on:
   pull_request:
