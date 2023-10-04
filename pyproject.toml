@@ -9,7 +9,7 @@ build-backend = "pdm.backend"
 
 [project]
 name = "Extractable"
-version = "0.0.39"
+version = "0.0.41"
 description = "Extract tables from PDFs"
 authors = [
     {name = "Suleymen C. Kandrouch", email = "suleyleeuw@gmail.com"},
@@ -41,7 +41,7 @@ dependencies = [
     "requests>=2.31.0",
     "PyCryptodome>=3.18.0",
 ]
-requires-python = ">=3.8,<3.12"
+requires-python = ">=3.9,<3.12"
 readme = "README.md"
 license = {text = "MIT"}
 keywords = ["python", "table-extraction", "pdf", "TATR", "Table Transformer", "Computer Vision"]

@@ -1,0 +1,99 @@
+name: Publish to pip
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9  # You can specify the Python version you need
+
+      - name: Check if version is in pyproject.toml
+        run: |
+          # Check if the version number is in pyproject.toml
+          if grep -q "version\s*=\s*['\"]\?[0-9.-]\+['\"]\?" pyproject.toml; then
+            echo "Hello, version is found in pyproject.toml."
+          else
+            echo "Version not found in pyproject.toml."
+          fi
+        shell: bash
+
+      - name: Extract and echo version number from pyproject.toml
+        run: |
+          # Use grep to find the line containing the version number
+          version_line=$(grep -E "version\s*=" pyproject.toml)
+
+          # Use awk to extract the version number
+          version=$(echo "$version_line" | awk -F"['\"]" '{print $2}')
+
+          # Echo the extracted version number
+          echo "Version number is: $version"
+        shell: bash
+
+      - name: Increment the rightmost integer in the version
+        run: |
+          # Use grep to find the line containing the version number
+          version_line=$(grep -E "version\s*=" pyproject.toml)
+
+          # Use awk to extract the version number
+          version=$(echo "$version_line" | awk -F"['\"]" '{print $2}')
+
+          # Increment the rightmost integer by 1
+          IFS='.' read -a version_parts <<< "$version"
+          last_part="${version_parts[-1]}"
+          new_last_part=$((last_part + 1))
+          version_parts[-1]=$new_last_part
+          new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
+
+          # Update the version in pyproject.toml
+          sed -i "s/\(version\s*=\s*['\"]\?\)[0-9.-]\+\(['\"]\?\)/\1$new_version\2/" pyproject.toml
+
+          # Echo the updated version
+          echo "Updated version is: $new_version"
+        shell: bash
+
+      - name: Check the updated version in pyproject.toml
+        run: |
+          # Use grep to find the line containing the updated version number
+          updated_version_line=$(grep -E "version\s*=" pyproject.toml)
+
+          # Use awk to extract the updated version number
+          updated_version=$(echo "$updated_version_line" | awk -F"['\"]" '{print $2}')
+
+          # Echo the updated version
+          echo "Updated version in pyproject.toml is: $updated_version"
+        shell: bash
+
+      # The version can also be updated using a version in the github repo, this must first be analyzed for pros and cons
+      #- name: Update version in src/version.py and pyproject.toml
+      #  run: |
+      #    # Increment the version in src/version.py
+      #    python -c "import re; f=open('src/version.py', 'r+'); v=re.sub(r'(\d+)', lambda x: str(int(x.group(0))+1), f.read()); f.seek(0); f.write(v); f.truncate(); f.close()"
+      #    # Update the version in pyproject.toml
+      #    sed -i 's/\(version = "\)[0-9.]*\(".*\)/\1NEW_VERSION\2/' pyproject.toml
+      #  env:
+      #    NEW_VERSION: ${{ github.run_number }}
+
+      - name: Build package
+        run: |
+          python -m pip install --upgrade pdm
+          pdm build
+        working-directory: ./  # Specify the directory where pyproject.toml is located
+
+      - name: Upload package to PyPI
+        run: |
+          python -m pip install twine
+          twine upload dist/extractable-* --verbose
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
