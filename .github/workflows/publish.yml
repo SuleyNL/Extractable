@@ -74,12 +74,6 @@ jobs:
           echo "Updated version in pyproject.toml is: $updated_version"
         shell: bash
 
-      - name: Checkout Develop Branch
-        run: git checkout develop
-
-      - name: Pull Latest Changes from Develop Branch
-        run: git pull origin develop
-
       - name: Commit and Push Changes
         run: |
           git config --global user.email "suleyleeuw@gmail.com"
