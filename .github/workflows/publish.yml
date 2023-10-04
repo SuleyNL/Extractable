@@ -74,6 +74,14 @@ jobs:
           echo "Updated version in pyproject.toml is: $updated_version"
         shell: bash
 
+      - name: Commit and Push Changes
+        run: |
+          # Commit the changes in pyproject.toml
+          git commit -am "Increment version"
+
+          # Push the changes to the pull request branch
+          git push origin ${{ github.head_ref }}
+
       # The version can also be updated using a version in the github repo, this must first be analyzed for pros and cons
       #- name: Update version in src/version.py and pyproject.toml
       #  run: |
