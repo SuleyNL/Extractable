@@ -42,14 +42,15 @@ jobs:
 
 
       - name: Run Unittests
-        # CI/CD-Optimization: Only run Unittets on ubuntu-runs because we expect the behaviour to be the same across OS systems, 
-        if: matrix.os == 'ubuntu-latest' 
+        # CI/CD-Optimization: Only run Unittets on ubuntu-runs because we expect the behaviour to be the same across OS systems,
+        if: matrix.os == 'ubuntu-latest'
+        working-directory: ./  # This sets the working directory to the repository root
         run: |
-          pdm run pytest -v -k unittests  
-
+          pdm run pytest -v -k unittests
 
       - name: Run E2E Tests on each OS
+        working-directory: ./  # Set the working directory to the repository root
         run: |
-          pdm run pytest -v -k e2e  
+          pdm run pytest -v -k e2e
 
 
