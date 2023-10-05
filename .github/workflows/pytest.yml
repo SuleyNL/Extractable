@@ -53,6 +53,7 @@ jobs:
         run: |
           echo "Current directory: $(pwd)"
           ls -al
-          pdm run pytest -v -k e2e
+          pdm run pytest
+          # pdm run pytest -v -k e2e
 
 
