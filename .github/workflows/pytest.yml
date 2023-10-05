@@ -49,7 +49,6 @@ jobs:
           pdm run pytest -v -k unittests
 
       - name: Run E2E Tests on each OS
-        needs: Run Unittests
         if: matrix.os == 'macOS-latest'
         working-directory: ./  # Set the working directory to the repository root
         run: |
