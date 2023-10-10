@@ -4,9 +4,9 @@ Test Table Generator (TTG):
 2. CreatePDFTable = Generate PDF table -> FPDF2
 '''
 from itertools import product
-from TableGenerator.GenerateTableData import *
-from TableGenerator.Options import *
-from TableGenerator.CreatePDFTable import *
+from src.TableGenerator.GenerateTableData import *
+from src.TableGenerator.Options import *
+from src.TableGenerator.CreatePDFTable import *
 
 options = Options()
 params = options.__to_dict__()
