@@ -1,6 +1,6 @@
 import abc
 
-from Extractable.Dataobj import DataObj
+from src.Extractable.Dataobj import DataObj
 
 
 class Pipe(abc.ABC):

@@ -3,14 +3,14 @@ import os
 import platform
 from pathlib import Path
 
-from Extractable.Pipe import Pipe
-from Extractable.Dataobj import DataObj
-
-from Extractable import Logger
-from Extractable import ModeManager
-
 import pdf2image
 from pdf2jpg import pdf2jpg
+
+from src.Extractable.Pipe import Pipe
+from src.Extractable.Dataobj import DataObj
+
+from src.Extractable import Logger
+from src.Extractable import ModeManager
 
 
 class ConvertUsingPDF2image(Pipe):
