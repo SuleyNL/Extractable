@@ -1,7 +1,7 @@
 import logging
 from toolz import compose_left
 
-import Extractable.PDFtoImageConvertor as PDFtoImageConvertor
+import src.Extractable.PDFtoImageConvertor as PDFtoImageConvertor
 import Extractable.StructureDetector as StructureDetector
 import Extractable.TableDetector as TableDetector
 import Extractable.TextExtractor as TextExtractor

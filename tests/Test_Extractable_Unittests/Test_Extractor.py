@@ -101,6 +101,7 @@ class Test_extract_using_TATR_methods:
                 patch('src.Extractable.DataObj.output') as mock_data_obj_output, \
                 patch('src.Extractable.PDFtoImageConvertor.ConvertUsingPDF2image.process') as mock_convert_to_image, \
                 patch('src.Extractable.Extractor.DataObj') as mock_dataobj:
+
             pipeline = mock_compose_left(
                 mock_table_detector,
                 mock_structure_detector,
@@ -115,6 +116,7 @@ class Test_extract_using_TATR_methods:
         # Assert
         # Check whether compose left has been called properly
         mock_compose_left.assert_called_with(mock_convert_to_image, pipeline)
+
         mock_dataobj.assert_called_once_with({}, input_file=table_pdf_file, output_dir=empty_folder,
                                              output_filetype=Filetype.XML, mode=Mode.PERFORMANCE)
         pipeline.assert_called_once_with(mock_dataobj())
