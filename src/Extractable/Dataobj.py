@@ -1,6 +1,6 @@
 import tempfile
 from enum import Enum
-from src.Extractable.ModeManager import Mode
+from Extractable.ModeManager import Mode
 
 
 class Filetype(Enum):

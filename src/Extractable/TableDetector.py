@@ -5,14 +5,14 @@ from PIL import Image
 from transformers import AutoImageProcessor, TableTransformerForObjectDetection, DetrForObjectDetection, DetrImageProcessor
 import numpy as np
 
-from src.Extractable.Pipe import Pipe
+from Extractable.Pipe import Pipe
 
 
-from src.Extractable import Logger, ModeManager
+from Extractable import Logger, ModeManager
 import os
 import ntpath
 from pathlib import Path
-from src.Extractable.Dataobj import DataObj
+from Extractable.Dataobj import DataObj
 
 
 class TableDetectorTATR(Pipe):
