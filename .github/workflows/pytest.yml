@@ -57,6 +57,7 @@ jobs:
         run: |
           python -m venv myenv
           source myenv/bin/activate
+          python -m pip install pytest
           pdm add
           pdm install
           pdm add pytest
