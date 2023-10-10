@@ -3,7 +3,6 @@ fonttools~=4.39.4
 defusedxml~=0.7.1
 Pillow~=9.5.0
 deprecation~=2.1.0
-extractable~=0.0.29+editable
 pandas~=2.0.2
 tqdm~=4.65.0
 requests~=2.31.0
