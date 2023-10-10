@@ -55,6 +55,7 @@ jobs:
         if: matrix.os != 'windows-latest'
         #working-directory: ./  # Set the working directory to the repository root
         run: |
-           pytest tests/Test_e2e_blackbox/*    
+          source venv/bin/activate  # Replace with the correct path to your virtual environment
+          pytest tests/Test_e2e_blackbox/*    
 
 
