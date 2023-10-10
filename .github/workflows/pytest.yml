@@ -59,6 +59,7 @@ jobs:
           source myenv/bin/activate
           pdm add
           pdm install
+          pdm add pytest
           pytest tests/Test_e2e_blackbox/*    
 
 
