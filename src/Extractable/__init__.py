@@ -1,10 +1,11 @@
-from Extractable.Extractor import *
-from Extractable.Logger import *
-from Extractable.Dataobj import *
-from Extractable.Pipe import *
-from Extractable.TextExtractor import *
-from Extractable.Datatypes import *
-from Extractable.TableDetector import *
-from Extractable.StructureDetector import *
-from Extractable.PDFtoImageConvertor import *
-from Extractable.ImagePreprocessor import *
+from Extractor import *
+import Logger
+from Logger import setup_logger, CustomFormatter
+from Dataobj import *
+from Pipe import *
+from TextExtractor import *
+from Datatypes import *
+from TableDetector import *
+from StructureDetector import *
+from PDFtoImageConvertor import *
+from ImagePreprocessor import *

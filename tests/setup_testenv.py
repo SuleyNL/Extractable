@@ -8,10 +8,6 @@ import pytest
 from tests.variables import empty_folder, table_pdf_file
 
 
-class TestSetupError(Exception):
-    pass
-
-
 @pytest.fixture(scope="function")
 def setup_test_environment():
     try:
@@ -21,11 +17,11 @@ def setup_test_environment():
 
     # Check that folder exists and that it is a folder
     if not os.path.exists(empty_folder) or not os.path.isdir(empty_folder):
-        raise TestSetupError(f"The folder '{empty_folder}' does not exist or is not a directory.")
+        pytest.fail(f"The folder '{empty_folder}' does not exist or is not a directory.")
 
     # Check that input file exists
     if not os.path.exists(table_pdf_file):
-        raise TestSetupError(f"The input file '{table_pdf_file}' does not exist.")
+        pytest.fail(f"The input file '{table_pdf_file}' does not exist.")
 
     # Ensure that the output folder starts empty
     for file_name in os.listdir(empty_folder):

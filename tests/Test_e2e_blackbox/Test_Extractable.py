@@ -27,9 +27,6 @@ def test_Extractable_happyflow(setup_test_environment):
         if execution_time > 35:
             pytest.fail(f"Test failed: Execution time exceeded 20 seconds ({execution_time:.2f} seconds)")
 
-    except TestSetupError as e:
-        pytest.fail(str(e))
-
     except Exception as e:
         pytest.fail(f"An unexpected error occurred: {str(e)}")
 

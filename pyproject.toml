@@ -58,7 +58,7 @@ Downloads = "https://github.com/SuleyNL/Extractable/archive/refs/tags/v1.0.0.tar
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=7.3.1",
+    "pytest>=7.4.2",
     "pdm>=2.7.0",
 ]
 
@@ -78,12 +78,12 @@ includes = [ "src/Extractable",
 excludes = ["src/Extractable/Tesseract-OCR", "src/test", "src/venv", "src/genalog", "src/weasyprint"]
 
 [tool.pdm.dependencies]
-pytest = ">=7.3.1"
+pytest = ">=7.4.2"
 
 
 [tool.pytest.ini_options]
 pythonpath = [
-  ".", "src/Extractable", "tests/Extractable"
+  ".", "src/Extractable"
 ]
 
 

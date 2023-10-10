@@ -3,7 +3,7 @@ import sys
 
 import pytest
 from unittest.mock import patch, Mock
-from Extractable import setup_logger, CustomFormatter, Logger, extract, Filetype, Mode, Extractor
+from src.Extractable import Extractor, setup_logger, CustomFormatter, Filetype, Mode
 
 # Ensure the logger is not configured when tests start
 import logging
@@ -77,10 +77,10 @@ def test_extract(before_and_after):
     # Mock extract_using_TATR()
     # Arrange
 
-    with patch('Extractable.Extractor.extract_using_TATR') as mock_extract_using_TATR:
+    with patch('src.Extractable.Extractor.extract_using_TATR') as mock_extract_using_TATR:
         mock_extract_using_TATR.return_value = None
         # Act
-        extract(table_pdf_file, empty_folder, Filetype.XML, Mode.PERFORMANCE)
+        Extractor.extract(table_pdf_file, empty_folder, Filetype.XML, Mode.PERFORMANCE)
 
     # Assert
     # check if extract() correctly calls extract_using_TATR()
@@ -94,13 +94,13 @@ class Test_extract_using_TATR_methods:
         # Arrange
         # Mock the 'compose_left' function aswell as the functions within the pipeline so that none will be executed, only called
         with \
-                patch('Extractable.Extractor.compose_left') as mock_compose_left, \
-                patch('Extractable.TableDetector.TableDetectorTATR.process') as mock_table_detector, \
-                patch('Extractable.StructureDetector.StructureRecognitionWithTATR.process') as mock_structure_detector, \
-                patch('Extractable.TextExtractor.PyPDF2Textport.process') as mock_text_extractor, \
-                patch('Extractable.DataObj.output') as mock_data_obj_output, \
-                patch('Extractable.PDFtoImageConvertor.ConvertUsingPDF2image.process') as mock_convert_to_image, \
-                patch('Extractable.Extractor.DataObj') as mock_dataobj:
+                patch('src.Extractable.Extractor.compose_left') as mock_compose_left, \
+                patch('src.Extractable.TableDetector.TableDetectorTATR.process') as mock_table_detector, \
+                patch('src.Extractable.StructureDetector.StructureRecognitionWithTATR.process') as mock_structure_detector, \
+                patch('src.Extractable.TextExtractor.PyPDF2Textport.process') as mock_text_extractor, \
+                patch('src.Extractable.DataObj.output') as mock_data_obj_output, \
+                patch('src.Extractable.PDFtoImageConvertor.ConvertUsingPDF2image.process') as mock_convert_to_image, \
+                patch('src.Extractable.Extractor.DataObj') as mock_dataobj:
             pipeline = mock_compose_left(
                 mock_table_detector,
                 mock_structure_detector,
@@ -123,13 +123,13 @@ class Test_extract_using_TATR_methods:
         # Arrange
         # Mock the 'compose_left' function as well as the functions within the pipeline, so it's not executed, only called
         with \
-                patch('Extractable.Extractor.compose_left') as mock_compose_left, \
-                patch('Extractable.TableDetector.TableDetectorTATR.process') as mock_table_detector, \
-                patch('Extractable.StructureDetector.StructureRecognitionWithTATR.process') as mock_structure_detector, \
-                patch('Extractable.TextExtractor.PyPDF2Textport.process') as mock_text_extractor, \
-                patch('Extractable.DataObj.output') as mock_data_obj_output, \
-                patch('Extractable.PDFtoImageConvertor.ConvertUsingPDF2image.process') as mock_convert_to_image, \
-                patch('Extractable.Extractor.DataObj') as mock_dataobj:
+                patch('src.Extractable.Extractor.compose_left') as mock_compose_left, \
+                patch('src.Extractable.TableDetector.TableDetectorTATR.process') as mock_table_detector, \
+                patch('src.Extractable.StructureDetector.StructureRecognitionWithTATR.process') as mock_structure_detector, \
+                patch('src.Extractable.TextExtractor.PyPDF2Textport.process') as mock_text_extractor, \
+                patch('src.Extractable.DataObj.output') as mock_data_obj_output, \
+                patch('src.Extractable.PDFtoImageConvertor.ConvertUsingPDF2image.process') as mock_convert_to_image, \
+                patch('src.Extractable.Extractor.DataObj') as mock_dataobj:
             pipeline = mock_compose_left(
                 mock_table_detector,
                 mock_structure_detector,
@@ -159,13 +159,13 @@ class Test_extract_using_TATR_methods:
         # Arrange
         # Mock the 'compose_left' function aswell as the functions within the pipeline so that none will be executed, only called
         with \
-                patch('Extractable.Extractor.compose_left') as mock_compose_left, \
-                patch('Extractable.TableDetector.TableDetectorTATR.process') as mock_table_detector, \
-                patch('Extractable.StructureDetector.StructureRecognitionWithTATR.process') as mock_structure_detector, \
-                patch('Extractable.TextExtractor.PyPDF2Textport.process') as mock_text_extractor, \
-                patch('Extractable.DataObj.output') as mock_data_obj_output, \
-                patch('Extractable.PDFtoImageConvertor.ConvertUsingPDF2image.process') as mock_convert_to_image, \
-                patch('Extractable.Extractor.DataObj') as mock_dataobj:
+                patch('src.Extractable.Extractor.compose_left') as mock_compose_left, \
+                patch('src.Extractable.TableDetector.TableDetectorTATR.process') as mock_table_detector, \
+                patch('src.Extractable.StructureDetector.StructureRecognitionWithTATR.process') as mock_structure_detector, \
+                patch('src.Extractable.TextExtractor.PyPDF2Textport.process') as mock_text_extractor, \
+                patch('src.Extractable.DataObj.output') as mock_data_obj_output, \
+                patch('src.Extractable.PDFtoImageConvertor.ConvertUsingPDF2image.process') as mock_convert_to_image, \
+                patch('src.Extractable.Extractor.DataObj') as mock_dataobj:
             pipeline = mock_compose_left(
                 mock_table_detector,
                 mock_data_obj_output)
@@ -189,13 +189,13 @@ class Test_extract_using_TATR_methods:
         # Arrange
         # Mock the 'compose_left' function as well as the functions within the pipeline, so it's not executed, only called
         with \
-                patch('Extractable.Extractor.compose_left') as mock_compose_left, \
-                patch('Extractable.TableDetector.TableDetectorTATR.process') as mock_table_detector, \
-                patch('Extractable.StructureDetector.StructureRecognitionWithTATR.process') as mock_structure_detector, \
-                patch('Extractable.TextExtractor.PyPDF2Textport.process') as mock_text_extractor, \
-                patch('Extractable.DataObj.output') as mock_data_obj_output, \
-                patch('Extractable.PDFtoImageConvertor.ConvertUsingPDF2image.process') as mock_convert_to_image, \
-                patch('Extractable.Extractor.DataObj') as mock_dataobj:
+                patch('src.Extractable.Extractor.compose_left') as mock_compose_left, \
+                patch('src.Extractable.TableDetector.TableDetectorTATR.process') as mock_table_detector, \
+                patch('src.Extractable.StructureDetector.StructureRecognitionWithTATR.process') as mock_structure_detector, \
+                patch('src.Extractable.TextExtractor.PyPDF2Textport.process') as mock_text_extractor, \
+                patch('src.Extractable.DataObj.output') as mock_data_obj_output, \
+                patch('src.Extractable.PDFtoImageConvertor.ConvertUsingPDF2image.process') as mock_convert_to_image, \
+                patch('src.Extractable.Extractor.DataObj') as mock_dataobj:
             pipeline = mock_compose_left(
                 mock_table_detector,
                 mock_data_obj_output)
@@ -224,13 +224,13 @@ class Test_extract_using_TATR_methods:
         # Arrange
         # Mock the 'compose_left' function aswell as the functions within the pipeline so that none will be executed, only called
         with \
-                patch('Extractable.Extractor.compose_left') as mock_compose_left, \
-                patch('Extractable.TableDetector.TableDetectorTATR.process') as mock_table_detector, \
-                patch('Extractable.StructureDetector.StructureRecognitionWithTATR.process') as mock_structure_detector, \
-                patch('Extractable.TextExtractor.PyPDF2Textport.process') as mock_text_extractor, \
-                patch('Extractable.DataObj.output') as mock_data_obj_output, \
-                patch('Extractable.PDFtoImageConvertor.ConvertUsingPDF2image.process') as mock_convert_to_image, \
-                patch('Extractable.Extractor.DataObj') as mock_dataobj:
+                patch('src.Extractable.Extractor.compose_left') as mock_compose_left, \
+                patch('src.Extractable.TableDetector.TableDetectorTATR.process') as mock_table_detector, \
+                patch('src.Extractable.StructureDetector.StructureRecognitionWithTATR.process') as mock_structure_detector, \
+                patch('src.Extractable.TextExtractor.PyPDF2Textport.process') as mock_text_extractor, \
+                patch('src.Extractable.DataObj.output') as mock_data_obj_output, \
+                patch('src.Extractable.PDFtoImageConvertor.ConvertUsingPDF2image.process') as mock_convert_to_image, \
+                patch('src.Extractable.Extractor.DataObj') as mock_dataobj:
             pipeline = mock_compose_left(
                 mock_structure_detector,
                 mock_data_obj_output)
@@ -254,13 +254,13 @@ class Test_extract_using_TATR_methods:
         # Arrange
         # Mock the 'compose_left' function as well as the functions within the pipeline, so it's not executed, only called
         with \
-                patch('Extractable.Extractor.compose_left') as mock_compose_left, \
-                patch('Extractable.TableDetector.TableDetectorTATR.process') as mock_table_detector, \
-                patch('Extractable.StructureDetector.StructureRecognitionWithTATR.process') as mock_structure_detector, \
-                patch('Extractable.TextExtractor.PyPDF2Textport.process') as mock_text_extractor, \
-                patch('Extractable.DataObj.output') as mock_data_obj_output, \
-                patch('Extractable.PDFtoImageConvertor.ConvertUsingPDF2image.process') as mock_convert_to_image, \
-                patch('Extractable.Extractor.DataObj') as mock_dataobj:
+                patch('src.Extractable.Extractor.compose_left') as mock_compose_left, \
+                patch('src.Extractable.TableDetector.TableDetectorTATR.process') as mock_table_detector, \
+                patch('src.Extractable.StructureDetector.StructureRecognitionWithTATR.process') as mock_structure_detector, \
+                patch('src.Extractable.TextExtractor.PyPDF2Textport.process') as mock_text_extractor, \
+                patch('src.Extractable.DataObj.output') as mock_data_obj_output, \
+                patch('src.Extractable.PDFtoImageConvertor.ConvertUsingPDF2image.process') as mock_convert_to_image, \
+                patch('src.Extractable.Extractor.DataObj') as mock_dataobj:
             pipeline = mock_compose_left(
                 mock_structure_detector,
                 mock_data_obj_output)

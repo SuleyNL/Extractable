@@ -1,4 +1,5 @@
 import logging
+global logger
 
 
 class CustomFormatter(logging.Formatter):
@@ -26,9 +27,6 @@ class CustomFormatter(logging.Formatter):
         return formatter.format(record)
 
 
-global logger
-
-
 def setup_logger():
     global logger
 
@@ -47,10 +45,12 @@ def setup_logger():
     return logger
 
 
-logger = setup_logger()
-
-
 def Logger():
     global logger
     return logger
+
+
+logger = setup_logger()
+
+
 

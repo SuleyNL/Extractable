@@ -33,13 +33,10 @@ jobs:
           python -m pip install --upgrade pdm
           pdm install --no-lock -G test -G pipeline
 
- 
-
       #- name: Run PyTest # ARTIFACT: in case there is a reson to run all tests, this is the config that worked
         # run pytest on all files that start with "test_" and have a ".py" extension.
         #run: |
          # pdm run pytest -k "tests/ and Test_"
-
 
       - name: Run Unittests
         # CI/CD-Optimization: Only run Unittets on ubuntu-runs because we expect the behaviour to be the same across OS systems,
@@ -48,13 +45,16 @@ jobs:
         run: |
           pdm run pytest -v -k unittests
 
-      - name: Run E2E Tests on each OS
-        if: matrix.os == 'macOS-latest'
+      - name: Run E2E Tests on Windows
+        if: matrix.os == 'windows-latest'
         #working-directory: ./  # Set the working directory to the repository root
         run: |
-          echo "Current directory: $(pwd)"
-          ls -al
-          pdm run pytest
-          # pdm run pytest -v -k e2e
+          pdm run pytest -v -k e2e
+
+      - name: Run E2E Tests on MacOS and Ubuntu
+        if: matrix.os != 'windows-latest'
+        #working-directory: ./  # Set the working directory to the repository root
+        run: |
+           pytest tests/Test_e2e_blackbox/*    
 
 
