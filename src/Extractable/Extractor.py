@@ -2,13 +2,13 @@ import logging
 from toolz import compose_left
 
 import src.Extractable.PDFtoImageConvertor as PDFtoImageConvertor
-import Extractable.StructureDetector as StructureDetector
-import Extractable.TableDetector as TableDetector
-import Extractable.TextExtractor as TextExtractor
-from Extractable import Logger
+import src.Extractable.StructureDetector as StructureDetector
+import src.Extractable.TableDetector as TableDetector
+import src.Extractable.TextExtractor as TextExtractor
+from src.Extractable import Logger
 
-from Extractable.Dataobj import Filetype, DataObj
-from Extractable.ModeManager import Mode
+from src.Extractable.Dataobj import Filetype, DataObj
+from src.Extractable.ModeManager import Mode
 
 logger = Logger.Logger()
 
