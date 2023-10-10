@@ -43,7 +43,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         working-directory: ./  # This sets the working directory to the repository root
         run: |
-          pdm run pytest -v -k tests/Test_Extractable_Unittests/*
+          pytest -v tests/Test_Extractable_Unittests/*
 
       - name: Run E2E Tests on Windows
         if: matrix.os == 'windows-latest'
