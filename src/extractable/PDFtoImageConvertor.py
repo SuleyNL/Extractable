@@ -91,7 +91,7 @@ class ConvertUsingPDF2image(Pipe):
             print("Poppler installation failed. Please install Poppler manually.")
             # old code for pre-installed poppler_path = os.path.join(os.path.dirname(__file__), 'poppler-23.06.0(linux)')
 
-        if platform.system() == "Darwin":  # macOS
+        elif platform.system() == "Darwin":  # macOS
             # Check if Poppler is already installed
             try:
                 subprocess.run(["pdftoppm", "-v"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
