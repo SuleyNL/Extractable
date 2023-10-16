@@ -1,8 +1,8 @@
 import math
 from typing import List
 
-from extractable.Dataobj import Bbox
-from extractable.Datatypes.Cell import Cell
+from src.extractable.Dataobj import Bbox
+from src.extractable.Datatypes.Cell import Cell
 import xml.etree.ElementTree as ET
 
 
