@@ -16,7 +16,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-
+      - name: Add project directory to Python path
+        run: |
+          echo "::add-path::/path/to/your/project"
+        env:
+          PYTHONPATH: ${{ runner.workspace }}
 
       - uses: actions/cache@v3
         with:
@@ -24,7 +28,6 @@ jobs:
             ${{ env.pythonLocation }}
             .venv
           key: pytest-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml', 'pdm.lock') }}
-
 
 
       - name: Install dependencies
