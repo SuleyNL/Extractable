@@ -131,6 +131,8 @@ __pycache__/
 *.so
 
 # Distribution / packaging
+poppler.zip
+poppler_windows/
 .Python
 build/lib/
 ../../build/
