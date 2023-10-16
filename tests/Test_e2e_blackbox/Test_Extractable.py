@@ -1,23 +1,28 @@
+import os
 import time
 import warnings
 
-from src.Extractable import *
-from src.Extractable import Extractor
-from tests.setup_testenv import *
+import pytest
 
+from extractable.ModeManager import Mode
+from src.extractable import Extractor
+from tests.setup_testenv import setup_test_environment as setup_test_environment
 
 # Define the test case
+import tests.variables as variables
+
+
 def test_Extractable_happyflow(setup_test_environment):
     try:
         # Act
         start_time = time.time()
-        Extractor.extract_using_TATR(table_pdf_file, empty_folder, mode=Mode.PERFORMANCE)
+        Extractor.extract_using_TATR(variables.table_pdf_file, variables.empty_folder, mode=Mode.PERFORMANCE)
         end_time = time.time()
 
         # Assert
         execution_time = end_time - start_time
 
-        assert os.listdir(empty_folder)  # Check that the output folder is now filled
+        assert os.listdir(variables.empty_folder)  # Check that the output folder is now filled
 
         # Warn if execution time is greater than 10 seconds
         if execution_time > 20:

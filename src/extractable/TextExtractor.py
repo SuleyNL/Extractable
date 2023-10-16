@@ -5,12 +5,10 @@ import svgwrite
 from PyPDF2 import PdfReader
 from pytesseract import Output
 
-from Extractable.Pipe import Pipe
-
-from Extractable import Logger, ModeManager
-from Extractable.Dataobj import Filetype, DataObj
-from Extractable.Datatypes.Table import Table
-
+from src.extractable import Logger, ModeManager
+from src.extractable.Pipe import Pipe
+from src.extractable.Dataobj import Filetype, DataObj
+from src.extractable.Datatypes.Table import Table
 
 from typing import List
 import ntpath

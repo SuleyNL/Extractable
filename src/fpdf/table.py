@@ -131,9 +131,9 @@ class Table:
         created_rows = []
 
         import os
-        from Extractable.Datatypes.Table import Table
-        from Extractable.Datatypes.Row import Row
-        from Extractable.Datatypes.Cell import Cell
+        from extractable.Datatypes.Table import Table
+        from extractable.Datatypes.Row import Row
+        from extractable.Datatypes.Cell import Cell
 
         # Starting the actual rows & cells rendering:
         for i in range(len(self.rows)):

@@ -3,11 +3,9 @@ import os
 import platform
 from pathlib import Path
 
-from Extractable.Pipe import Pipe
-from Extractable.Dataobj import DataObj
-
-from Extractable import Logger
-from Extractable import ModeManager
+from src.extractable.Pipe import Pipe
+from src.extractable.Dataobj import DataObj
+from src.extractable import Logger, ModeManager
 
 import pdf2image
 from pdf2jpg import pdf2jpg

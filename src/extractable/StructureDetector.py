@@ -2,14 +2,14 @@ import ntpath
 import os
 from pathlib import Path
 
-from Extractable.Pipe import Pipe
+from src.extractable.Pipe import Pipe
 
-from Extractable.Dataobj import Bbox, intersects, DataObj
+from src.extractable.Dataobj import Bbox, intersects, DataObj
 
-from Extractable import Logger, ModeManager
-from Extractable.Datatypes.Cell import Cell
-from Extractable.Datatypes.Row import Row
-from Extractable.Datatypes.Table import Table
+from src.extractable import Logger, ModeManager
+from src.extractable.Datatypes.Cell import Cell
+from src.extractable.Datatypes.Row import Row
+from src.extractable.Datatypes.Table import Table
 
 
 import torch
