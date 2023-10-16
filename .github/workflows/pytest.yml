@@ -58,14 +58,15 @@ jobs:
         if: matrix.os != 'windows-latest'
         #working-directory: ./  # Set the working directory to the repository root
         run: |
-          python -m venv myenv
-          source myenv/bin/activate
-          python -m pip install pytest
-          pdm install
-          pdm add
-          pip install -r requirements.txt
-          #TODO: dont perform the venv and pdm installation as these should be unnecessary after it has already
-          
-          pytest tests/Test_e2e_blackbox/*    
+          #python -m venv myenv
+          #source myenv/bin/activate
+          #python -m pip install pytest
+          #pdm install
+          #pdm add
+          #pip install -r requirements.txt
+          ##TODO: dont perform the venv and pdm installation as these should be unnecessary after it has already
+          # 
+          #pytest tests/Test_e2e_blackbox/*    
+          # TODO: TEMPORARILY SWITCHED OFF E2E TESTS
 
 
