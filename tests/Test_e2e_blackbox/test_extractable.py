@@ -35,7 +35,6 @@ def test_Extractable_happyflow(setup_test_environment):
         elif execution_time > 90 and platform.system() == "Darwin":
             pytest.fail(f"Test failed: Execution time exceeded MacOS-time of 90 seconds ({execution_time:.2f} seconds)")
 
-
     except Exception as e:
         pytest.fail(f"An unexpected error occurred: {str(e)}")
 
