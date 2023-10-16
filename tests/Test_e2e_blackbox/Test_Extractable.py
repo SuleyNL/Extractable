@@ -4,7 +4,7 @@ import warnings
 
 import pytest
 
-from extractable.ModeManager import Mode
+from src.extractable.ModeManager import Mode
 from src.extractable import Extractor
 from tests.setup_testenv import setup_test_environment as setup_test_environment
 
