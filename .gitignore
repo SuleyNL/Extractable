@@ -132,6 +132,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+build/lib/
 ../../build/
 develop-eggs/
 dist/
