@@ -4,7 +4,7 @@ import pytest
 from unittest.mock import patch
 
 from src.extractable import Extractor
-from src.extractable.Dataobj import Filetype
+from src.extractable.Filetype import Filetype
 from src.extractable.ModeManager import Mode
 from src.extractable.Logger import setup_logger, CustomFormatter
 
@@ -105,26 +105,26 @@ class Test_extract_using_TATR_methods:
                 patch('src.extractable.PDFtoImageConvertor.ConvertUsingPDF2image.process') as mock_convert_to_image, \
                 patch('src.extractable.Dataobj.DataObj') as mock_dataobj_class:  # Mock the DataObj class
 
+            #mock_dataobj = mock_dataobj_class()
             pipeline = mock_compose_left(
                 mock_table_detector,
                 mock_structure_detector,
                 mock_text_extractor,
-                mock_dataobj.output)
+                mock_dataobj_class.output)
 
             # Act
             # Call the 'extract_using_TATR' function with some test parameters.
             # This will trigger the execution of the pipeline of functions.
-            Extractor.extract_using_TATR(table_pdf_file, empty_folder, Filetype.XML, Mode.PERFORMANCE)
+            return_dataobj = Extractor.extract_using_TATR(table_pdf_file, empty_folder, Filetype.XML, Mode.PERFORMANCE)
 
         # Assert
         # Check whether compose left has been called properly
         mock_compose_left.assert_called_with(mock_convert_to_image, pipeline)
 
-        mock_dataobj_class.assert_called()
-
-        mock_dataobj_class.assert_called_once_with({}, input_file=table_pdf_file, output_dir=empty_folder,
-                                             output_filetype=Filetype.XML, mode=Mode.PERFORMANCE)
-        pipeline.assert_called_once_with(mock_dataobj_class())
+        assert return_dataobj.output_filetype == Filetype.XML
+        assert return_dataobj.output_file == empty_folder
+        assert return_dataobj.mode == Mode.PERFORMANCE
+        assert return_dataobj.input_file == table_pdf_file
 
     def test_extract_using_TATR_shouldCompilePipelineWhenInputPNG(self, before_and_after):
         # Arrange
@@ -137,7 +137,7 @@ class Test_extract_using_TATR_methods:
                 patch('src.extractable.TextExtractor.PyPDF2Textport.process') as mock_text_extractor, \
                 patch('src.extractable.Dataobj.DataObj.output') as mock_data_obj_output, \
                 patch('src.extractable.PDFtoImageConvertor.ConvertUsingPDF2image.process') as mock_convert_to_image, \
-                patch('src.extractable.Dataobj.DataObj', autospec=True) as mock_dataobj:  # Mock the DataObj class
+                patch('src.extractable.Dataobj.DataObj') as mock_dataobj:  # Mock the DataObj class
             pipeline = mock_compose_left(
                 mock_table_detector,
                 mock_structure_detector,
@@ -147,7 +147,7 @@ class Test_extract_using_TATR_methods:
             # Act
             # Call the 'extract_using_TATR' function with some test parameters.
             # This will trigger the execution of the pipeline of functions.
-            Extractor.extract_using_TATR(table_png_file_standard, empty_folder, Filetype.XML, Mode.PERFORMANCE)
+            return_dataobj = Extractor.extract_using_TATR(table_png_file_standard, empty_folder, Filetype.XML, Mode.PERFORMANCE)
 
         # Assert
         # Check whether compose left has been called properly
@@ -155,11 +155,12 @@ class Test_extract_using_TATR_methods:
             mock_table_detector,
             mock_structure_detector,
             mock_text_extractor,
-            mock_dataobj.output)
+            mock_data_obj_output)
 
-        mock_dataobj.assert_called_once_with({}, input_file=table_png_file_standard, output_dir=empty_folder,
-                                             output_filetype=Filetype.XML, mode=Mode.PERFORMANCE)
-        pipeline.assert_called_once_with(mock_dataobj())
+        assert return_dataobj.output_filetype == Filetype.XML
+        assert return_dataobj.output_file == empty_folder
+        assert return_dataobj.mode == Mode.PERFORMANCE
+        assert return_dataobj.input_file == table_png_file_standard
 
         mock_convert_to_image.assert_not_called()
 
@@ -182,14 +183,16 @@ class Test_extract_using_TATR_methods:
             # Act
             # Call the 'extract_using_TATR' function with some test parameters.
             # This will trigger the execution of the pipeline of functions.
-            Extractor.extract_using_TATR_table_only(table_pdf_file, empty_folder, Filetype.XML, Mode.PERFORMANCE)
+            return_dataobj = Extractor.extract_using_TATR_table_only(table_pdf_file, empty_folder, Filetype.XML, Mode.PERFORMANCE)
 
         # Assert
         # Check whether compose left has been called properly
         mock_compose_left.assert_called_with(mock_convert_to_image, pipeline)
-        mock_dataobj.assert_called_once_with({}, input_file=table_pdf_file, output_dir=empty_folder,
-                                             output_filetype=Filetype.XML, mode=Mode.PERFORMANCE)
-        pipeline.assert_called_once_with(mock_dataobj())
+
+        assert return_dataobj.output_filetype == Filetype.XML
+        assert return_dataobj.output_file == empty_folder
+        assert return_dataobj.mode == Mode.PERFORMANCE
+        assert return_dataobj.input_file == table_pdf_file
 
         mock_structure_detector.assert_not_called()
         mock_text_extractor.assert_not_called()
@@ -213,18 +216,19 @@ class Test_extract_using_TATR_methods:
             # Act
             # Call the 'extract_using_TATR' function with some test parameters.
             # This will trigger the execution of the pipeline of functions.
-            Extractor.extract_using_TATR_table_only(table_png_file_standard, empty_folder, Filetype.XML,
+            return_dataobj = Extractor.extract_using_TATR_table_only(table_png_file_standard, empty_folder, Filetype.XML,
                                                     Mode.PERFORMANCE)
 
         # Assert
         # Check whether compose left has been called properly
         mock_compose_left.assert_called_with(
             mock_table_detector,
-            mock_dataobj.output)
+            mock_data_obj_output)
 
-        mock_dataobj.assert_called_once_with({}, input_file=table_png_file_standard, output_dir=empty_folder,
-                                             output_filetype=Filetype.XML, mode=Mode.PERFORMANCE)
-        pipeline.assert_called_once_with(mock_dataobj())
+        assert return_dataobj.output_filetype == Filetype.XML
+        assert return_dataobj.output_file == empty_folder
+        assert return_dataobj.mode == Mode.PERFORMANCE
+        assert return_dataobj.input_file == table_png_file_standard
 
         mock_convert_to_image.assert_not_called()
         mock_structure_detector.assert_not_called()
@@ -249,14 +253,16 @@ class Test_extract_using_TATR_methods:
             # Act
             # Call the 'extract_using_TATR' function with some test parameters.
             # This will trigger the execution of the pipeline of functions.
-            Extractor.extract_using_TATR_structure_only(table_pdf_file, empty_folder, Filetype.XML, Mode.PERFORMANCE)
+            return_dataobj = Extractor.extract_using_TATR_structure_only(table_pdf_file, empty_folder, Filetype.XML, Mode.PERFORMANCE)
 
         # Assert
         # Check whether compose left has been called properly
         mock_compose_left.assert_called_with(mock_convert_to_image, pipeline)
-        mock_dataobj.assert_called_once_with({}, input_file=table_pdf_file, output_dir=empty_folder,
-                                             output_filetype=Filetype.XML, mode=Mode.PERFORMANCE)
-        pipeline.assert_called_once_with(mock_dataobj())
+
+        assert return_dataobj.output_filetype == Filetype.XML
+        assert return_dataobj.output_file == empty_folder
+        assert return_dataobj.mode == Mode.PERFORMANCE
+        assert return_dataobj.input_file == table_pdf_file
 
         mock_table_detector.assert_not_called()
         mock_text_extractor.assert_not_called()
@@ -280,18 +286,19 @@ class Test_extract_using_TATR_methods:
             # Act
             # Call the 'extract_using_TATR' function with some test parameters.
             # This will trigger the execution of the pipeline of functions.
-            Extractor.extract_using_TATR_structure_only(table_png_file_standard, empty_folder, Filetype.XML,
+            return_dataobj = Extractor.extract_using_TATR_structure_only(table_png_file_standard, empty_folder, Filetype.XML,
                                                         Mode.PERFORMANCE)
 
         # Assert
         # Check whether compose left has been called properly
         mock_compose_left.assert_called_with(
             mock_structure_detector,
-            mock_dataobj.output)
+            mock_data_obj_output)
 
-        mock_dataobj.assert_called_once_with({}, input_file=table_png_file_standard, output_dir=empty_folder,
-                                             output_filetype=Filetype.XML, mode=Mode.PERFORMANCE)
-        pipeline.assert_called_once_with(mock_dataobj())
+        assert return_dataobj.output_filetype == Filetype.XML
+        assert return_dataobj.output_file == empty_folder
+        assert return_dataobj.mode == Mode.PERFORMANCE
+        assert return_dataobj.input_file == table_png_file_standard
 
         mock_convert_to_image.assert_not_called()
         mock_table_detector.assert_not_called()

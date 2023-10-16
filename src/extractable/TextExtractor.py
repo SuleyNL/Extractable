@@ -7,7 +7,9 @@ from pytesseract import Output
 
 from src.extractable import Logger, ModeManager
 from src.extractable.Pipe import Pipe
-from src.extractable.Dataobj import Filetype, DataObj
+from src.extractable.Dataobj import DataObj
+from src.extractable.Filetype import Filetype
+
 from src.extractable.Datatypes.Table import Table
 
 from typing import List

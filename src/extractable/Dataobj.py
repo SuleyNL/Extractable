@@ -1,19 +1,7 @@
 import tempfile
 from enum import Enum
 from src.extractable.ModeManager import Mode
-
-
-class Filetype(Enum):
-    EXCEL = 'xlsx'
-    LATEX = 'tex'
-    PARQUET = 'parquet'
-    PDF = 'pdf'
-    IMG = 'img'
-    XML = 'xml'
-    JSON = 'json'
-    CSV = 'csv'
-    HTML = 'html'
-    YAML = 'yaml'
+from src.extractable.Filetype import Filetype
 
 
 class DataObj:
@@ -32,9 +20,11 @@ class DataObj:
 
         self.data = data
         self.input_file = input_file    # input pdf or img
-        self.output_file = output_dir  # output dir for example 'tables/' produces tables/_table_1.xml
-                                        # if not a dir, like 'tables/hello', it will be treated as prefix
-                                        # so it will produce tables/hello_table_1.xml
+        self.output_file = output_dir
+        # self.output_file expects an output dir, for example 'tables/'
+        # will produce files named 'tables/_table_1.xml' and 'tables/_table_2.xml' etc.
+        # if not a dir, for example 'tables/hello', it will be treated as prefix
+        # so it will produce 'tables/hello_table_1.xml', 'tables/hello_table_2.xml' etc.
         self.output_filetype = output_filetype
         self.mode = mode
         self.temp = tempfile.TemporaryDirectory()

@@ -108,11 +108,13 @@ class Test_ConvertUsingPDF2images:
             # Act
             # Call the 'extract_using_TATR' function with some test parameters.
             # This will trigger the execution of the pipeline of functions.
-            Extractor.extract_using_TATR(table_pdf_file, empty_folder, Filetype.XML, Mode.PERFORMANCE)
+            return_dataobj = Extractor.extract_using_TATR(table_pdf_file, empty_folder, Filetype.XML, Mode.PERFORMANCE)
 
         # Assert
         # Check whether compose left has been called properly
         mock_compose_left.assert_called_with(mock_convert_to_image, pipeline)
-        mock_dataobj.assert_called_once_with({}, input_file=table_pdf_file, output_dir=empty_folder,
-                                             output_filetype=Filetype.XML, mode=Mode.PERFORMANCE)
-        pipeline.assert_called_once_with(mock_dataobj())
+
+        assert return_dataobj.output_filetype == Filetype.XML
+        assert return_dataobj.output_file == empty_folder
+        assert return_dataobj.mode == Mode.PERFORMANCE
+        assert return_dataobj.input_file == table_pdf_file
