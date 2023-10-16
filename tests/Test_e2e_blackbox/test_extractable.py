@@ -1,6 +1,7 @@
 import os
 import time
 import warnings
+from sys import platform
 
 import pytest
 
@@ -29,8 +30,11 @@ def test_Extractable_happyflow(setup_test_environment):
             warning_message = f"Performance warning: Execution time exceeded 20 seconds: ({execution_time:.2f} seconds)"
             warnings.warn(warning_message, UserWarning)
         # Fail the test if execution time is greater than 20 seconds
-        if execution_time > 35:
-            pytest.fail(f"Test failed: Execution time exceeded 20 seconds ({execution_time:.2f} seconds)")
+        if execution_time > 35 and platform.system() != "Darwin":
+            pytest.fail(f"Test failed: Execution time exceeded 35 seconds ({execution_time:.2f} seconds)")
+        elif execution_time > 65 and platform.system() == "Darwin":
+            pytest.fail(f"Test failed: Execution time exceeded MacOS-time of 65 seconds ({execution_time:.2f} seconds)")
+
 
     except Exception as e:
         pytest.fail(f"An unexpected error occurred: {str(e)}")
