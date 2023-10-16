@@ -1,6 +1,10 @@
 import ntpath
 import os
 import platform
+import subprocess
+
+import requests
+import zipfile
 from pathlib import Path
 
 from src.extractable.Pipe import Pipe
@@ -9,6 +13,7 @@ from src.extractable import Logger, ModeManager
 
 import pdf2image
 from pdf2jpg import pdf2jpg
+from pathlib import Path
 
 
 class ConvertUsingPDF2image(Pipe):
@@ -39,10 +44,52 @@ class ConvertUsingPDF2image(Pipe):
         poppler_path = None
 
         if platform.system() == "Windows":
-            poppler_path = os.path.join(os.path.dirname(__file__), 'poppler-0.68.0(win)', 'bin')
+            # Define the URL to the Poppler Windows binary
+            poppler_url = "https://github.com/oschwartz10612/poppler-windows/releases/download/v23.08.0-0/Release-23.08.0-0.zip"
+
+            # Define the path to your project directory
+            location = Path(__file__).parent / 'poppler_windows'
+
+            # Create the directory if it doesn't exist
+            os.makedirs(location, exist_ok=True)
+
+            # Define the path where you want to save the downloaded file
+            downloaded_file = os.path.join(location, "poppler.zip")
+
+            # Download the Poppler binary
+            response = requests.get(poppler_url)
+            with open(downloaded_file, 'wb') as f:
+                f.write(response.content)
+
+            # Extract the downloaded file
+            with zipfile.ZipFile(downloaded_file, 'r') as zip_ref:
+                zip_ref.extractall(location)
+
+            poppler_path = os.path.join(os.path.dirname(__file__), 'poppler_windows', 'poppler-23.08.0', 'Library', 'bin')
+            # old code for pre-installed poppler_path = os.path.join(os.path.dirname(__file__), 'poppler-0.68.0(win)', 'bin')
 
         elif platform.system() == "Linux":
-            poppler_path = os.path.join(os.path.dirname(__file__), 'poppler-23.06.0(linux)')
+            # Check if Poppler is already installed
+            try:
+                subprocess.run(["pdftoppm", "-h"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                print("Poppler is already installed.")
+                return
+            except FileNotFoundError:
+                pass
+
+            # Install Poppler on Linux using the appropriate package manager
+            package_managers = ["apt-get", "yum", "dnf"]
+            for manager in package_managers:
+                try:
+                    subprocess.run(["sudo", manager, "install", "-y", "poppler-utils"], stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE)
+                    print("Poppler installed successfully.")
+                    return
+                except FileNotFoundError:
+                    continue
+
+            print("Poppler installation failed. Please install Poppler manually.")
+            # old code for pre-installed poppler_path = os.path.join(os.path.dirname(__file__), 'poppler-23.06.0(linux)')
 
         return poppler_path
 
