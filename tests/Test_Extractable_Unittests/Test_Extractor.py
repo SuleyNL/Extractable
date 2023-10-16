@@ -3,10 +3,10 @@ import os
 import pytest
 from unittest.mock import patch
 
-from src.extractable import Extractor
-from src.extractable.Dataobj import Filetype
-from src.extractable.ModeManager import Mode
-from src.extractable.Logger import setup_logger, CustomFormatter
+from ...src.extractable import Extractor
+from ...src.extractable.Dataobj import Filetype
+from ...src.extractable.ModeManager import Mode
+from ...src.extractable.Logger import setup_logger, CustomFormatter
 
 # Ensure the logger is not configured when tests start
 import logging

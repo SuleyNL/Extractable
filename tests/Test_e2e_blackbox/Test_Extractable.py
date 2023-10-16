@@ -4,8 +4,8 @@ import warnings
 
 import pytest
 
-from src.extractable.ModeManager import Mode
-from src.extractable import Extractor
+from ...src.extractable.ModeManager import Mode
+from ...src.extractable import Extractor
 from tests.setup_testenv import setup_test_environment as setup_test_environment
 
 # Define the test case

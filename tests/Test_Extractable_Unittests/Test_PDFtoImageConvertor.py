@@ -5,9 +5,9 @@ import pytest
 from unittest.mock import patch, Mock
 
 # Ensure the logger is not configured when tests start
-from src.extractable import Extractor
-from src.extractable.Logger import setup_logger
-from src.extractable.Extractor import Filetype, Mode
+from ...src.extractable import Extractor
+from ...src.extractable.Logger import setup_logger
+from ...src.extractable.Extractor import Filetype, Mode
 import logging
 
 # Ensure the logger is not configured when tests start

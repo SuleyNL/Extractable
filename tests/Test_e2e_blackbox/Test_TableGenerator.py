@@ -4,11 +4,11 @@ import warnings
 
 import pytest
 
-import src.TableGenerator as TableGenerator
+from ...src import TableGenerator as TableGenerator
 
 #  startProcess('files/tables/')
 
-from src.TableGenerator import Options, OptionsENUM
+from ...src.TableGenerator import Options, OptionsENUM
 from tests.variables import default_pdf_file, default_pdf_dir
 
 options = Options().__default__
