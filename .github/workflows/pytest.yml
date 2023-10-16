@@ -16,11 +16,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Add project directory to Python path
+      - name: Set PYTHONPATH
         run: |
-          echo "::add-path::/path/to/your/project"
+          echo "PYTHONPATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
         env:
-          PYTHONPATH: ${{ runner.workspace }}
+          GITHUB_ENV: ${{ runner.workspace }}/.env
 
       - uses: actions/cache@v3
         with:
