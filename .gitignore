@@ -1,4 +1,4 @@
-src/Extractable/oldcode.py
+src/extractable/oldcode.py
 src/test
 
 Extractable/Tesseract-OCR/*
@@ -131,7 +131,10 @@ __pycache__/
 *.so
 
 # Distribution / packaging
+poppler.zip
+poppler_windows/
 .Python
+build/lib/
 ../../build/
 develop-eggs/
 dist/
@@ -247,6 +250,7 @@ celerybeat.pid
 .env
 .venv
 env/
+myenv/
 venv/
 ENV/
 env.bak/

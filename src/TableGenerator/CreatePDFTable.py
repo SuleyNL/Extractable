@@ -1,15 +1,14 @@
 import os
 
-import numpy
-from fpdf import FPDF
-import fpdf
-
-from TableGenerator import *
-from TableGenerator.Options import OptionsENUM
+from src.TableGenerator.Options import OptionsENUM
 
 import random
 import math
-from fpdf.fonts import FontFace
+from src.fpdf.fonts import FontFace
+
+import numpy
+from src.fpdf import FPDF
+from src import fpdf
 
 
 def GeneratePDFTable(table_data: numpy.array, output_file: str, options: dict):

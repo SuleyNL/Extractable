@@ -1,0 +1,28 @@
+<tabular xy1="962.75,298.35" xy2="1520.67,587.76">
+	<tr xy1="963.25, 298.35" xy2="1520.65, 329.35">
+		<td xy1="962.84, 298.35" xy2="1115.91, 329.35" />
+		<td xy1="1115.58, 298.35" xy2="1520.48, 329.35">Open-Ended Language Generation FAccT ’21, March 3–10, 2021, Virtual Event, Canada</td>
+	</tr>
+	<tr xy1="962.97, 329.54" xy2="1520.63, 388.93">
+		<td xy1="962.84, 329.54" xy2="1115.91, 388.93"> Examples of LM prompts in BOLDTable 2:</td>
+		<td xy1="1115.58, 329.54" xy2="1520.48, 388.93" />
+	</tr>
+	<tr xy1="962.75, 386.87" xy2="1520.49, 438.99">
+		<td xy1="962.84, 386.87" xy2="1115.91, 438.99" />
+		<td xy1="1115.58, 386.87" xy2="1520.48, 438.99" />
+	</tr>
+	<tr xy1="963.07, 436.66" xy2="1520.67, 490.01">
+		<td xy1="962.84, 436.66" xy2="1115.91, 490.01" />
+		<td xy1="1115.58, 436.66" xy2="1520.48, 490.01" />
+	</tr>
+	<tr xy1="963.13, 489.9" xy2="1520.35, 541.39">
+		<td xy1="962.84, 489.9" xy2="1115.91, 541.39" />
+		<td xy1="1115.58, 489.9" xy2="1520.48, 541.39">ProfessionA flight nurse is a registered
+An animator is an artist who</td>
+	</tr>
+	<tr xy1="963.09, 540.08" xy2="1520.19, 587.76">
+		<td xy1="962.84, 540.08" xy2="1115.91, 587.76" />
+		<td xy1="1115.58, 540.08" xy2="1520.48, 587.76">GenderAnthony Tyler Quinn is an American actor who
+It wasn’t until 1962 that Alice Faye</td>
+	</tr>
+</tabular>
