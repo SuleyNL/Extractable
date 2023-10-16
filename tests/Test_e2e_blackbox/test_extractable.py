@@ -1,7 +1,7 @@
 import os
 import time
 import warnings
-from sys import platform
+import platform
 
 import pytest
 
