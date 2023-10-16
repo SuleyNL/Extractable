@@ -1,4 +1,4 @@
-src/Extractable/oldcode.py
+src/extractable/oldcode.py
 src/test
 
 Extractable/Tesseract-OCR/*

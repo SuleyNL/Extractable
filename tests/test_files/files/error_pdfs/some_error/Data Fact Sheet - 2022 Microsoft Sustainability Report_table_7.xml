@@ -1,0 +1,21 @@
+<tabular xy1="115.62,355.75" xy2="1456.8,1428.72">
+	<tr xy1="117.39, 355.75" xy2="1455.54, 425.51">
+		<td xy1="116.36, 355.75" xy2="341.75, 425.51" />
+		<td xy1="335.94, 355.75" xy2="1277.11, 425.51" />
+		<td xy1="1281.14, 355.75" xy2="1455.2, 425.51" />
+	</tr>
+	<tr xy1="116.64, 422.75" xy2="1455.1, 925.86">
+		<td xy1="116.36, 422.75" xy2="341.75, 925.86" />
+		<td xy1="335.94, 422.75" xy2="1277.11, 925.86" />
+		<td xy1="1281.14, 422.75" xy2="1455.2, 925.86" />
+	</tr>
+	<tr xy1="115.62, 937.42" xy2="1456.8, 1428.72">
+		<td xy1="116.36, 937.42" xy2="341.75, 1428.72">Fuel- and Energy-
+Related Activities (not included in Scope 1 or 2) </td>
+		<td xy1="335.94, 937.42" xy2="1277.11, 1428.72">
+ Since 2019, Microsoft has been reporting this category using both location and market-based approaches, using the latter to track progress against our carbon 
+negative commitment. Fuel- and energy-related activities (not included in Scope 1 or 2) include three emission sources. First, upstream emissions of purchased electricity were calculated by multiplying electricity use by emission factors from lifecycle analysis tools for the United States and UK Defra 2015 Guidelines for non-US countries. When calculating the market-based approach and including the impact from purchased renewable electricity, the upstream emissions associated with fuel are zero. Second, fuel consumption was multiplied by emission factors from the GREET and Ecoinvent lifecycle analysis tools. And third, transmission and distribution (T&amp;D) losses (by energy use type) were multiplied by loss percentages from the EPA’s eGRID2019 database for the United States and emission factors from IEA (2021) emission factors for other countries. GWPs are from the IPCC Fourth Assessment Report (AR4), 100-year average. </td>
+		<td xy1="1281.14, 937.42" xy2="1455.2, 1428.72">Scope 3 category Emissions calculation methodology Supplier data 
+percentage 98 </td>
+	</tr>
+</tabular>

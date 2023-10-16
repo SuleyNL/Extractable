@@ -1,0 +1,75 @@
+<tabular xy1="125.55,241.64" xy2="2873.67,1569.06">
+	<tr xy1="128.42, 241.64" xy2="2870.94, 310.1">
+		<td xy1="132.15, 241.64" xy2="367.22, 310.1" />
+		<td xy1="368.34, 241.64" xy2="1290.54, 310.1" />
+		<td xy1="1293.13, 241.64" xy2="1499.38, 310.1" />
+		<td xy1="1504.28, 241.64" xy2="1772.05, 310.1" />
+		<td xy1="1794.31, 241.64" xy2="2696.22, 310.1" />
+		<td xy1="2697.18, 241.64" xy2="2863.01, 310.1" />
+	</tr>
+	<tr xy1="126.7, 314.57" xy2="2868.56, 715.02">
+		<td xy1="132.15, 314.57" xy2="367.22, 715.02" />
+		<td xy1="368.34, 314.57" xy2="1290.54, 715.02" />
+		<td xy1="1293.13, 314.57" xy2="1499.38, 715.02" />
+		<td xy1="1504.28, 314.57" xy2="1772.05, 715.02" />
+		<td xy1="1794.31, 314.57" xy2="2696.22, 715.02" />
+		<td xy1="2697.18, 314.57" xy2="2863.01, 715.02">0 </td>
+	</tr>
+	<tr xy1="126.07, 710.86" xy2="2867.99, 801.33">
+		<td xy1="132.15, 710.86" xy2="367.22, 801.33" />
+		<td xy1="368.34, 710.86" xy2="1290.54, 801.33" />
+		<td xy1="1293.13, 710.86" xy2="1499.38, 801.33">0 </td>
+		<td xy1="1504.28, 710.86" xy2="1772.05, 801.33" />
+		<td xy1="1794.31, 710.86" xy2="2696.22, 801.33" />
+		<td xy1="2697.18, 710.86" xy2="2863.01, 801.33" />
+	</tr>
+	<tr xy1="127.35, 818.4" xy2="2868.92, 1095.08">
+		<td xy1="132.15, 818.4" xy2="367.22, 1095.08">Downstream T
+</td>
+		<td xy1="368.34, 818.4" xy2="1290.54, 1095.08">and Distribution Included in this category are the emissions from transporting and warehousing of d
+evices Microsoft sold (including Xbox devices, Microsoft Surface devices, 
+HoloLens, keyboards, mice, and other peripherals) from retail distribution centers to retailers and between retail outlets and customers. Calculations are based on internal Microsoft sales data and use standard assumptions of distance between retailers and their distribution centers and warehouse floorspace from an MWPVL International analysis of Walmart’s distribution center network. Assumptions about the energy intensity of warehouses come from the US Energy Information Administration (EIA)’s Commercial Buildings Energy Consumption Survey (2012). All transportation data is kept consistent with the Global Logistics Emissions Council Framework for Logistics Emissions Accounting and Reporting, Version 2.0. GWPs are from the IPCC Fourth Assessment Report (AR4), 100-year average. </td>
+		<td xy1="1293.13, 818.4" xy2="1499.38, 1095.08">Scope 3 category Emissions calculation methodology Supplier data 
+p
+ercentage </td>
+		<td xy1="1504.28, 818.4" xy2="1772.05, 1095.08">Scope 3 category Emissions calculation methodology Su
+
+Use of Sold Products (
+management’s 
+</td>
+		<td xy1="1794.31, 818.4" xy2="2696.22, 1095.08">criteria) This category includes the emissions of all Surface and Xbox devices active during the r
+</td>
+		<td xy1="2697.18, 818.4" xy2="2863.01, 1095.08">pplier data 
+percentage </td>
+	</tr>
+	<tr xy1="125.55, 1099.23" xy2="2871.05, 1384.26">
+		<td xy1="132.15, 1099.23" xy2="367.22, 1384.26" />
+		<td xy1="368.34, 1099.23" xy2="1290.54, 1384.26" />
+		<td xy1="1293.13, 1099.23" xy2="1499.38, 1384.26">0 </td>
+		<td xy1="1504.28, 1099.23" xy2="1772.05, 1384.26">
+</td>
+		<td xy1="1794.31, 1099.23" xy2="2696.22, 1384.26" />
+		<td xy1="2697.18, 1099.23" xy2="2863.01, 1384.26">0 </td>
+	</tr>
+	<tr xy1="127.32, 1386.17" xy2="2873.14, 1441.13">
+		<td xy1="132.15, 1386.17" xy2="367.22, 1441.13" />
+		<td xy1="368.34, 1386.17" xy2="1290.54, 1441.13">old Products Not relevant. Microsoft did not have any physical intermediate products in the y
+ears reported. </td>
+		<td xy1="1293.13, 1386.17" xy2="1499.38, 1441.13" />
+		<td xy1="1504.28, 1386.17" xy2="1772.05, 1441.13" />
+		<td xy1="1794.31, 1386.17" xy2="2696.22, 1441.13" />
+		<td xy1="2697.18, 1386.17" xy2="2863.01, 1441.13" />
+	</tr>
+	<tr xy1="129.9, 1439.0" xy2="2873.67, 1569.06">
+		<td xy1="132.15, 1439.0" xy2="367.22, 1569.06" />
+		<td xy1="368.34, 1439.0" xy2="1290.54, 1569.06">Included in this category is the lifetime electricity use of devices Microsoft sold in
+cluding Xbox devices, Surface devices, HoloLens, keyboards, mice, and other 
+peripherals. Lifetime electricity use per device is calculated based on standard product-use assumptions as included in our ISO 14040– and ISO 14044–compliant lifecycle analyses. Calculations include energy use assumptions that are derived from various guidance documents, studies, or telemetry data. Assumptions on total lifetime expected use (years) are used. Sales geography for the products sold is used to determine the electricity emission factor used to calculate emissions. Emissions from third-party devices running Microsoft software are currently outside of the scope of our carbon commitments and therefore not included. GWPs are from the IPCC Fourth Assessment Report (AR4), 100-year average. </td>
+		<td xy1="1293.13, 1439.0" xy2="1499.38, 1569.06" />
+		<td xy1="1504.28, 1439.0" xy2="1772.05, 1569.06">End of Life T
+</td>
+		<td xy1="1794.31, 1439.0" xy2="2696.22, 1569.06">t
+he reporting year including Xbox devices, Surface devices, HoloLens, keyboards, </td>
+		<td xy1="2697.18, 1439.0" xy2="2863.01, 1569.06" />
+	</tr>
+</tabular>

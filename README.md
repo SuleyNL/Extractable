@@ -28,13 +28,13 @@ Extractable is designed to be used with Python 3.10.
 To use Extractable, simply import the library and use its functions. We provide comprehensive documentation to get started with the library.
 
 ```python
-import Extractable
+import extractable
 
 input_file = "path_to/your_input.pdf"
 output_file = "path_to/your_preferred_output"
 
 # Extract tables from a PDF file
-tables = Extractable.Extractor.extract(input_file, output_file)
+tables = extractable.Extractor.extract(input_file, output_file)
 
 # That's how simple it is!
 ```
