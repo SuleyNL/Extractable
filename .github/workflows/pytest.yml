@@ -58,7 +58,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         #working-directory: ./  # Set the working directory to the repository root
         run: |
-          pytest tests/Test_e2e_blackbox/*    
+          pdm run pytest -v tests/Test_e2e_blackbox/*    
 
       - name: Run E2E Tests on MacOS
         if: matrix.os == 'macOS-latest'
