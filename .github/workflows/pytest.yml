@@ -58,16 +58,6 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         #working-directory: ./  # Set the working directory to the repository root
         run: |
-          python -m venv myenv
-          source myenv/bin/activate
-          python -m pip install pytest
-          pdm install
-          pdm add
-          pip install -r requirements.txt
-          
-          #TODO: dont perform the venv and pdm installation as these should be unnecessary 
-          #after it has been done in prior steps
-           
           pytest tests/Test_e2e_blackbox/*    
 
       - name: Run E2E Tests on MacOS
