@@ -82,9 +82,9 @@ jobs:
           updated_version=$(echo "$updated_version_line" | awk -F"['\"]" '{print $2}')          
           
           echo "Updated version in pyproject.toml is: $updated_version"
-          branch=$(feature/update-version-$updated_version)
+          #branch=$(feature/update-version-$updated_version)
           branch2="feature/update-version-$updated_version"
-          echo "creating branch: $branch"
+          #echo "creating branch: $branch"
           echo "creating branch2: $branch2"
 
           git checkout -b feature/update-version-$updated_version
