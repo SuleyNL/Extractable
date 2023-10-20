@@ -122,9 +122,6 @@ jobs:
           # gh pr review $branch --request-changes --body "Please review me, updated $version to $new_version"
           
           gh pr comment $branch --body "@SuleyNL pls review"
-
-          # Wait for reviews and approvals
-          gh pr checks $branch --watch 
           
           # Merge the pull request
           gh pr merge $branch --auto
