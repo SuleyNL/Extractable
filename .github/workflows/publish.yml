@@ -105,7 +105,7 @@ jobs:
           git commit -am "Increment version"
       
           # Push the changes to the current branch
-          git push origin $current_branch
+          git push origin $current_branch --set-upstream origin feature/update-version
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
 
