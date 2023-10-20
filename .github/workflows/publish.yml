@@ -124,7 +124,7 @@ jobs:
           gh pr comment $branch --body "@SuleyNL pls review"
           
           # Merge the pull request
-          gh pr merge $branch --merge --auto --delete-branch
+          gh pr merge $branch --merge --admin --delete-branch
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
 
