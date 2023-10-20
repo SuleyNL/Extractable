@@ -40,17 +40,12 @@ jobs:
 
           # Echo the extracted version number
           echo "Version number is: $version"
+          echo "version=$version" >> $GITHUB_ENV
         shell: bash
 
 
       - name: Increment the rightmost integer in the version
         run: |
-          # Use grep to find the line containing the version number
-          version_line=$(grep -E "version\s*=" pyproject.toml)
-
-          # Use awk to extract the version number
-          version=$(echo "$version_line" | awk -F"['\"]" '{print $2}')
-
           # Increment the rightmost integer by 1
           IFS='.' read -a version_parts <<< "$version"
           last_part="${version_parts[-1]}"
@@ -62,25 +57,17 @@ jobs:
           sed -i "s/\(version\s*=\s*['\"]\?\)[0-9.-]\+\(['\"]\?\)/\1$new_version\2/" pyproject.toml
 
           # Echo the updated version
-          echo "Updated version is: $new_version"
+          echo "Updated version is below:"
+          echo "new_version=$new_version" >> $GITHUB_ENV
         shell: bash
 
 
       - name: Create a new branch
         run: |
-          # Use grep to find the line containing the updated version number 
-          updated_version_line=$(grep -E "version\s*=" pyproject.toml)
-
-          # Use awk to extract the updated version number 
-          updated_version=$(echo "$updated_version_line" | awk -F"['\"]" '{print $2}')          
-          
-          echo "Updated version in pyproject.toml is: $updated_version"
-          branch2="feature/update-version-$updated_version"
-          echo "creating branch2: $branch2"
-
-          git checkout -b feature/update-version-$updated_version
-          git push origin feature/update-version-$updated_version 
-
+          echo "creating branch: "
+          branch="feature/update-version-$new_version" >> $GITHUB_ENV
+          git checkout -b feature/update-version-$new_version
+          git push origin feature/update-version-$new_version
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
 
@@ -90,20 +77,20 @@ jobs:
           git config --global user.email "suleyleeuw@gmail.com"
           git config --global user.name "SuleyNL"
           
+          # Switch to the update_version branch
+          git fetch
+          git checkout $branch
+          git add pyproject.toml
+          
           # Extract the current branch name from the github.event variable
-          current_branch=${{ github.ref }}
+          current_branch=${{ github.ref }} >> $GITHUB_ENV
           echo "current branch is: $current_branch"
           
-          # Switch to the current branch
-          git fetch
-          git checkout $current_branch
-          git add pyproject.toml
-
           # Commit the changes in pyproject.toml
-          git commit -am "Increment version"
+          git commit -am "Increment version from $version to $new_version"
       
           # Push the changes to the current branch
-          git push origin $current_branch --set-upstream origin $current_branch
+          git push origin $branch --set-upstream origin $branch
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
 
@@ -121,7 +108,7 @@ jobs:
         run: |
           pr_title="Update Version"
           pr_body="This is an automated update of version in pyproject.toml. This action is performed by publish.yml."
-          gh pr create --base main --head $current_branch --title "$pr_title" --body "$pr_body"
+          gh pr create --base main --head $branch --title "$pr_title" --body "$pr_body"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
 
@@ -129,10 +116,10 @@ jobs:
       - name: Request Reviews and Merge
         run: |
           # Request reviews from specific users (modify as needed)
-          gh pr request-review $current_branch -R SuleyNL
+          gh pr request-review $branch -R SuleyNL
           
           # Merge the pull request
-          gh pr merge $current_branch --auto
+          gh pr merge $branch --auto
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
 
