@@ -85,8 +85,8 @@ jobs:
           
           git checkout -b feature/update-version-$updated_version
           echo "current branch is: $current_branch"
+          git push origin feature/update-version-$updated_version 
 
-          git push origin feature/update-version-$updated_version --set-upstream origin feature/update-version-$updated_version
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
 
