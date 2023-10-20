@@ -19,14 +19,6 @@ jobs:
           python-version: 3.9  # You can specify the Python version you need
 
 
-      - name: Create a new branch
-        run: |
-          git checkout -b feature/update-version
-          git push origin feature/update-version
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-
-
       - name: Check if version is in pyproject.toml
         run: |
           # Check if the version number is in pyproject.toml
@@ -87,6 +79,14 @@ jobs:
         shell: bash
 
 
+      - name: Create a new branch
+        run: |
+          git checkout -b "feature/update-version-$updated_version"
+          git push origin "feature/update-version-$updated_version"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+
+
       - name: Commit and Push Changes
         run: |
           git config --global user.email "suleyleeuw@gmail.com"
@@ -105,7 +105,7 @@ jobs:
           git commit -am "Increment version"
       
           # Push the changes to the current branch
-          git push origin $current_branch --set-upstream origin feature/update-version
+          git push origin $current_branch --set-upstream origin $current_branch
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
 
@@ -123,7 +123,7 @@ jobs:
         run: |
           pr_title="Update Version"
           pr_body="This is an automated update of version in pyproject.toml. This action is performed by publish.yml."
-          gh pr create --base main --head feature/update-version --title "$pr_title" --body "$pr_body"
+          gh pr create --base main --head $current_branch --title "$pr_title" --body "$pr_body"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
 
@@ -131,10 +131,10 @@ jobs:
       - name: Request Reviews and Merge
         run: |
           # Request reviews from specific users (modify as needed)
-          gh pr request-review feature/update-version -R SuleyNL
+          gh pr request-review $current_branch -R SuleyNL
           
           # Merge the pull request
-          gh pr merge feature/update-version --auto
+          gh pr merge $current_branch --auto
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
 
