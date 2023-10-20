@@ -32,7 +32,7 @@ class PyPDF2Textport(Pipe):
     def process(dataobj: DataObj) -> DataObj:
         logger = Logger.Logger()
 
-        words = PyPDF2Textport.extractText(dataobj)
+        words = PyPDF2Textport.extract_text(dataobj)
 
         table_structures: List[Table] = dataobj.data['table_structures']
         table_images: List[str] = dataobj.data['table_images']
@@ -44,7 +44,7 @@ class PyPDF2Textport(Pipe):
             # no tables detected to run structure detector on
             return dataobj
 
-        # Loop past each Table object to check if cell bounding boxes correlate to text bounding boxes
+        # Loop past each Table object to check if the found cell bounding boxes correlate to text bounding boxes
         for table_nr, (table, table_image_path, table_correction) in enumerate(
                 zip(table_structures, table_images, table_corrections)):
             # get the page_nr where this Table object is detected
@@ -82,7 +82,7 @@ class PyPDF2Textport(Pipe):
                     for x, y, text, font_size, page in zip(words['x'], words['y'], words['text'], words['font_size'],
                                                            words['page']):
                         # Loop through the words to see if they are inside the boundaries of current Cell object,
-                        # if yes, add to cell.text
+                        # if yes, add the text to cell.text
                         padding = math.ceil(font_size)
                         if page == page_nr and x1 - padding <= x <= x2 + padding and y1 + padding <= y <= y2 + padding:
                             words_in_bounds['x'].append(x)
@@ -93,52 +93,18 @@ class PyPDF2Textport(Pipe):
                     cell.text = ''.join(words_in_bounds['text'])
             final_tables.append(table)
 
-            # TODO: TextExtractor.output_table
+            # Prepare table_data before writing to file
+            output_file = prepare_table_data(dataobj, table_nr)
 
-            # Convert detected table structure to XML Object
-            table_xml = ET.fromstring(table.to_xml_with_coords())
-
-            # Create an ElementTree object
-            tree = ET.ElementTree(table_xml)
-
-            # Prettify XML output
-            ET.indent(tree, space="\t", level=0)
-
-            # Write the XML object to the file
-            file_prefix = os.path.splitext(dataobj.output_file)[0]
-
-            if ntpath.isdir(file_prefix):
-                output_file = file_prefix + '/' + 'table_' + str(table_nr + 1)
-            else:
-                output_file = file_prefix + '_table_' + str(table_nr + 1)
-
-            if not Path(output_file).parent.exists():
-                os.makedirs(Path(output_file).parent)
-
-            if dataobj.output_filetype == Filetype.XML:
-                tree.write(output_file + '.xml', encoding="utf-8")
-
-            if dataobj.output_filetype == Filetype.CSV:
-                table.to_csv(output_file)
-
-            if dataobj.output_filetype == Filetype.JSON:
-                table.to_json(output_file)
-
-            if dataobj.output_filetype == Filetype.PARQUET:
-                table.to_parquet(output_file)
-
-            if dataobj.output_filetype == Filetype.LATEX:
-                table.to_latex(output_file)
-
-            if dataobj.output_filetype == Filetype.EXCEL:
-                table.to_excel(output_file)
+            # Write table_data to file
+            write_table_to_file(table, output_file, dataobj.output_filetype)
 
             logger.info('Full XML including text saved to: %s', output_file, extra={'className': __class__.__name__})
         dataobj.data['final_tables'] = final_tables
         return dataobj
 
     @staticmethod
-    def extractText(dataobj: DataObj) -> DataObj:
+    def extract_text(dataobj: DataObj) -> dict:
         # GET ALL WORDS FROM ALL PAGES
         # TODO: can be done more efficiently, only certain pages
 
@@ -316,5 +282,42 @@ class NeedlemanWunschExtraction(Pipe):
         # Return the text as an object that can be passed to the next step in the pipeline
         dataobj.data[__class__.__name__] = {}
         return dataobj
+
+
+def prepare_table_data(dataobj: DataObj, table_nr) -> str:
+    # Make the prefix for the final output filename
+    file_prefix = os.path.splitext(dataobj.output_file)[0]
+
+    if ntpath.isdir(file_prefix):
+        final_output_file = file_prefix + '/' + 'table_' + str(table_nr + 1)
+    else:
+        final_output_file = file_prefix + '_table_' + str(table_nr + 1)
+
+    # Create the parent dir if not existing
+    if not Path(final_output_file).parent.exists():
+        os.makedirs(Path(final_output_file).parent)
+
+    return final_output_file
+
+
+def write_table_to_file(table: Table, output_file: str, output_filetype: Filetype) -> None:
+    # Write to file
+    if output_filetype == Filetype.XML:
+        table.to_prettyXML(output_file)
+
+    if output_filetype == Filetype.CSV:
+        table.to_csv(output_file)
+
+    if output_filetype == Filetype.JSON:
+        table.to_json(output_file)
+
+    if output_filetype == Filetype.PARQUET:
+        table.to_parquet(output_file)
+
+    if output_filetype == Filetype.LATEX:
+        table.to_latex(output_file)
+
+    if output_filetype == Filetype.EXCEL:
+        table.to_excel(output_file)
 
 
