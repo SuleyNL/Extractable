@@ -119,7 +119,7 @@ jobs:
       - name: Request Reviews and Merge
         run: |
           # Request reviews from specific users (modify as needed)
-          gh pr request-review $branch -R SuleyNL
+          gh pr review $branch -R SuleyNL
           
           # Merge the pull request
           gh pr merge $branch --auto
