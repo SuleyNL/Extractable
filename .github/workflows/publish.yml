@@ -121,6 +121,9 @@ jobs:
           # Request reviews from specific users (modify as needed)
           gh pr review $branch -R SuleyNL
           
+          # Wait for reviews and approvals
+          gh pr check $branch --wait
+          
           # Merge the pull request
           gh pr merge $branch --auto
         env:
