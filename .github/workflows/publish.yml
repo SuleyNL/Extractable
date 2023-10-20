@@ -59,14 +59,14 @@ jobs:
           updated_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
           
           echo "Updated version in pyproject.toml is: $updated_version"
-
+          
           git checkout -b feature/update-version-$updated_version
           echo "current branch is: $current_branch"
 
           git push origin feature/update-version-$updated_version --set-upstream origin feature/update-version-$updated_version
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-
+        shell: bash
 
       - name: Increment the rightmost integer in the version
         run: |
