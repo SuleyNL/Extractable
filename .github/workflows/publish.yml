@@ -4,8 +4,9 @@ on:
   push:
     branches:
       - main
-    branches-ignore:
-      - 'feature/update-version-*'
+    paths-ignore:
+      - 'pyproject.toml'  # Ignore changes to pyproject.toml
+      - 'src/version.py'   # Ignore changes to src/version.py
 
 jobs:
   publish:
@@ -15,7 +16,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-    if: "!startsWith(github.ref, 'refs/heads/feature/update-version-')"
       - name: Check if version is in pyproject.toml
         run: |
           # Check if the version number is in pyproject.toml
