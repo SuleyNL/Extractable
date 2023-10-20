@@ -109,7 +109,7 @@ jobs:
 
       - name: Create Pull Request
         run: |
-          pr_title="Update Version"
+          pr_title="Update version from $version to $new_version"
           pr_body="This is an automated update of version in pyproject.toml. This action is performed by publish.yml."
           gh pr create --base main --head $branch --title "$pr_title" --body "$pr_body"
         env:
@@ -119,9 +119,9 @@ jobs:
       - name: Request Reviews and Merge
         run: |
           # Use the gh pr review command to request changes
-          # gh pr review $branch --request-changes --body "Please review me, updated $version to $new_version"
+          # gh pr review $branch --request-changes --body "Please review me,"
           
-          gh pr comment $branch --body "@SuleyNL pls review"
+          gh pr comment $branch --body "updated version from $version to $new_version, @SuleyNL pls review"
           
           # Merge the pull request
           gh pr merge $branch --merge --admin --delete-branch
