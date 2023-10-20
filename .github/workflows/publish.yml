@@ -119,11 +119,12 @@ jobs:
       - name: Request Reviews and Merge
         run: |
           # Use the gh pr review command to request changes
-          #gh pr review $branch --request-changes SuleyNL
-          gh pr review $branch --request-changes --body "Please review me, updated $version to $new_version"
+          # gh pr review $branch --request-changes --body "Please review me, updated $version to $new_version"
           
+          gh pr comment $branch --body "@SuleyNL pls review"
+
           # Wait for reviews and approvals
-          gh pr check $branch --wait
+          gh pr checks $branch --watch -web
           
           # Merge the pull request
           gh pr merge $branch --auto
