@@ -18,17 +18,27 @@ jobs:
         with:
           python-version: 3.9  # You can specify the Python version you need
 
+
+      - name: Create a new branch
+        run: |
+          git checkout -b feature/update-version
+          git push origin feature/update-version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+
+
       - name: Check if version is in pyproject.toml
         run: |
           # Check if the version number is in pyproject.toml
           if grep -q "version\s*=\s*['\"]\?[0-9.-]\+['\"]\?" pyproject.toml; then
-            echo "Hello, version is found in pyproject.toml."
+            echo "Version is found in pyproject.toml."
           else
-            echo "Version not found in pyproject.toml."
+            echo "ERROR - Version not found in pyproject.toml."
           fi
         shell: bash
 
-      - name: Extract and echo version number from pyproject.toml
+
+      - name: Extract version number from pyproject.toml
         run: |
           # Use grep to find the line containing the version number
           version_line=$(grep -E "version\s*=" pyproject.toml)
@@ -39,6 +49,7 @@ jobs:
           # Echo the extracted version number
           echo "Version number is: $version"
         shell: bash
+
 
       - name: Increment the rightmost integer in the version
         run: |
@@ -62,6 +73,7 @@ jobs:
           echo "Updated version is: $new_version"
         shell: bash
 
+
       - name: Check the current version of pyproject.toml to know if updated
         run: |
           # Use grep to find the line containing the updated version number
@@ -73,6 +85,7 @@ jobs:
           # Echo the updated version
           echo "Updated version in pyproject.toml is: $updated_version"
         shell: bash
+
 
       - name: Commit and Push Changes
         run: |
@@ -93,22 +106,8 @@ jobs:
       
           # Push the changes to the current branch
           git push origin $current_branch
-
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-
-          #env:
-          #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-          ## Switch to the develop branch (if not already on it)
-          #git checkout develop
-          #
-          ## Commit the changes in pyproject.toml
-          #git commit -am "Increment version"
-          #
-          ## Push the changes to the develop branch
-          #git push origin develop
-
 
       # The version can also be updated using a version in the github repo, this must first be analyzed for pros and cons
       #- name: Update version in src/version.py and pyproject.toml
@@ -120,11 +119,32 @@ jobs:
       #  env:
       #    NEW_VERSION: ${{ github.run_number }}
 
+      - name: Create Pull Request
+        run: |
+          pr_title="Update Version"
+          pr_body="This is an automated update of version in pyproject.toml. This action is performed by publish.yml."
+          gh pr create --base main --head feature/update-version --title "$pr_title" --body "$pr_body"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+
+
+      - name: Request Reviews and Merge
+        run: |
+          # Request reviews from specific users (modify as needed)
+          gh pr request-review feature/update-version -R SuleyNL
+          
+          # Merge the pull request
+          gh pr merge feature/update-version --auto
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+
+
       - name: Build package
         run: |
           python -m pip install --upgrade pdm
           pdm build
         working-directory: ./  # Specify the directory where pyproject.toml is located
+
 
       - name: Upload package to PyPI
         run: |
