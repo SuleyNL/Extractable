@@ -9,7 +9,7 @@ build-backend = "pdm.backend"
 
 [project]
 name = "Extractable"
-version = "0.0.53"
+version = "0.0.54"
 description = "Extract tables from PDFs"
 authors = [
     {name = "Suleymen C. Kandrouch", email = "suleyleeuw@gmail.com"},
