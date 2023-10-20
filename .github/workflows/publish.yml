@@ -65,7 +65,8 @@ jobs:
       - name: Create a new branch
         run: |
           echo "creating branch: "
-          branch="feature/update-version-$new_version" >> $GITHUB_ENV
+          branch="feature/update-version-$new_version"
+          echo "branch=$branch" >> $GITHUB_ENV
           git checkout -b feature/update-version-$new_version
           git push origin feature/update-version-$new_version
         env:
@@ -85,6 +86,7 @@ jobs:
           # Extract the current branch name from the github.event variable
           current_branch=${{ github.ref }} >> $GITHUB_ENV
           echo "current branch is: $current_branch"
+          echo "Branch to push to is: $branch"
           
           # Commit the changes in pyproject.toml
           git commit -am "Increment version from $version to $new_version"
