@@ -1,5 +1,6 @@
 import ntpath
 import os
+import warnings
 from pathlib import Path
 
 from src.extractable.Pipe import Pipe
@@ -72,7 +73,6 @@ class StructureRecognitionWithTATR(Pipe):
 
             StructureRecognitionWithTATR.save_table_xml(table_xml, dataobj, logger, i)
 
-            #TODO MODEMANAGER
             ModeManager.StructureDetector_display_structure(dataobj.mode, image, model, presentation_results, i, len(images))
 
         dataobj.data['table_structures'] = table_structures
@@ -94,8 +94,7 @@ class StructureRecognitionWithTATR(Pipe):
         elif dataobj.data['pdf_images'] is not None and len(dataobj.data['pdf_images']) > 0:
             return dataobj.data['pdf_images']
         else:
-            # TODO: raise error no image found
-            return None
+            raise Exception("No images found, is your input a valid PDF or PNG? Is Poppler installed and in PATH?")
 
     @staticmethod
     def preprocessing(image):
@@ -305,9 +304,11 @@ class StructureRecognitionWithTATR(Pipe):
                     pass
                     # TODO: only add cell if it intersects
                 else:
-                    pass
-                    # TODO: Error log or Warning log
+                    # Raise a UserWarning for the unexpected case
+                    warning_message = "Columns should always intersect with rows, but no intersection found."
+                    warnings.warn(warning_message, UserWarning)
                     #  should not arrive here, that is weird? every column should intersect with a row
+                    pass
 
                 cell_bbox = row.intersection_with_column_bbox(bbox_column)
 
