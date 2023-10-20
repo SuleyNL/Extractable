@@ -36,7 +36,7 @@ jobs:
           python -m pip install --upgrade pdm
           pdm install --no-lock -G test -G pipeline
 
-      #- name: Run PyTest # ARTIFACT: in case there is a reson to run all tests, this is the config that worked
+      #- name: Run PyTest # ARTIFACT: in case there is a reason to run all tests, this is the config that worked
         # run pytest on all files that start with "test_" and have a ".py" extension.
         #run: |
          # pdm run pytest -k "tests/ and Test_"
