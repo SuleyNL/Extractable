@@ -42,29 +42,10 @@ jobs:
           echo "Version number is: $version"
         shell: bash
 
-
-      - name: Create a new branch
+      - name: Create a new branch1
         run: |
-          # Use grep to find the line containing the updated version number 
-          version_line=$(grep -E "version\s*=" pyproject.toml)
-
-          # Use awk to extract the updated version number 
-          version=$(echo "$updated_version_line" | awk -F"['\"]" '{print $2}')          
-          
-          # Increment the rightmost integer by 1
-          IFS='.' read -a version_parts <<< "$version"
-          last_part="${version_parts[-1]}"
-          new_last_part=$((last_part + 1))
-          version_parts[-1]=$new_last_part
-          updated_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
-          
-          echo "Updated version in pyproject.toml is: $updated_version"
-          
-          git checkout -b feature/update-version-$updated_version
-          echo "current branch is: $current_branch"
-
-          git push origin feature/update-version-$updated_version --set-upstream origin feature/update-version-$updated_version
-        shell: bash
+          git checkout -b feature/update-version
+          git push origin feature/update-version
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
 
@@ -90,6 +71,24 @@ jobs:
           # Echo the updated version
           echo "Updated version is: $new_version"
         shell: bash
+
+
+      - name: Create a new branch
+        run: |
+          # Use grep to find the line containing the updated version number 
+          version_line=$(grep -E "version\s*=" pyproject.toml)
+
+          # Use awk to extract the updated version number 
+          updated_version=$(echo "$updated_version_line" | awk -F"['\"]" '{print $2}')          
+          
+          echo "Updated version in pyproject.toml is: $updated_version"
+          
+          git checkout -b feature/update-version-$updated_version
+          echo "current branch is: $current_branch"
+
+          git push origin feature/update-version-$updated_version --set-upstream origin feature/update-version-$updated_version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
 
 
       - name: Commit and Push Changes
