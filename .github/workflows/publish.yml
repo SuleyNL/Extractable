@@ -42,13 +42,6 @@ jobs:
           echo "Version number is: $version"
         shell: bash
 
-      - name: Create a new branch1
-        run: |
-          git checkout -b feature/update-version
-          git push origin feature/update-version
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-
 
       - name: Increment the rightmost integer in the version
         run: |
