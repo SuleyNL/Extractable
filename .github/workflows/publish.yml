@@ -66,29 +66,16 @@ jobs:
         shell: bash
 
 
-      - name: Check the current version of pyproject.toml to know if updated
-        run: |
-          # Use grep to find the line containing the updated version number
-          updated_version_line=$(grep -E "version\s*=" pyproject.toml)
-
-          # Use awk to extract the updated version number
-          updated_version=$(echo "$updated_version_line" | awk -F"['\"]" '{print $2}')
-
-          # Echo the updated version
-          echo "Updated version in pyproject.toml is: $updated_version"
-        shell: bash
-
-
       - name: Create a new branch
         run: |
-          echo "Updated version in pyproject.toml is here: $updated_version"
           # Use grep to find the line containing the updated version number #TODO: DELETE LINE BELOW
           updated_version_line=$(grep -E "version\s*=" pyproject.toml)
 
           # Use awk to extract the updated version number #TODO: DELETE LINE BELOW
-          updated_version=$(echo "$updated_version_line" | awk -F"['\"]" '{print $2}')
+          updated_version=$(echo "$updated_version_line" | awk -F"['\"]" '{print $2}')          
           
-          
+          echo "Updated version in pyproject.toml is: $updated_version"
+ 
           git checkout -b "feature/update-version-$updated_version"
           git push origin "feature/update-version-$updated_version" --set-upstream origin $current_branch
         env:
