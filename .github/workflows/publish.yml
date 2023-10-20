@@ -118,13 +118,9 @@ jobs:
 
       - name: Request Reviews and Merge
         run: |
-          # Request reviews from specific users (modify as needed)
-          reviewer="SuleyNL"
-
           # Use the gh pr review command to request changes
           #gh pr review $branch --request-changes SuleyNL
-          #gh pr review $branch --request-changes
-          gh pr review $branch --request-changes --body "Please check this" --reviewer $reviewer
+          gh pr review $branch --request-changes
           
           # Wait for reviews and approvals
           gh pr check $branch --wait
