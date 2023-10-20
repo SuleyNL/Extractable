@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    branches-ignore:
+          - 'feature/update-version-*'
 
 jobs:
   publish:
@@ -12,11 +14,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9  # You can specify the Python version you need
 
 
       - name: Check if version is in pyproject.toml
@@ -83,16 +80,12 @@ jobs:
           git checkout $branch
           git add pyproject.toml
           
-          # Extract the current branch name from the github.event variable
-          current_branch=${{ github.ref }} >> $GITHUB_ENV
-          echo "current branch is: $current_branch"
           echo "Branch to push to is: $branch"
           
           # Commit the changes in pyproject.toml
           git commit -am "Increment version from $version to $new_version"
       
           # Push the changes to the current branch
-          #git push origin $branch --set-upstream origin $branch
           git push origin HEAD:$branch
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
@@ -110,17 +103,15 @@ jobs:
       - name: Create Pull Request
         run: |
           pr_title="Update version from $version to $new_version"
-          pr_body="This is an automated update of version in pyproject.toml. This action is performed by publish.yml."
+          pr_body="This is an automated update of version in pyproject.toml. This action is performed by a Github Action from publish.yml."
           gh pr create --base main --head $branch --title "$pr_title" --body "$pr_body"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
 
 
-      - name: Request Reviews and Merge
+      - name: Merge Pull Request
         run: |
-          # Use the gh pr review command to request changes
-          # gh pr review $branch --request-changes --body "Please review me,"
-          
+          # Use the gh pr review command to request changes          
           gh pr comment $branch --body "updated version from $version to $new_version, @SuleyNL pls review"
           
           # Merge the pull request
