@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - main
-    branches-ignore:
-          - 'feature/update-version-*'
+    paths-ignore:
+      - 'refs/heads/feature/update-version-/*'
 
 jobs:
   publish:
