@@ -76,15 +76,3 @@ class Table:
         # TODO: not yet tested
         df = pd.DataFrame(self.data)
         df.to_parquet(file_path + '.parquet', header=False, index=False)
-
-    def to_prettyXML(self, file_path):
-        # Convert detected table structure to XML Object
-        table_xml = ET.fromstring(self.to_xml_with_coords())
-
-        # Create an ElementTree object
-        tree = ET.ElementTree(table_xml)
-
-        # Prettify XML output
-        ET.indent(tree, space="\t", level=0)
-
-        tree.write(file_path + '.xml', encoding="utf-8")

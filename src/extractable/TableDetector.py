@@ -74,7 +74,8 @@ class TableDetectorTATR(Pipe):
         elif dataobj.data['pdf_images'] is not None and len(dataobj.data['pdf_images']) > 0:
             return dataobj.data['pdf_images']
         else:
-            raise Exception("No images found, is your input a valid PDF or PNG? Is Poppler installed and in PATH?")
+            #TODO: raise error no image found
+            return None
 
     @staticmethod
     def runTATR(image, image_processor, model):
@@ -158,7 +159,7 @@ class TableDetectorDETR(Pipe):
 
         scores = np.ones((bboxes.shape[0]))
         ids = np.zeros((bboxes.shape[0]))
-        ModeManager.plot_results(image, model, scores, ids, bboxes, title='detected tables using DETR')
+        plot_results(image, model, scores, ids, bboxes, title='detected tables using DETR')
         return dataobj
 
 
