@@ -124,7 +124,7 @@ jobs:
           gh pr comment $branch --body "@SuleyNL pls review"
 
           # Wait for reviews and approvals
-          gh pr check $branch --watch -web
+          gh pr checks $branch --watch -web
           
           # Merge the pull request
           gh pr merge $branch --auto
