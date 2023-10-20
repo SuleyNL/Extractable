@@ -64,9 +64,10 @@ jobs:
           echo "current branch is: $current_branch"
 
           git push origin feature/update-version-$updated_version --set-upstream origin feature/update-version-$updated_version
+        shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-        shell: bash
+
 
       - name: Increment the rightmost integer in the version
         run: |
