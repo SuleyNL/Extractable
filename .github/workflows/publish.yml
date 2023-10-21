@@ -139,7 +139,7 @@ jobs:
 
       - name: Add main_version to github repo variable
         with:
-          script: |
+          run: |
             echo "main_version=$new_version" >> $GITHUB_ENV
             echo "github env: $new_version"
             
