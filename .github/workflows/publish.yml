@@ -138,9 +138,19 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYPI_API }}
 
       - name: Add main_version to github repo variable
-        uses: actions/github-script@v4
+        uses: peter-evans/repository-dispatch@v2
         with:
           script: |
+            
+            echo "main_version=$new_version" >> $GITHUB_ENV
+            echo "github env: $new_version"
+            
+            echo "main_version=$new_version" >> ${{ vars.ENVIRONMENT_STAGE }}
+            echo "vars: ${{ vars.ENVIRONMENT_STAGE }}"
+            
+            echo "main_version=$new_version" >> ${{ secrets.ENVIRONMENT_STAGE }}
+            echo "secrets: ${{ secrets.ENVIRONMENT_STAGE }}"
+            
             const response = await github.repos.createDispatchEvent({
               owner: context.repo.owner,
               repo: context.repo.repo,
