@@ -140,14 +140,15 @@ jobs:
       - name: Add main_version to github repo variable
         run: |
           echo "mversion is $m_version"
+          echo "$mversion=$new_version"
           
-          echo "main_version=$new_version" >> $GITHUB_ENV
+          echo "main_version=$new_version" >> $vars
           echo "github env: $new_version"
           
-          echo "main_version=$new_version" >> $GITHUB_WORKSPACE 
+          echo "main_version=$new_version" >> $GITHUB_VARS
           echo "secrets: $ENVIRONMENT_STAGE"
           
-          echo "main_version=$new_version" >> $GITHUB_WORKSPACE 
+          echo "main_version=$new_version" >> $GITHUB_ENV
           echo "vars: $ENVIRONMENT_STAGE"
           
 
