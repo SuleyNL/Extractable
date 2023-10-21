@@ -54,7 +54,7 @@ jobs:
           sed -i "s/\(version\s*=\s*['\"]\?\)[0-9.-]\+\(['\"]\?\)/\1$new_version\2/" pyproject.toml
 
           # Echo the updated version
-          echo "Updated version is below:"
+          echo "Updated version is: $new_version"
           echo "new_version=$new_version" >> $GITHUB_ENV
         shell: bash
 
@@ -134,3 +134,20 @@ jobs:
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API }}
+
+      steps:
+        - name: Dispatch Repository Variable Edit
+          uses: actions/github-script@v4
+          with:
+            script: |
+              const response = await github.repos.createDispatchEvent({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                event_type: 'edit-variable',
+                client_payload: {
+                  secret_name: 'MAIN_VERSION',
+                  secret_value: '$new_version',
+                }
+              });
+              console.log(response.data);
+            token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
