@@ -142,11 +142,13 @@ jobs:
           echo "main_version=$new_version" >> $GITHUB_ENV
           echo "github env: $new_version"
           
-          echo "main_version=$new_version" >> $vars.ENVIRONMENT_STAGE
+          echo "main_version=$new_version" >> $secrets
+          echo "secrets: ${{ secrets.ENVIRONMENT_STAGE }}"
+          
+          echo "main_version=$new_version" >> $vars
           echo "vars: ${{ vars.ENVIRONMENT_STAGE }}"
           
-          echo "main_version=$new_version" >> $secrets.ENVIRONMENT_STAGE
-          echo "secrets: ${{ secrets.ENVIRONMENT_STAGE }}"
+
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
 
