@@ -16,6 +16,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Echo Push Event
+        run: |
+          echo trigger_branch=${{ github.ref }} >> $GITHUB_ENV
+          echo "The workflow was triggered by a push to branch: $trigger_branch"         
+          
+          echo git_event=${{ github.sha }} >> $GITHUB_ENV
+          echo "Push event SHA: $git_event"
+
+          echo "Pushed by: ${{ github.actor }}"
+        shell: bash
+
       - name: Check if version number is in pyproject.toml
         run: |
           # Check if the version number is in pyproject.toml
@@ -104,9 +115,18 @@ jobs:
 
       - name: Create Pull Request
         run: |
+          echo "Push event SHA: $git_event"
+          echo mergedBranch="${{ github.event.pull_request.base.ref }}" >> $GITHUB_ENV
+          echo "Merged from branch: $mergedBranch" 
+          
           pr_title="Update version from $version to $new_version"
-          pr_body="This is an automated update of version in pyproject.toml. This action is performed by the Github Action: publish.yml /n 
-          after every accepted pull request. When finished, this will have published a lates patch of the Extractable codebase as a patch to Pip."
+          pr_body="This is an automated version-update on pyproject.toml. 
+          \n 
+          \n The workflow was triggered by a succesfull pull request from branch: $mergedBranch 
+          \n With push event SHA of: $git_event 
+          \n 
+          \n This action is performed by the Github Action: publish.yml after every accepted pull request. When finished, 
+          this will have published the latest patch of the Extractable codebase to Pypi so it can be pip installed."
           gh pr create --base main --head $branch --title "$pr_title" --body "$pr_body"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
