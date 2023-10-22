@@ -5,6 +5,7 @@ import svgwrite
 from PyPDF2 import PdfReader
 from pytesseract import Output
 
+from src.extractable import Extractor
 from src.extractable import Logger, ModeManager
 from src.extractable.Pipe import Pipe
 from src.extractable.Dataobj import DataObj
@@ -182,6 +183,9 @@ class PyPDF2Textport(Pipe):
 
 
 class TesseractOCR(Pipe):
+    '''
+    This code doesnt work yet. It still should be built out further
+    '''
     path_to_tesseract = None
 
     @staticmethod
@@ -234,7 +238,6 @@ class TesseractOCR(Pipe):
                     logger.info('13: detected text with confidence of ' + str(read_roi13['conf'][-1]) + ' containing the text: \'' + read_roi13['text'][-1] + '\'', extra={'className': __class__.__name__})
                     '''
 
-                    # TODO MODEMANAGER
                     ModeManager.TextExtractor_display_cell(dataobj.mode, cell_image, row, table_xml, read_roi12)
 
         dataobj.data[__class__.__name__] = {}
