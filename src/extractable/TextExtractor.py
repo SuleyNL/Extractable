@@ -5,7 +5,7 @@ import svgwrite
 from PyPDF2 import PdfReader
 from pytesseract import Output
 
-from extractable import Extractor
+from src.extractable import Extractor
 from src.extractable import Logger, ModeManager
 from src.extractable.Pipe import Pipe
 from src.extractable.Dataobj import DataObj

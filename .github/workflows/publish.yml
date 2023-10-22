@@ -105,7 +105,8 @@ jobs:
       - name: Create Pull Request
         run: |
           pr_title="Update version from $version to $new_version"
-          pr_body="This is an automated update of version in pyproject.toml. This action is performed by a Github Action from publish.yml."
+          pr_body="This is an automated update of version in pyproject.toml. This action is performed by the Github Action: publish.yml /n 
+          after every accepted pull request. When finished, this will have published a lates patch of the Extractable codebase as a patch to Pip."
           gh pr create --base main --head $branch --title "$pr_title" --body "$pr_body"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
@@ -137,7 +138,8 @@ jobs:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API }}
 
-      #- name: Add main_version to github repo variable #TODO: would be nice if this worked
+      #- name: Add main_version to github repo variable
+      #TODO: would be nice if this worked: keeping the version number in the github main repo
       #  run: |
       #    echo "mversion is $m_version"
       #    echo "$m_version=$new_version" >> $GITHUB_ENV
