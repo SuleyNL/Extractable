@@ -121,11 +121,11 @@ jobs:
           
           pr_title="Update version from $version to $new_version"
           pr_body="This is an automated version-update on pyproject.toml. 
-          \n 
-          \n The workflow was triggered by a succesfull pull request from branch: $mergedBranch 
-          \n With push event SHA of: $git_event 
-          \n 
-          \n This action is performed by the Github Action: publish.yml after every accepted pull request. When finished, 
+          
+          The workflow was triggered by a succesfull pull request from branch: $mergedBranch 
+          With push event SHA of: $git_event 
+          
+          This action is performed by the Github Action: publish.yml after every accepted pull request. When finished, 
           this will have published the latest patch of the Extractable codebase to Pypi so it can be pip installed."
           gh pr create --base main --head $branch --title "$pr_title" --body "$pr_body"
         env:
