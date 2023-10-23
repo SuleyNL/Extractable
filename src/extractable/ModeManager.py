@@ -3,7 +3,7 @@ from PIL import Image
 from matplotlib import pyplot as plt
 
 
-class Mode(Enum):
+class Mode(str, Enum):
     PERFORMANCE = 'performance'                 # maximize performance for big data ETL
     PRESENTATION = 'presentation'               # show every visual step in process
     PRESENTATION_PLUS = 'presentation plus'     # show every visual step in process, including irrelevant steps such as transforming images
