@@ -135,7 +135,7 @@ jobs:
       - name: Merge Pull Request
         run: |
           # Use the gh pr review command to request changes          
-          gh pr comment $branch --body "updated version in pyproject.toml from $version to $new_version
+          gh pr comment $branch --body "updated version in pyproject.toml from $version to $new_version"
           
           # Merge the pull request
           gh pr merge $branch --merge --admin --delete-branch
