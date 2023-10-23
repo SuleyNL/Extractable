@@ -1,10 +1,10 @@
 import logging
 from toolz import compose_left
 
-from src.extractable import PDFtoImageConvertor, StructureDetector, TableDetector, TextExtractor, Logger
-from src.extractable.Dataobj import DataObj
-from src.extractable.Filetype import Filetype
-from src.extractable.ModeManager import Mode
+from . import PDFtoImageConvertor, StructureDetector, TableDetector, TextExtractor, Logger
+from . Dataobj import DataObj
+from . Filetype import Filetype
+from . ModeManager import Mode
 
 logger = Logger.Logger()
 

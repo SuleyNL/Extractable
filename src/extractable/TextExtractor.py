@@ -5,13 +5,13 @@ import svgwrite
 from PyPDF2 import PdfReader
 from pytesseract import Output
 
-from src.extractable import Extractor
-from src.extractable import Logger, ModeManager
-from src.extractable.Pipe import Pipe
-from src.extractable.Dataobj import DataObj
-from src.extractable.Filetype import Filetype
+from . import Extractor
+from . import Logger, ModeManager
+from . Pipe import Pipe
+from . Dataobj import DataObj
+from . Filetype import Filetype
 
-from src.extractable.Datatypes.Table import Table
+from . Datatypes import Table
 
 from typing import List
 import ntpath

@@ -1,5 +1,5 @@
 from typing import List
-from src.extractable.Datatypes.Row import Row
+from . Row import Row
 import xml.etree.ElementTree as ET
 import pandas as pd
 

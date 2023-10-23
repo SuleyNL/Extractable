@@ -7,9 +7,9 @@ import requests
 import zipfile
 from pathlib import Path
 
-from src.extractable.Pipe import Pipe
-from src.extractable.Dataobj import DataObj
-from src.extractable import Logger, ModeManager
+from . Pipe import Pipe
+from . Dataobj import DataObj
+from . import Logger, ModeManager
 
 import pdf2image
 from pdf2jpg import pdf2jpg

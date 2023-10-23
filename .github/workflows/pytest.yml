@@ -87,7 +87,7 @@ jobs:
            
           pytest tests/Test_e2e_blackbox/*    
         
-          
+      #TODO: also test if publishing to testPypi and then executing e2e works, before allowing push to be accepted
           
 
 
