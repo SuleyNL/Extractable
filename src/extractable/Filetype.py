@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class Filetype(Enum):
+class Filetype(str, Enum):
     EXCEL = 'xlsx'
     LATEX = 'tex'
     PARQUET = 'parquet'

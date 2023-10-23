@@ -1,3 +1,4 @@
+import json
 import tempfile
 from enum import Enum
 from . ModeManager import Mode
@@ -32,6 +33,17 @@ class DataObj:
 
     def output(self) -> dict:
         return self.data
+
+    def toJSON(self):
+        serializable_data = {
+            "data": self.data,
+            "input_file": self.input_file,
+            "output_file": self.output_file,
+            "output_filetype": self.output_filetype,
+            "mode": self.mode,
+            "temp_dir": self.temp_dir
+        }
+        return json.dumps(serializable_data, sort_keys=True, indent=4)
 
 
 class Bbox:
