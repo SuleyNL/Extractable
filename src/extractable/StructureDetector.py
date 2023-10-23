@@ -3,14 +3,12 @@ import os
 import warnings
 from pathlib import Path
 
-from src.extractable.Pipe import Pipe
-
-from src.extractable.Dataobj import Bbox, intersects, DataObj
-
-from src.extractable import Logger, ModeManager
-from src.extractable.Datatypes.Cell import Cell
-from src.extractable.Datatypes.Row import Row
-from src.extractable.Datatypes.Table import Table
+from . Pipe import Pipe
+from . Dataobj import Bbox, intersects, DataObj
+from . import Logger, ModeManager
+from . Datatypes.Cell import Cell
+from . Datatypes.Row import Row
+from . Datatypes.Table import Table
 
 
 import torch

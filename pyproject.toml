@@ -8,8 +8,8 @@ build-backend = "pdm.backend"
 #build-backend = "setuptools.build_meta"
 
 [project]
-name = "Extractable"
-version = "0.0.120"
+name = "extractable"
+version = "0.0.121"
 description = "Extract tables from PDFs"
 authors = [
     {name = "Suleymen C. Kandrouch", email = "suleyleeuw@gmail.com"},
@@ -69,13 +69,11 @@ package-dir = {''= 'src'}
 package-dir = "src"
 
 [tool.pdm.build]
-includes = [ "src/Extractable",
+includes = [ "src/extractable",
     "src/TableGenerator",
-    "src/fpdf",
-    "src/Extractable/Tesseract-OCR/tessdata/eng.traineddata",
-    "src/Extractable/Tesseract-OCR/tessdata/nld.traineddata"]
+    "src/fpdf", ]
 
-excludes = ["src/Extractable/Tesseract-OCR", "src/test", "src/venv", "src/genalog", "src/weasyprint"]
+excludes = ["src/extractable/Tesseract-OCR", "src/test", "src/venv", "src/genalog", "src/weasyprint"]
 
 [tool.pdm.dependencies]
 pytest = ">=7.4.2"
@@ -83,7 +81,7 @@ pytest = ">=7.4.2"
 
 [tool.pytest.ini_options]
 pythonpath = [
-  ".", "src/Extractable"
+  ".", "src/extractable"
 ]
 
 
