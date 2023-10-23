@@ -5,9 +5,9 @@ from PIL import Image
 from transformers import AutoImageProcessor, TableTransformerForObjectDetection, DetrForObjectDetection, DetrImageProcessor
 import numpy as np
 
-from src.extractable import Logger, ModeManager
-from src.extractable.Dataobj import DataObj
-from src.extractable.Pipe import Pipe
+from . import Logger, ModeManager
+from . Dataobj import DataObj
+from . Pipe import Pipe
 
 import os
 import ntpath

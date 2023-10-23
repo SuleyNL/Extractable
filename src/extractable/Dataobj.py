@@ -1,7 +1,7 @@
 import tempfile
 from enum import Enum
-from src.extractable.ModeManager import Mode
-from src.extractable.Filetype import Filetype
+from . ModeManager import Mode
+from . Filetype import Filetype
 
 
 class DataObj:
