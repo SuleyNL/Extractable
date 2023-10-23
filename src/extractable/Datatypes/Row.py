@@ -1,4 +1,5 @@
 import math
+import warnings
 from typing import List
 
 from .. Dataobj import Bbox
@@ -75,6 +76,5 @@ class Row:
             # return intersection area of row and column
             return Bbox(x1, y1, x2, y2)
         else:
-            #TODO: RAISE OUT BOUNDS ERROR
-            print('bbox error')
+            warnings.warn('Bbox out of bounds')
             return Bbox(x1, y1, x2, y2)
