@@ -10,7 +10,9 @@ class DataObj:
                  input_file: str,
                  output_dir: str,
                  output_filetype: Filetype = Filetype.XML,
-                 mode: Mode = Mode.PERFORMANCE):
+                 mode: Mode = Mode.PERFORMANCE,
+                 temp: tempfile.TemporaryDirectory = tempfile.TemporaryDirectory(),
+                 temp_dir: str = None):
 
         data['pdf_images'] = None if input_file.endswith('.pdf') else [input_file]       # image of each page in pdf
         data['table_locations'] = None                                                   # a list of dicts, each sublist containing the leftupper x,y value of the table-cropped image, aswell as the page it belongs to and table_id
@@ -28,8 +30,8 @@ class DataObj:
         # so it will produce 'tables/hello_table_1.xml', 'tables/hello_table_2.xml' etc.
         self.output_filetype = output_filetype
         self.mode = mode
-        self.temp = tempfile.TemporaryDirectory()
-        self.temp_dir = self.temp.name
+        self.temp = temp
+        self.temp_dir = temp_dir if temp_dir is not None else self.temp.name
 
     def output(self) -> dict:
         return self.data
@@ -41,9 +43,29 @@ class DataObj:
             "output_file": self.output_file,
             "output_filetype": self.output_filetype,
             "mode": self.mode,
+            "temp": self.temp,
             "temp_dir": self.temp_dir
         }
         return json.dumps(serializable_data, sort_keys=True, indent=4)
+
+    @classmethod
+    def fromJSON(cls, json_str):
+        json_data = json.loads(json_str)
+
+        output_filetype = Filetype(json_data["output_filetype"]) if "output_filetype" in json_data else Filetype.XML
+        mode = Mode(json_data["mode"]) if "mode" in json_data else Mode.PERFORMANCE
+        temp_dir = json_data.get("temp_dir", None)
+        temp = json_data.get("temp", None)
+
+        return cls(
+            data=json_data["data"],
+            input_file=json_data["input_file"],
+            output_dir=json_data["output_file"],
+            output_filetype=output_filetype,
+            mode=mode,
+            temp=temp,
+            temp_dir=temp_dir
+        )
 
 
 class Bbox:
