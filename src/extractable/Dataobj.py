@@ -11,7 +11,7 @@ class DataObj:
                  output_dir: str,
                  output_filetype: Filetype = Filetype.XML,
                  mode: Mode = Mode.PERFORMANCE,
-                 temp_dir: str = tempfile.TemporaryDirectory().name):
+                 temp_dir: str | None = None):
 
         data['pdf_images'] = None if input_file.endswith('.pdf') else [input_file]       # image of each page in pdf
         data['table_locations'] = None                                                   # a list of dicts, each sublist containing the leftupper x,y value of the table-cropped image, aswell as the page it belongs to and table_id
@@ -29,7 +29,13 @@ class DataObj:
         # so it will produce 'tables/hello_table_1.xml', 'tables/hello_table_2.xml' etc.
         self.output_filetype = output_filetype
         self.mode = mode
-        self.temp_dir = temp_dir
+
+        if temp_dir is None:
+            # this MUST be done in 2 steps because else the TemporaryDirectory() will delete itself
+            created_dir = tempfile.TemporaryDirectory()
+            self.temp_dir = created_dir.name
+        else:
+            self.temp_dir = temp_dir
 
     def output(self) -> dict:
         return self.data
