@@ -6,22 +6,15 @@ from . Filetype import Filetype
 
 
 class DataObj:
-    def __init__(self, data: dict,
+    def __init__(self,
                  input_file: str,
                  output_dir: str,
                  output_filetype: Filetype = Filetype.XML,
                  mode: Mode = Mode.PERFORMANCE,
+                 data: dict | None = None,
                  temp_dir: str | None = None):
 
-        data['pdf_images'] = None if input_file.endswith('.pdf') else [input_file]       # image of each page in pdf
-        data['table_locations'] = None                                                   # a list of dicts, each sublist containing the leftupper x,y value of the table-cropped image, aswell as the page it belongs to and table_id
-        data['table_corrections'] = None                                                 # for each table, the difference between detected table (topleft xy tuple) by TableDetector vs by StructureDetector, so this can be used to find true location of words on page
-        data['table_images'] = None                                                      # image of each table
-        data['table_structures'] = None                                                  # a Table() containing bboxes, for each table
-        data['final_tables'] = None                                                      # a Table() containing bboxes and text, for each table
-
-        self.data = data
-        self.input_file = input_file    # input pdf or img
+        self.input_file = input_file    # input can be pdf or img
         self.output_dir = output_dir
         # self.output_file expects an output dir, for example 'tables/'
         # will produce files named 'tables/_table_1.xml' and 'tables/_table_2.xml' etc.
@@ -29,7 +22,16 @@ class DataObj:
         # so it will produce 'tables/hello_table_1.xml', 'tables/hello_table_2.xml' etc.
         self.output_filetype = output_filetype
         self.mode = mode
+        if data is None:
+            data = {
+                'pdf_images': None if input_file.endswith('.pdf') else [input_file],
+                'table_locations': None,
+                'table_corrections': None,
+                'table_images': None,
+                'table_structures': None,
+                'final_tables': None}
 
+        self.data = data
         if temp_dir is None:
             # this MUST be done in 2 steps because else the TemporaryDirectory() will delete itself
             created_dir = tempfile.TemporaryDirectory()
