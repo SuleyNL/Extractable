@@ -127,8 +127,8 @@ class StructureRecognitionWithTATR(Pipe):
         x1, y1 = box[:2]
         diff_x = x1 - 40  # 40 because TableDetector zoomed out by 40px
         diff_y = y1 - 40  # 40 because TableDetector zoomed out by 40px
-        table_corrections.append((diff_x, diff_y))
-        logger.info('Table correction: ' + str((diff_x, diff_y)), extra={'className': __class__.__name__})
+        table_corrections.append([diff_x, diff_y])
+        logger.info('Table correction: ' + str([diff_x, diff_y]), extra={'className': __class__.__name__})
 
     @staticmethod
     def postprocessing(results, table_locations, table_corrections, i):
