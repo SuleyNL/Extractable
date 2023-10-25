@@ -115,9 +115,10 @@ class ConvertUsingPDF2image(Pipe):
     def save_img_to_temp(dataobj, logger, image, i, path_to_images):
         image_name = Path(ntpath.basename(dataobj.input_file)).stem
         image_path_string = f"{image_name}_page_{i + 1}.jpg"
-        image_path = dataobj.temp_dir + '\\' + os.path.normpath(image_path_string)
-        logger.info('Saved image to: ' + image_path, extra={'className': __class__.__name__})
-
+        #image_path = dataobj.temp_dir + '\\' + os.path.normpath(image_path_string)
+        image_path = os.path.join(dataobj.temp_dir, os.path.normpath(image_path_string)) # to also work in other os systems
+        logger.info('Saving image to: ' + image_path, extra={'className': __class__.__name__})
+        # TODO: do this with the rest of the library aswell
         image.save(image_path, "JPEG")
         path_to_images.append(image_path)
 
