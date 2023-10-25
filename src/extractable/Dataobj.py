@@ -22,6 +22,7 @@ class DataObj:
         # so it will produce 'tables/hello_table_1.xml', 'tables/hello_table_2.xml' etc.
         self.output_filetype = output_filetype
         self.mode = mode
+
         if data is None:
             data = {
                 'pdf_images': None if input_file.endswith('.pdf') else [input_file],
@@ -30,8 +31,8 @@ class DataObj:
                 'table_images': None,
                 'table_structures': None,
                 'final_tables': None}
-
         self.data = data
+
         if temp_dir is None:
             # this MUST be done in 2 steps because else the TemporaryDirectory() will delete itself
             created_dir = tempfile.TemporaryDirectory()
@@ -44,11 +45,11 @@ class DataObj:
 
     def toJSON(self):
         serializable_data = {
-            "data": self.data,
             "input_file": self.input_file,
             "output_file": self.output_dir,
             "output_filetype": self.output_filetype,
             "mode": self.mode,
+            "data": self.data,
             "temp_dir": self.temp_dir
         }
         return json.dumps(serializable_data, sort_keys=True, indent=4)
