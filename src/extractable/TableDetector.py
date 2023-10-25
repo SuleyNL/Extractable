@@ -74,7 +74,7 @@ class TableDetectorTATR(Pipe):
         elif dataobj.data['pdf_images'] is not None and len(dataobj.data['pdf_images']) > 0:
             return dataobj.data['pdf_images']
         else:
-            raise Exception("No images found, is your input a valid PDF or PNG? Is Poppler installed and in PATH?")
+            raise Exception("No images found! Check if the directory where the images should be exists! : " + str(dataobj.temp_dir))
 
     @staticmethod
     def runTATR(image, image_processor, model):
