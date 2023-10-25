@@ -122,7 +122,7 @@ class Test_extract_using_TATR_methods:
         mock_compose_left.assert_called_with(mock_convert_to_image, pipeline)
 
         assert return_dataobj.output_filetype == Filetype.XML
-        assert return_dataobj.output_file == empty_folder
+        assert return_dataobj.output_dir == empty_folder
         assert return_dataobj.mode == Mode.PERFORMANCE
         assert return_dataobj.input_file == table_pdf_file
 
@@ -158,7 +158,7 @@ class Test_extract_using_TATR_methods:
             mock_data_obj_output)
 
         assert return_dataobj.output_filetype == Filetype.XML
-        assert return_dataobj.output_file == empty_folder
+        assert return_dataobj.output_dir == empty_folder
         assert return_dataobj.mode == Mode.PERFORMANCE
         assert return_dataobj.input_file == table_png_file_standard
 
@@ -190,7 +190,7 @@ class Test_extract_using_TATR_methods:
         mock_compose_left.assert_called_with(mock_convert_to_image, pipeline)
 
         assert return_dataobj.output_filetype == Filetype.XML
-        assert return_dataobj.output_file == empty_folder
+        assert return_dataobj.output_dir == empty_folder
         assert return_dataobj.mode == Mode.PERFORMANCE
         assert return_dataobj.input_file == table_pdf_file
 
@@ -226,7 +226,7 @@ class Test_extract_using_TATR_methods:
             mock_data_obj_output)
 
         assert return_dataobj.output_filetype == Filetype.XML
-        assert return_dataobj.output_file == empty_folder
+        assert return_dataobj.output_dir == empty_folder
         assert return_dataobj.mode == Mode.PERFORMANCE
         assert return_dataobj.input_file == table_png_file_standard
 
@@ -260,7 +260,7 @@ class Test_extract_using_TATR_methods:
         mock_compose_left.assert_called_with(mock_convert_to_image, pipeline)
 
         assert return_dataobj.output_filetype == Filetype.XML
-        assert return_dataobj.output_file == empty_folder
+        assert return_dataobj.output_dir == empty_folder
         assert return_dataobj.mode == Mode.PERFORMANCE
         assert return_dataobj.input_file == table_pdf_file
 
@@ -296,7 +296,7 @@ class Test_extract_using_TATR_methods:
             mock_data_obj_output)
 
         assert return_dataobj.output_filetype == Filetype.XML
-        assert return_dataobj.output_file == empty_folder
+        assert return_dataobj.output_dir == empty_folder
         assert return_dataobj.mode == Mode.PERFORMANCE
         assert return_dataobj.input_file == table_png_file_standard
 

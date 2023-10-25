@@ -22,7 +22,7 @@ class DataObj:
 
         self.data = data
         self.input_file = input_file    # input pdf or img
-        self.output_file = output_dir
+        self.output_dir = output_dir
         # self.output_file expects an output dir, for example 'tables/'
         # will produce files named 'tables/_table_1.xml' and 'tables/_table_2.xml' etc.
         # if not a dir, for example 'tables/hello', it will be treated as prefix
@@ -38,7 +38,7 @@ class DataObj:
         serializable_data = {
             "data": self.data,
             "input_file": self.input_file,
-            "output_file": self.output_file,
+            "output_file": self.output_dir,
             "output_filetype": self.output_filetype,
             "mode": self.mode,
             "temp_dir": self.temp_dir

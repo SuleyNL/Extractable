@@ -106,7 +106,7 @@ class PyPDF2Textport(Pipe):
             ET.indent(tree, space="\t", level=0)
 
             # Write the XML object to the file
-            file_prefix = os.path.splitext(dataobj.output_file)[0]
+            file_prefix = os.path.splitext(dataobj.output_dir)[0]
 
             if ntpath.isdir(file_prefix):
                 output_file = file_prefix + '/' + 'table_' + str(table_nr + 1)
