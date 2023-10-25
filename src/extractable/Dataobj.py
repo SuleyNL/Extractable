@@ -32,13 +32,10 @@ class DataObj:
                 'table_structures': None,
                 'final_tables': None}
         self.data = data
+        self.temp_dir_object = tempfile.TemporaryDirectory() if temp_dir is None else None
+        self.temp_dir = temp_dir if temp_dir is not None else self.temp_dir_object.name
 
-        if temp_dir is None:
-            # this MUST be done in 2 steps because else the TemporaryDirectory() will delete itself
-            created_dir = tempfile.TemporaryDirectory()
-            self.temp_dir = created_dir.name
-        else:
-            self.temp_dir = temp_dir
+        # this MUST be done in 2 steps because else the TemporaryDirectory() will delete itself
 
     def output(self) -> dict:
         return self.data
