@@ -4,11 +4,12 @@ import warnings
 from pathlib import Path
 
 from . Pipe import Pipe
-from . Dataobj import Bbox, intersects, DataObj
+from . Dataobj import intersects, DataObj
 from . import Logger, ModeManager
 from . Datatypes.Cell import Cell
 from . Datatypes.Row import Row
 from . Datatypes.Table import Table
+from . Datatypes.Bbox import Bbox
 
 
 import torch

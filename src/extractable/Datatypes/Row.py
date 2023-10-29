@@ -2,7 +2,7 @@ import math
 import warnings
 from typing import List
 
-from .. Dataobj import Bbox
+from . Bbox import Bbox
 from . Cell import Cell
 import xml.etree.ElementTree as ET
 
