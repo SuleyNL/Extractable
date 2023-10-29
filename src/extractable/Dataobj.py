@@ -67,7 +67,7 @@ class DataObj:
         return cls(
             data=json_data["data"][0],
             input_file=json_data["input_file"],
-            output_dir=json_data["output_file"],
+            output_dir=json_data["output_dir"],
             output_filetype=output_filetype,
             mode=mode,
             temp_dir=temp_dir
