@@ -47,7 +47,7 @@ class DataObj:
         data = self.convert_tables_to_json(self.data),  # Convert tables in 'data'
         serializable_data = {
             "input_file": self.input_file,
-            "output_file": self.output_dir,
+            "output_dir": self.output_dir,
             "output_filetype": self.output_filetype,
             "mode": self.mode,
             "data": data,
