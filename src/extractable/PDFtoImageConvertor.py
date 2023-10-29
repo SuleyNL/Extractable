@@ -36,7 +36,7 @@ class ConvertUsingPDF2image(Pipe):
             ModeManager.PDFtoImageConvertor_display_image(dataobj.mode, image_path,  i, len(images))
 
         dataobj.data['pdf_images'] = path_to_images
-        dataobj.data[__class__.__name__] = {}
+        dataobj.data[__class__.__name__] = []
         return dataobj
 
     @staticmethod

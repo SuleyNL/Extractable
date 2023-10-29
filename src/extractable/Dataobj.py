@@ -1,6 +1,9 @@
 import json
 import tempfile
 from enum import Enum
+from typing import Any
+
+from . Datatypes import Table
 from . ModeManager import Mode
 from . Filetype import Filetype
 
@@ -41,12 +44,13 @@ class DataObj:
         return self.data
 
     def toJSON(self):
+        data = self.convert_tables_to_json(self.data),  # Convert tables in 'data'
         serializable_data = {
             "input_file": self.input_file,
             "output_file": self.output_dir,
             "output_filetype": self.output_filetype,
             "mode": self.mode,
-            "data": self.data,
+            "data": data,
             "temp_dir": self.temp_dir
         }
         return json.dumps(serializable_data, sort_keys=True, indent=4)
@@ -54,19 +58,54 @@ class DataObj:
     @classmethod
     def fromJSON(cls, json_str):
         json_data = json.loads(json_str)
+        json_data = cls.convert_jsons_to_table(json_data)  # Convert tables in 'data'
 
         output_filetype = Filetype(json_data["output_filetype"]) if "output_filetype" in json_data else Filetype.XML
         mode = Mode(json_data["mode"]) if "mode" in json_data else Mode.PERFORMANCE
         temp_dir = json_data.get("temp_dir")
 
         return cls(
-            data=json_data["data"],
+            data=json_data["data"][0],
             input_file=json_data["input_file"],
             output_dir=json_data["output_file"],
             output_filetype=output_filetype,
             mode=mode,
             temp_dir=temp_dir
         )
+
+    def convert_tables_to_json(self, data):
+        # TODO: research which type of method is best practice here, classmethod, staticmethod or regular
+        if type(data) == Table.Table:
+            # If the current item is an instance of the Table class, convert it to JSON
+            return data.to_json_with_coords()
+        if isinstance(data, dict):
+            # If the current item is a dictionary, recursively process its values
+            return {key: self.convert_tables_to_json(value) for key, value in data.items()}
+        if isinstance(data, list):
+            # If the current item is a list, recursively process its elements
+            return [self.convert_tables_to_json(item) for item in data]
+        # If it's neither a Table nor a container, return it as is
+        return data
+
+    @classmethod
+    # TODO: research which type of method is best practice here, classmethod, staticmethod or regular
+    def convert_jsons_to_table(cls, data: Any) -> Any:
+        if isinstance(data, str):
+            try:
+                table = Table.Table.from_json(data)
+
+                # If the current item is an instance of the Table class, return
+                return table
+            except:
+                pass
+        if isinstance(data, dict):
+            # If the current item is a dictionary, recursively process its values
+            return {key: cls.convert_jsons_to_table(value) for key, value in data.items()}
+        if isinstance(data, list):
+            # If the current item is a list, recursively process its elements
+            return [cls.convert_jsons_to_table(item) for item in data]
+        # If it's neither a Table nor a container, return it as is
+        return data
 
 
 # TODO: review Legacy code

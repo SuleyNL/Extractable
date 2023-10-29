@@ -77,8 +77,8 @@ class StructureRecognitionWithTATR(Pipe):
         dataobj.data['table_structures'] = table_structures
         dataobj.data['table_corrections'] = table_corrections
 
-        dataobj.data[__class__.__name__] = {"objects detected: " + str(
-            [f"{model.config.id2label[value]}: {np.count_nonzero(filtered_results['labels'] == value)}" for value in
+        dataobj.data[__class__.__name__] = {"detected_objects":
+            str([f"{model.config.id2label[value]}: {np.count_nonzero(filtered_results['labels'] == value)}" for value in
              np.unique(filtered_results['labels'])])}
         return dataobj
 
