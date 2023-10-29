@@ -157,7 +157,7 @@ jobs:
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API }}
-
+      # TODO: would be nice if the pushed code was first tested by publishing on test pypi and then rerunning the e2e and unit and component tests
       #- name: Add main_version to github repo variable
       #TODO: would be nice if this worked: keeping the version number in the github main repo
       #  run: |
