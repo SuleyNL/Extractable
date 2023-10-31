@@ -131,9 +131,16 @@ class Table:
         created_rows = []
 
         import os
-        from extractable.Datatypes.Table import Table
-        from extractable.Datatypes.Row import Row
-        from extractable.Datatypes.Cell import Cell
+
+        try:
+            from src.extractable.Datatypes.Table import Table
+            from src.extractable.Datatypes.Row import Row
+            from src.extractable.Datatypes.Cell import Cell
+        except ImportError:
+            from extractable.Datatypes.Table import Table
+            from extractable.Datatypes.Row import Row
+            from extractable.Datatypes.Cell import Cell
+
 
         # Starting the actual rows & cells rendering:
         for i in range(len(self.rows)):
