@@ -8,8 +8,9 @@ from fpdf.fonts import FontFace
 
 import numpy
 from fpdf import FPDF
+
 try:
-    from src.fpdf import fpdf
+    from src import fpdf
 
 except ImportError:
     import fpdf  # TODO: this is not accepted by e2e tests for some reason

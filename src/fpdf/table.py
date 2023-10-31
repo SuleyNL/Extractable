@@ -64,7 +64,7 @@ class Table:
         """
         self._fpdf = fpdf
         self._align = align
-        self._borders_layout = TableBordersLayout.coerce(borders_layout)
+        self._borders_layout = borders_layout
         self._cell_fill_color = cell_fill_color
         self._cell_fill_mode = TableCellFillMode.coerce(cell_fill_mode)
         self._col_widths = col_widths
