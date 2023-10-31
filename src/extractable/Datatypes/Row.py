@@ -5,16 +5,17 @@ from typing import List
 from . Bbox import Bbox
 from . Cell import Cell
 import xml.etree.ElementTree as ET
+from typing import Optional
 
 
 class Row:
     def __init__(
             self,
             row_id: int,
-            cells: List[Cell] = None,
-            xy1: tuple[float, float] = None,
-            xy2: tuple[float, float] = None,
-            bbox: Bbox = None  # TODO: calculate bbox from 2 tuples
+            cells: Optional[List[Cell]] = None,
+            xy1: Optional[tuple[float, float]] = None,
+            xy2: Optional[tuple[float, float]] = None,
+            bbox: Optional[Bbox] = None  # TODO: calculate bbox from 2 tuples
     ):
         """
         :type cells: List[Cell]
