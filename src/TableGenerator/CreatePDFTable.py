@@ -4,16 +4,17 @@ from . Options import OptionsENUM
 
 import random
 import math
-from fpdf.fonts import FontFace
-
 import numpy
-from fpdf import FPDF
 
 try:
     from src import fpdf
+    from src.fpdf.fonts import FontFace
+    from src.fpdf import FPDF
 
 except ImportError:
     import fpdf  # TODO: this is not accepted by e2e tests for some reason
+    from fpdf.fonts import FontFace
+    from fpdf import FPDF
 
 
 def GeneratePDFTable(table_data: numpy.array, output_file: str, options: dict):
