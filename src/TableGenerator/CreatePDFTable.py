@@ -8,7 +8,11 @@ from fpdf.fonts import FontFace
 
 import numpy
 from fpdf import FPDF
-import fpdf # TODO: this is not accepted by e2e tests for some reason
+try:
+    from src.fpdf import fpdf
+
+except ImportError:
+    import fpdf  # TODO: this is not accepted by e2e tests for some reason
 
 
 def GeneratePDFTable(table_data: numpy.array, output_file: str, options: dict):
