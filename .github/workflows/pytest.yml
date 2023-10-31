@@ -1,9 +1,9 @@
 name: Run tests
 
-on: [push]
-
-branches-ignore:
-  - main
+on:
+  push:
+    branches-ignore:
+      - main
 
 jobs:
   code-coverage:
