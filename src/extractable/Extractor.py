@@ -33,7 +33,7 @@ def extract_using_TATR(input_file: str, output_dir: str, output_filetype: Filety
     # run the pipeline on data_object
     pipeline(data_object)
 
-    logger.info('Process Finished', extra={'className': 'Extractor'})
+    logger.info('✔ Process Finished', extra={'className': 'Extractor'})
 
     return data_object
 

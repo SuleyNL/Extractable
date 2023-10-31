@@ -5,6 +5,7 @@ from . Cell import Cell
 from . Row import Row
 import xml.etree.ElementTree as ET
 import pandas as pd
+from typing import Optional
 
 
 class Table:
@@ -12,8 +13,8 @@ class Table:
             self,
             table_id,
             rows: List[Row],
-            xy1: tuple[float, float] = None,
-            xy2: tuple[float, float] = None,
+            xy1: Optional[tuple[float, float]] = None,
+            xy2: Optional[tuple[float, float]] = None,
     ):
         self.table_id = table_id
         self.rows = rows

@@ -6,6 +6,7 @@ from typing import Any
 from . Datatypes import Table
 from . ModeManager import Mode
 from . Filetype import Filetype
+from typing import Optional
 
 
 class DataObj:
@@ -14,8 +15,8 @@ class DataObj:
                  output_dir: str,
                  output_filetype: Filetype = Filetype.XML,
                  mode: Mode = Mode.PERFORMANCE,
-                 data: dict | None = None,
-                 temp_dir: str | None = None):
+                 data: Optional[dict] = None,
+                 temp_dir: Optional[str] = None):
 
         self.input_file = input_file    # input can be pdf or img
         self.output_dir = output_dir

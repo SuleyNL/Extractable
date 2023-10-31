@@ -134,7 +134,7 @@ class PyPDF2Textport(Pipe):
             if dataobj.output_filetype == Filetype.EXCEL:
                 table.to_excel(output_file)
 
-            logger.info('Full XML including text saved to: %s', output_file, extra={'className': __class__.__name__})
+            logger.info('✔ Full XML including text saved to: %s', output_file, extra={'className': __class__.__name__})
         dataobj.data['final_tables'] = final_tables
         return dataobj
 

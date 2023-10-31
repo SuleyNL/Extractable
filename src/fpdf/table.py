@@ -64,7 +64,7 @@ class Table:
         """
         self._fpdf = fpdf
         self._align = align
-        self._borders_layout = TableBordersLayout.coerce(borders_layout)
+        self._borders_layout = borders_layout
         self._cell_fill_color = cell_fill_color
         self._cell_fill_mode = TableCellFillMode.coerce(cell_fill_mode)
         self._col_widths = col_widths
@@ -131,9 +131,16 @@ class Table:
         created_rows = []
 
         import os
-        from extractable.Datatypes.Table import Table
-        from extractable.Datatypes.Row import Row
-        from extractable.Datatypes.Cell import Cell
+
+        try:
+            from src.extractable.Datatypes.Table import Table
+            from src.extractable.Datatypes.Row import Row
+            from src.extractable.Datatypes.Cell import Cell
+        except ImportError:
+            from extractable.Datatypes.Table import Table
+            from extractable.Datatypes.Row import Row
+            from extractable.Datatypes.Cell import Cell
+
 
         # Starting the actual rows & cells rendering:
         for i in range(len(self.rows)):
