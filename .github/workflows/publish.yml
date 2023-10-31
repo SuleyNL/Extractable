@@ -25,15 +25,17 @@ jobs:
           echo "Push event SHA: $git_event"
 
           echo "Pushed by: ${{ github.actor }}"
+          echo "### ✘ Did not (yet) ship Extractable version to pip." >> $GITHUB_STEP_SUMMARY
+
         shell: bash
 
       - name: Check if version number is in pyproject.toml
         run: |
           # Check if the version number is in pyproject.toml
           if grep -q "version\s*=\s*['\"]\?[0-9.-]\+['\"]\?" pyproject.toml; then
-            echo "Version is found in pyproject.toml."
+            echo "✔ Version is found in pyproject.toml."
           else
-            echo "ERROR - Version not found in pyproject.toml."
+            echo "✘ ERROR - Version not found in pyproject.toml."
           fi
         shell: bash
 
@@ -47,8 +49,10 @@ jobs:
           version=$(echo "$version_line" | awk -F"['\"]" '{print $2}')
 
           # Echo the extracted version number
-          echo "Version number is: $version"
+          echo "✔ Version number is: $version"
           echo "version=$version" >> $GITHUB_ENV
+          echo "### ✘ Did not (yet) ship Extractable version to pip. Current version: $version" > $GITHUB_STEP_SUMMARY
+
         shell: bash
 
 
@@ -65,8 +69,10 @@ jobs:
           sed -i "s/\(version\s*=\s*['\"]\?\)[0-9.-]\+\(['\"]\?\)/\1$new_version\2/" pyproject.toml
 
           # Echo the updated version
-          echo "New version number is: $new_version"
+          echo "✔ New version number is: $new_version"
           echo "new_version=$new_version" >> $GITHUB_ENV
+          echo "### ✘ Did not (yet) ship Extractable version $new_version to pip. Current version: $version" > $GITHUB_STEP_SUMMARY
+
         shell: bash
 
 
@@ -117,7 +123,7 @@ jobs:
         run: |
           echo "Push event SHA: $git_event"
           echo mergedBranch="${{ github.event.pull_request.base.ref }}" >> $GITHUB_ENV
-          echo "Merged from branch: $mergedBranch" 
+          echo "✔ Merged from branch: $mergedBranch" 
           
           pr_title="Update version from $version to $new_version"
           pr_body="This is an automated version-update on pyproject.toml. 
@@ -154,7 +160,7 @@ jobs:
         run: |
           python -m pip install twine
           twine upload dist/extractable-* --verbose
-          echo "### Hello world! :rocket: version upgraded from $version to $new_version" >> $GITHUB_STEP_SUMMARY
+          echo "### :rocket: Succesfully shipped Extractable version $new_version to pip!" > $GITHUB_STEP_SUMMARY
 
         env:
           TWINE_USERNAME: __token__

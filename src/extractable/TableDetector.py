@@ -36,6 +36,7 @@ class TableDetectorTATR(Pipe):
 
             # run TATR on the image
             results, model, target_sizes = TableDetectorTATR.runTATR(image, image_processor, model)
+            # TODO: use tqdm for progress bar in terminal
 
             # log all results
             TableDetectorTATR.logResults(results, model, logger, inner_data)

@@ -42,6 +42,8 @@ class StructureRecognitionWithTATR(Pipe):
 
             # run TATR on the image
             results, model, target_sizes = StructureRecognitionWithTATR.runTATR(image)
+            # TODO: use tqdm for progress bar in terminal
+
 
             StructureRecognitionWithTATR.save_table_correction(image, results, table_corrections, logger)
 
