@@ -76,7 +76,7 @@ jobs:
           #after it has been done in prior steps
            
           pytest tests/Test_e2e_blackbox/*    
-          echo "### ✔ Succesfully e2e tested Ubuntu with python version $matrix.python-version!" >> $GITHUB_STEP_SUMMARY
+          echo "### ✔ Succesfully e2e tested Ubuntu with python version $python-version!" >> $GITHUB_STEP_SUMMARY
 
       - name: Run E2E Tests on MacOS
         if: matrix.os == 'macOS-latest'
