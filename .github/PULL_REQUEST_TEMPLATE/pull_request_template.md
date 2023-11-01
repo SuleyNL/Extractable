@@ -4,7 +4,6 @@ about: Contribute to this project
 title: Pull/Publish request
 labels: ''
 assignees: ''
-
 ---
 
 # Pull Request 🚀
@@ -20,15 +19,13 @@ To prevent your code from being rejected unexpectedly, here are some important r
 - [ ] Documentation is provided or updated.
 - [ ] The branch contains the latest `main`.
 - [ ] Commit messages are clear and commits are atomic.
+---
+### Optional Items
 
-## Optional Items
-- [ ] Any additional context or information that might be relevant.
-- [ ] Specific assignees or reviewers you'd like to request.
-
-## Related Issue
+#### Related Issue
 Link to the related issue (if applicable). Example: Closes #123
 
-## Reviewer Notes
+#### Reviewer Notes
 Include notes for the reviewers, such as areas where you would like specific feedback or things to pay extra attention to.
 
 Let's work together to make this project even better! 🙌
