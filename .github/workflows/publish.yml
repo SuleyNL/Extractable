@@ -25,7 +25,6 @@ jobs:
           echo "Push event SHA: $git_event"
 
           echo "Pushed by: ${{ github.actor }}"
-          echo "### ✘ Did not (yet) ship Extractable version to pip." >> $GITHUB_STEP_SUMMARY
 
         shell: bash
 
@@ -51,7 +50,6 @@ jobs:
           # Echo the extracted version number
           echo "✔ Version number is: $version"
           echo "version=$version" >> $GITHUB_ENV
-          echo "### ✘ Did not (yet) ship Extractable version to pip. Current version: $version" > $GITHUB_STEP_SUMMARY
 
         shell: bash
 
@@ -71,7 +69,6 @@ jobs:
           # Echo the updated version
           echo "✔ New version number is: $new_version"
           echo "new_version=$new_version" >> $GITHUB_ENV
-          echo "### ✘ Did not (yet) ship Extractable version $new_version to pip. Current version: $version" > $GITHUB_STEP_SUMMARY
 
         shell: bash
 
