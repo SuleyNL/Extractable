@@ -10,7 +10,7 @@ build-backend = "pdm.backend"
 [project]
 name = "extractable"
 
-version = "0.0.147"
+version = "0.0.148"
 
 description = "Extract tables from PDFs"
 authors = [
