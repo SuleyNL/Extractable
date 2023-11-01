@@ -63,7 +63,7 @@ jobs:
         #working-directory: ./  # Set the working directory to the repository root
         run: |
           pdm run pytest -v -k e2e
-          echo "### ✔ Succesfully e2e tested windows with python version $python_version! " >> $GITHUB_STEP_SUMMARY
+          echo "### ✔ Succesfully e2e tested windows with python version ${{ matrix.python-version }}! " >> $GITHUB_STEP_SUMMARY
 
       - name: Run E2E Tests on Ubuntu
         if: matrix.os == 'ubuntu-latest'
