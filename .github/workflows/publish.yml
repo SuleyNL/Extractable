@@ -131,12 +131,13 @@ jobs:
           This action is performed by the Github Action: publish.yml after every accepted pull request. When finished, 
           this will have published the latest patch of the Extractable codebase to Pypi so it can be pip installed.
           
-          # DO NOT DO ANYTHING WITH THIS PULL REQUEST
-          ### DO NOT DO ANYTHING WITH THIS PULL REQUEST
-
-          it should resolve itself within 1 minute.
           
-          if its older than 5 minutes you may check the github workflow actions"
+          # DO NOT DO ANYTHING WITH THIS PULL REQUEST
+
+          The pull request should resolve itself within 1 minute.
+          
+          If its older than 5 minutes you may check the github workflow actions to see where it went wrong, 
+          its safe to delete this merge request in that case"
           gh pr create --base main --head $branch --title "$pr_title" --body "$pr_body"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
