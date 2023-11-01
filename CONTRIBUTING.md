@@ -7,10 +7,10 @@
 - [Installation](#installation)
 - [Usage](#usage)
 - [Architecture](#architecture)
-- [Contributing](#contributing)
+- [Contributing](#contributing-guidelines)
 - [Maintainers](#maintainers)
-  - [For Testing](#for-testing)
-  - [For Publishing](#for-publishing)
+  - [For Testing](#testing)
+  - [For Publishing](#publishing)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
 
@@ -55,11 +55,56 @@ tables = extractable.Extractor.extract(input_file, output_file)
 
 ![Code and dependency Architecture of the codebase](Extractable_Architecture_3_10_2023.png)
 
-## Contributing
+## Contributing Guidelines
 🤝 Extractable is a community-driven project, and we welcome contributions from all. If you're interested in contributing, please follow our contribution guidelines. Don't hesitate to reach out to us on our GitHub repository if you have any questions or need assistance.
 
+
+
+### Issue Guidelines
+
+🔍 When creating an issue, please use the appropriate label to categorize it as one of the following:
+
+- **Bug**: Something isn't working as expected.
+- **Feature Request**: Proposing a new feature or enhancement.
+- **Enhancement**: Suggesting improvements to existing features.
+- **Documentation**: Issues related to documentation.
+- **Help Wanted**: Indicating that the issue is suitable for contributors.
+
+Provide a clear and detailed description of the issue you're facing or the feature you're suggesting. Include relevant context, error messages, and expected behavior.
+
+If it's a bug, include steps to reproduce the issue. The more detailed and reproducible the steps, the easier it is to investigate and fix.
+
+Mention the operating system, Python version, and any other relevant environment information. This helps in narrowing down the issue.
+
+
+
+### Pull Request Guidelines
+
+1. Create a new branch for your pull request with a descriptive name. Avoid working directly on the `main` branch.
+2.  Follow the project's coding style and guidelines. Consistency is crucial for maintainability.
+3.  Ensure that your code is adequately tested. New features or bug fixes should include appropriate unit tests.
+4.  Update the documentation if your changes impact it. This includes README updates and docstrings in the code.
+5.  Write clear and descriptive commit messages in the present tense. Each commit should address a single concern and be logically organized.
+6.  Be open to feedback during code reviews and make necessary adjustments based on feedback from maintainers or contributors.
+
+
+
+### Commit Guidelines
+
+🚀 Consider using conventional commit messages following a format like:
+
+- ✨ `feat: add new feature`
+- 🐛 `fix: resolve a bug`
+- 📖 `docs: update documentation`
+
+This makes it easier to understand the purpose of each commit.
+
+1. When a commit is related to a specific issue or feature request, reference it in the commit message, e.g., "Fixes #123" or "Closes #456."
+2. Keep commits atomic, addressing a single change or concern. Avoid mixing unrelated changes in a single commit.
+3. Before creating a pull request, merge your branch with the latest `main` to ensure it includes the most recent changes.
+
 ## Maintainers
-👩‍💼👨‍💼 Our maintainers oversee the development and management of Extractable. Here are the steps you might need as a maintainer:
+Our maintainers oversee the development and management of Extractable. Here are the steps you might need as a maintainer:
 
 ### Testing
 Before publishing a new version of Extractable, it's crucial to run tests to ensure the code's functionality remains intact. Follow these steps:
