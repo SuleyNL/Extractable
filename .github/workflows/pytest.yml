@@ -48,7 +48,7 @@ jobs:
 
       - name: Run Unittests
         # CI/CD-Optimization: Only run Unittets on ubuntu-runs because we expect the behaviour to be the same across OS systems,
-        if: matrix.os == 'ubuntu-latest' && matrix.python-version == "3.11"
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
         working-directory: ./  # This sets the working directory to the repository root
         run: |
           pdm run pytest -v tests/Test_Extractable_Unittests/*
