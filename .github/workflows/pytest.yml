@@ -61,7 +61,7 @@ jobs:
         #working-directory: ./  # Set the working directory to the repository root
         run: |
           pdm run pytest -v -k e2e
-          echo "### ✔ Succesfully e2e tested windows with python version ${{ matrix.python-version }}! " >> $GITHUB_STEP_SUMMARY
+          echo "### ✔ Succesfully e2e tested windows with python-${{ matrix.python-version }}! " >> $GITHUB_STEP_SUMMARY
 
       - name: Run E2E Tests on Ubuntu
         if: matrix.os == 'ubuntu-latest'
@@ -78,7 +78,7 @@ jobs:
           #after it has been done in prior steps
            
           pytest tests/Test_e2e_blackbox/*    
-          echo "### ✔ Succesfully e2e tested Ubuntu with python version ${{ matrix.python-version }}!" >> $GITHUB_STEP_SUMMARY
+          echo "### ✔ Succesfully e2e tested Ubuntu with python-${{ matrix.python-version }}!" >> $GITHUB_STEP_SUMMARY
 
       - name: Run E2E Tests on MacOS
         if: matrix.os == 'macOS-latest'
@@ -95,7 +95,7 @@ jobs:
           #after it has been done in prior steps
            
           pytest tests/Test_e2e_blackbox/*    
-          echo "### ✔ Succesfully e2e tested macOS with python version ${{ matrix.python-version }}!" >> $GITHUB_STEP_SUMMARY
+          echo "### ✔ Succesfully e2e tested macOS with python-${{ matrix.python-version }}!" >> $GITHUB_STEP_SUMMARY
 
         #TODO: also test if publishing to testPypi and then executing e2e works, before allowing push to be accepted
           
