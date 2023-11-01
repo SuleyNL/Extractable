@@ -24,6 +24,8 @@ jobs:
       - name: Set PYTHONPATH
         run: |
           echo "PYTHONPATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+          python_version=$(python --version 2>&1)
+          echo "python_version=$python_version" >> $GITHUB_ENV
         env:
           GITHUB_ENV: ${{ runner.workspace }}/.env
 
@@ -40,6 +42,7 @@ jobs:
         run: |
           python -m pip install --upgrade pdm
           pdm install --no-lock -G test -G pipeline
+          
 
       #- name: Run PyTest # ARTIFACT: in case there is a reason to run all tests, this is the config that worked
         # run pytest on all files that start with "test_" and have a ".py" extension.
@@ -59,7 +62,7 @@ jobs:
         #working-directory: ./  # Set the working directory to the repository root
         run: |
           pdm run pytest -v -k e2e
-          echo "### ✔ Succesfully e2e tested windows with python version $matrix.python-version! " >> $GITHUB_STEP_SUMMARY
+          echo "### ✔ Succesfully e2e tested windows with python version $python_version! " >> $GITHUB_STEP_SUMMARY
 
       - name: Run E2E Tests on Ubuntu
         if: matrix.os == 'ubuntu-latest'
@@ -76,7 +79,7 @@ jobs:
           #after it has been done in prior steps
            
           pytest tests/Test_e2e_blackbox/*    
-          echo "### ✔ Succesfully e2e tested Ubuntu with python version $python-version!" >> $GITHUB_STEP_SUMMARY
+          echo "### ✔ Succesfully e2e tested Ubuntu with python version $python_version!" >> $GITHUB_STEP_SUMMARY
 
       - name: Run E2E Tests on MacOS
         if: matrix.os == 'macOS-latest'
@@ -93,7 +96,7 @@ jobs:
           #after it has been done in prior steps
            
           pytest tests/Test_e2e_blackbox/*    
-          echo "### ✔ Succesfully e2e tested macOS with python version $matrix.python-version!" >> $GITHUB_STEP_SUMMARY
+          echo "### ✔ Succesfully e2e tested macOS with python version $python_version!" >> $GITHUB_STEP_SUMMARY
 
         #TODO: also test if publishing to testPypi and then executing e2e works, before allowing push to be accepted
           
