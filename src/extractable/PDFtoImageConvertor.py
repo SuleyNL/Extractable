@@ -99,7 +99,7 @@ class ConvertUsingPDF2image(Pipe):
                 return
 
             except FileNotFoundError:
-                pass
+                print("Poppler installation failed. Please install Poppler manually.")
 
             # Install Poppler on macOS using Homebrew
             try:
@@ -125,8 +125,8 @@ class ConvertUsingPDF2image(Pipe):
         return image_path
 
 
-# space for other conversion methods. this one is not in use
-class dont_use_ConvertUsingPDF2JPG(Pipe):
+# extractable leaves space for other conversion methods. this one is currently not in use
+class ConvertUsingPDF2JPG(Pipe):
     @staticmethod
     def process(dataobj: DataObj) -> DataObj:
         # This class doesn't work (yet) !
@@ -139,3 +139,19 @@ class dont_use_ConvertUsingPDF2JPG(Pipe):
 
         dataobj.data[__class__.__name__] = {}
         return dataobj
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
