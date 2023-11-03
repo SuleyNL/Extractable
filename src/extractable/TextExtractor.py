@@ -5,7 +5,6 @@ import svgwrite
 from PyPDF2 import PdfReader
 from pytesseract import Output
 
-from . import Extractor
 from . import Logger, ModeManager
 from . Pipe import Pipe
 from . Dataobj import DataObj
@@ -196,7 +195,7 @@ class TesseractOCR(Pipe):
 
         pytesseract.pytesseract.tesseract_cmd = TesseractOCR.path_to_tesseract
 
-        logger = Extractor.Logger()
+        logger = Logger.Logger()
         # Extract text from the cells
         # Return the text as an object that can be passed to the next step in the pipeline
         table_structures: List[Table] = dataobj.data['table_structures']
@@ -248,7 +247,7 @@ class TesseractOCR(Pipe):
         import os
         import requests
         import subprocess
-        logger = Extractor.Logger()
+        logger = Logger.Logger()
 
         current_os = platform.system()
 
@@ -319,5 +318,12 @@ class NeedlemanWunschExtraction(Pipe):
         # Return the text as an object that can be passed to the next step in the pipeline
         dataobj.data[__class__.__name__] = {}
         return dataobj
+
+
+
+
+
+
+
 
 
