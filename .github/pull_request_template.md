@@ -1,11 +1,3 @@
----
-name: Pull request
-about: Contribute to this project
-title: Pull/Publish request
-labels: ''
-assignees: ''
----
-
 # Pull Request 🚀
 
 ## Description
