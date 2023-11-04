@@ -6,35 +6,33 @@ Extractable is an open-source library designed to bring the power of state-of-th
 
 Extractable is designed to be easy to use and highly flexible. Some of its key features include:
 
-- **Table Extraction from PDFs**: Extractable uses machine learning models to extract tables from PDFs, enabling users to easily extract data from large datasets.
+- **Table Extraction from PDFs**: Extractable uses [Microsofts' open source TATR](https://github.com/microsoft/table-transformer) machine learning models to extract tables from PDFs, enabling users to easily extract data from large datasets.
 
 - **Open-Source and Collaborative**: Extractable is an open-source library designed for easy collaboration and contributions from the community.
 
 - **PDF Test Table Generator**: We have developed a unique dataset to simulate real-world scenarios and benchmark machine learning models, identify the challenges and improve on specific areas. 
-
-- **Comparative Analyses**: We have conducted extensive comparative analyses of various machine learning models to determine their effectiveness in extracting tables from PDFs.
 
 - **Robust Data Pipelines**: We have designed and implemented robust data pipelines for processing and analyzing large volumes of PDF data, with a focus on code-readability and sustainability.
 
 ## Installation
 
 To install Extractable, simply use pip:
-```pip install Extractable```
+```pip install extractable```
 
-Extractable is designed to be used with Python 3.10.
+Extractable is designed to be used with Python 3.10 but is also compatible with python 3.9 and 3.11.
 
 ## Usage
 
 To use Extractable, simply import the library and use its functions. We provide comprehensive documentation to get started with the library.
 
 ```python
-import extractable
+import extractable as ex
 
 input_file = "path_to/your_input.pdf"
 output_file = "path_to/your_preferred_output"
 
 # Extract tables from a PDF file
-tables = extractable.Extractor.extract(input_file, output_file)
+ex.extract(input_file, output_file)
 
 # That's how simple it is!
 ```
@@ -43,7 +41,7 @@ tables = extractable.Extractor.extract(input_file, output_file)
 To visualize the architecture of internal dependencies of this codebase, the extension 'Codesee' has been used. 
 With every pull-request a Codesee bot will be called to analyze changes in the architecture and visualize it. Next to that, Codesee also provides useful insights into the code on-demand. This looks as follows:
 
-![Code and dependency Architecture of the codebase](Extractable_Architecture_3_10_2023.png)
+![Code and dependency Architecture of the codebase](Extractable_Architecture_3_11_2023.png)
 
 ## Contributing
 Extractable is an open-source project and we welcome contributions from the community. If you would like to contribute, please take a look at our contribution guidelines and feel free to reach out to us on our GitHub repository.
