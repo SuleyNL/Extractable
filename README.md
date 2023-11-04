@@ -28,13 +28,41 @@ To use Extractable, simply import the library and use its functions. We provide 
 ```python
 import extractable as ex
 
-input_file = "path_to/your_input.pdf"
-output_file = "path_to/your_preferred_output"
+input_file = "path_to/myfile.pdf"
+output_dir = "path_to/your_preferred_output_dir/"
 
 # Extract tables from a PDF file
-ex.extract(input_file, output_file)
+ex.extract(input_file=input_file, output_dir=output_dir)
+```
 
-# That's how simple it is!
+```
+Extracted table XML is now visible as:
+path_to/your_preferred_output_dir/myfile_table_1.xml
+path_to/your_preferred_output_dir/myfile_table_2.xml
+path_to/your_preferred_output_dir/myfile_table_3.xml
+```
+___
+Extractable also offers the ability for anyone to see what's happening under the hood by providing images after every processing step. To enable this setting you can run it with the parameter `mode=extractable.Mode.PRESENTATION`
+
+```python
+import extractable as ex
+
+input_file = "path_to/myfile.pdf"
+output_dir = "path_to/your_preferred_output_dir/"
+
+# Extract tables from a PDF file
+ex.extract(input_file=input_file, output_dir=output_dir, mode=ex.Mode.PRESENTATION)
+```
+___
+Do you want your tables in another format? Dont worry! you can easily chose from an array of supported filetypes by adding your desired output filetype as a parameter `output_filetype=extractable.Filetype.CSV`
+```python
+import extractable as ex
+
+input_file = "path_to/myfile.pdf"
+output_dir = "path_to/your_preferred_output_dir/"
+
+# Extract tables from a PDF file
+ex.extract(input_file=input_file, output_dir=output_dir, output_filetype=ex.Filetype.CSV)
 ```
 
 ## Architecture
