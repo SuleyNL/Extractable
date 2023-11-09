@@ -113,6 +113,7 @@ class StructureRecognitionTATR(Pipe):
 
         model = TableTransformerForObjectDetection.from_pretrained(
             "microsoft/table-transformer-structure-recognition")
+        #model = StructureRecognitionTATR.use_gpu_if_available(model, logger)
 
         with torch.no_grad():
             outputs = model(**encoding)
@@ -352,3 +353,13 @@ class StructureRecognitionTATR(Pipe):
         tree.write(output_file, encoding="utf-8")
 
         logger.info('Detected structure saved to: %s', output_file, extra={'className': __class__.__name__})
+
+    @staticmethod
+    def use_gpu_if_available(model, logger):
+        print(torch.cuda.is_available())
+        print(torch.cuda.current_device())
+        print(torch.cuda.get_device_name(torch.cuda.current_device()))
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        model.to(device)
+        logger.info('Using device: ' + str(device), extra={'className': __class__.__name__})
+        return model

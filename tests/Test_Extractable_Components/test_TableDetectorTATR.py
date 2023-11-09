@@ -78,9 +78,9 @@ def test_TableDetectorTATR_shouldCreateOutputTableCoordsToTemp(before_and_after)
         {'x': 171, 'y': 291, 'page': 3},
         {'x': 176, 'y': 1609, 'page': 3},
         {'x': 172, 'y': 530, 'page': 4}]
-
     # Act
     output_dataobj = extractable.TableDetectorTATR.process(input_dataobj)
 
     # Assert
     assert output_dataobj.data['table_locations'] == table_locations_expected
+    # TODO: add/subtract a bit +- to the expectation

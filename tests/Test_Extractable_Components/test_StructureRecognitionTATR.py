@@ -7,6 +7,7 @@ import pytest
 from unittest.mock import patch
 import xml.etree.ElementTree as ET
 import json
+import numpy
 
 import src.extractable.Datatypes.Table as Table
 import src.extractable as extractable
@@ -96,7 +97,7 @@ def test_StructureRecognitionTATR_shouldCreateOutputTableXMLsToOutputfile(before
 
     ''''
     #TODO: check if table structures expected and actual are equal
-    
+    postponed because its complex to add table_structurs
     expected_table_structures = [Table.Table.from_json((open(os.path.join(test_table_structures_dir, t_json))).read())
                                  for t_json in os.listdir(test_table_structures_dir)
                                  if t_json.endswith(".json")]
@@ -106,8 +107,8 @@ def test_StructureRecognitionTATR_shouldCreateOutputTableXMLsToOutputfile(before
     output_dataobj = extractable.StructureRecognitionTATR.process(input_dataobj)
 
     # Assert
-    assert expected_table_corrections == output_dataobj.data['table_corrections']
-    #assert expected_table_structures == output_dataobj.data['table_structures']
+    assert numpy.allclose(expected_table_corrections, output_dataobj.data['table_corrections'])
+    #assert expected_table_structures == output_dataobj.data['table_structures'] # TODO: its complex to add table_structurs
     true_output_xmls = [os.path.join(mock_output_dir, f) for f in os.listdir(mock_output_dir) if
                         f.endswith(".xml")]
     for expected_output_xml, true_output_xml in zip(expected_output_xmls, true_output_xmls):

@@ -29,6 +29,7 @@ class TableDetectorTATR(Pipe):
 
         image_processor = AutoImageProcessor.from_pretrained("microsoft/table-transformer-detection")
         model = TableTransformerForObjectDetection.from_pretrained("microsoft/table-transformer-detection")
+        #model = TableDetectorTATR.use_gpu_if_available(model, logger)
 
         # loop past each image (every image is one page of the pdf)
         for i, image_path in enumerate(images):
@@ -126,6 +127,16 @@ class TableDetectorTATR(Pipe):
 
         table_image.save(image_path, "JPEG")
         table_images.append(image_path)
+
+    @staticmethod
+    def use_gpu_if_available(model, logger):
+        print(torch.cuda.is_available())
+        print(torch.cuda.current_device())
+        print(torch.cuda.get_device_name(torch.cuda.current_device()))
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        model.to(device)
+        logger.info('Using device: ' + str(device), extra={'className': __class__.__name__})
+        return model
 
 
 class TableDetectorDETR(Pipe):
