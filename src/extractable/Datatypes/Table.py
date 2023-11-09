@@ -81,7 +81,7 @@ class Table:
         for row_id, row_data in enumerate(table_data["tr"]):
             cells = []
             for cell_id, cell_data in enumerate(row_data["td"]):
-                text = cell_data.get("text", None)  # Check if "text" key exists
+                text = cell_data["text"] if "text" in cell_data else None
                 cell_xy1 = tuple(float(coord.replace(',', '')) for coord in cell_data['xy1'].split())
                 # TODO: enforce that it is only 2 values else raise error/warning
                 cell_xy2 = tuple(float(coord.replace(',', '')) for coord in cell_data['xy2'].split())

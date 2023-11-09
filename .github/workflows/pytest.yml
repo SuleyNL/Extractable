@@ -41,7 +41,6 @@ jobs:
           python -m pip install --upgrade pdm
           pdm install --no-lock -G test -G pipeline
           
-          
 
       #- name: Run PyTest # ARTIFACT: in case there is a reason to run all tests, this is the config that worked
         # run pytest on all files that start with "test_" and have a ".py" extension.
@@ -55,6 +54,49 @@ jobs:
         run: |
           pdm run pytest -v tests/Test_Extractable_Unittests/*
           echo "### ✔ Succesfully ran Unittests!" >> $GITHUB_STEP_SUMMARY
+
+
+      - name: Run Component Tests on Windows
+        if: matrix.os == 'windows-latest'
+        #working-directory: ./  # Set the working directory to the repository root
+        run: |
+          pdm run pytest -v -k components
+          echo "### ✔ Succesfully Component-tested on windows with python-${{ matrix.python-version }}! " >> $GITHUB_STEP_SUMMARY
+
+      - name: Run Component Tests on Ubuntu
+        if: matrix.os == 'ubuntu-latest'
+        #working-directory: ./  # Set the working directory to the repository root
+        run: |
+          python -m venv myenv
+          source myenv/bin/activate
+          python -m pip install pytest
+          pdm install
+          pdm add
+          pip install -r requirements.txt
+          
+          #TODO: dont perform the venv and pdm installation as these should be unnecessary 
+          #after it has been done in prior steps
+           
+          pytest tests/Test_Extractable_Components/*    
+          echo "### ✔ Succesfully Component-tested on Ubuntu with python-${{ matrix.python-version }}!" >> $GITHUB_STEP_SUMMARY
+
+      - name: Run Component Tests on MacOS
+        if: matrix.os == 'macOS-latest'
+        #working-directory: ./  # Set the working directory to the repository root
+        run: |
+          python -m venv myenv
+          source myenv/bin/activate
+          python -m pip install pytest
+          pdm install
+          pdm add
+          pip install -r requirements.txt
+          
+          #TODO: dont perform the venv and pdm installation as these should be unnecessary 
+          #after it has been done in prior steps
+           
+          pytest tests/Test_Extractable_Components/*    
+          echo "### ✔ Succesfully Component-tested on macOS with python-${{ matrix.python-version }}!" >> $GITHUB_STEP_SUMMARY
+
 
       - name: Run E2E Tests on Windows
         if: matrix.os == 'windows-latest'
