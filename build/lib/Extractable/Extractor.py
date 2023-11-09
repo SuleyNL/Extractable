@@ -69,7 +69,7 @@ def extract_using_TATR(input_file: str, output_dir: str, output_filetype: Filety
 
     pipeline = compose_left(
             TableDetector.TableDetectorTATR.process,
-            StructureDetector.StructureRecognitionWithTATR.process,
+            StructureDetector.StructureRecognitionTATR.process,
             TextExtractor.PyPDF2Textport.process,
             DataObj.output)
 
@@ -92,7 +92,7 @@ def extract_using_TATR_OCR(input_file: str, output_dir: str, output_filetype: Fi
 
     pipeline = compose_left(
             TableDetector.TableDetectorTATR.process,
-            StructureDetector.StructureRecognitionWithTATR.process,
+            StructureDetector.StructureRecognitionTATR.process,
             process,
             DataObj.output)
 
@@ -131,7 +131,7 @@ def extract_using_TATR_structure_only(input_file: str, output_dir: str, output_f
         logger.setLevel(logging.DEBUG)
 
     pipeline = compose_left(
-        StructureDetector.StructureRecognitionWithTATR.process,
+        StructureDetector.StructureRecognitionTATR.process,
         DataObj.output)
 
     if input_file.endswith('.pdf'):

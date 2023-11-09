@@ -36,3 +36,33 @@ def setup_test_environment():
         file_path = os.path.join(empty_folder, file_name)
         if os.path.isfile(file_path):
             os.remove(file_path)
+
+
+@pytest.fixture(scope='function')
+def before_and_after():
+    try:
+        os.mkdir(empty_folder)
+    except OSError:
+        pass
+
+    # Check if the empty folder is empty and if it stays empty
+    # BEFORE EACH
+    exists = os.path.exists(empty_folder) and os.path.isdir(empty_folder)
+    is_empty = not os.listdir(empty_folder)
+
+    assert exists is True
+    assert is_empty is True
+    # ------
+    yield None  # This is the wrapped function itself
+    # ------
+    # AFTER EACH
+    # Cleanup
+    for file_name in os.listdir(empty_folder):
+        file_path = os.path.join(empty_folder, file_name)
+        if os.path.isfile(file_path):
+            os.remove(file_path)
+    exists = os.path.exists(empty_folder) and os.path.isdir(empty_folder)
+    is_empty = not os.listdir(empty_folder)
+
+    assert exists is True
+    assert is_empty is True

@@ -19,14 +19,14 @@ import numpy as np
 import xml.etree.ElementTree as ET
 
 
-class StructureRecognitionWithTATR(Pipe):
+class StructureRecognitionTATR(Pipe):
     @staticmethod
     def process(dataobj: DataObj) -> DataObj:
         # Detect structure in a table_image
         # Return the table locations as an object that can be passed to the next step in the pipeline
         logger = Logger.Logger()
 
-        images = StructureRecognitionWithTATR.load_images(dataobj)
+        images = StructureRecognitionTATR.load_images(dataobj)
 
         table_corrections = []
         table_structures = []
@@ -38,21 +38,21 @@ class StructureRecognitionWithTATR(Pipe):
 
         # loop past each image (every image is one page of the pdf)
         for i, image in enumerate(images):
-            image = StructureRecognitionWithTATR.preprocessing(image)
+            image = StructureRecognitionTATR.preprocessing(image)
 
             # run TATR on the image
-            results, model, target_sizes = StructureRecognitionWithTATR.runTATR(image)
+            results, model, target_sizes = StructureRecognitionTATR.runTATR(image)
             # TODO: use tqdm for progress bar in terminal
 
 
-            StructureRecognitionWithTATR.save_table_correction(image, results, table_corrections, logger)
+            StructureRecognitionTATR.save_table_correction(image, results, table_corrections, logger)
 
             filtered_results, presentation_results, \
             scores_rows, labels_rows, boxes_rows, \
             scores_columns, labels_columns, boxes_columns = \
-                StructureRecognitionWithTATR.postprocessing(results, table_locations, table_corrections, i)
+                StructureRecognitionTATR.postprocessing(results, table_locations, table_corrections, i)
 
-            rows = StructureRecognitionWithTATR.createTable(
+            rows = StructureRecognitionTATR.createTable(
                 scores_rows, labels_rows, boxes_rows,
                 scores_columns, labels_columns, boxes_columns)
 
@@ -72,7 +72,7 @@ class StructureRecognitionWithTATR(Pipe):
             # Convert detected table structure to XML Object
             table_xml = ET.fromstring(table.to_xml_with_coords())
 
-            StructureRecognitionWithTATR.save_table_xml(table_xml, dataobj, logger, i)
+            StructureRecognitionTATR.save_table_xml(table_xml, dataobj, logger, i)
 
             ModeManager.StructureDetector_display_structure(dataobj.mode, image, model, presentation_results, i, len(images))
 

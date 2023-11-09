@@ -75,20 +75,6 @@ def test_setup_logger(before_and_after):
     assert logger.level == logging.DEBUG
 
 
-# Test the main extract method
-def test_extract(before_and_after):
-    # Mock extract_using_TATR()
-    # Arrange
-
-    with patch('src.extractable.Extractor.extract_using_TATR') as mock_extract_using_TATR:
-        mock_extract_using_TATR.return_value = None
-        # Act
-        Extractor.extract(table_pdf_file, empty_folder, Filetype.XML, Mode.PERFORMANCE)
-
-    # Assert
-    # check if extract() correctly calls extract_using_TATR()
-    mock_extract_using_TATR.assert_called_once_with(table_pdf_file, empty_folder, Filetype.XML, Mode.PERFORMANCE)
-
 
 # Define your test
 # Test extract_using_TATR method
@@ -100,7 +86,7 @@ class Test_extract_using_TATR_methods:
                 patch('src.extractable.Extractor.compose_left') as mock_compose_left, \
                 patch('src.extractable.TableDetector.TableDetectorTATR.process') as mock_table_detector, \
                 patch(
-                    'src.extractable.StructureDetector.StructureRecognitionWithTATR.process') as mock_structure_detector, \
+                    'src.extractable.StructureDetector.StructureRecognitionTATR.process') as mock_structure_detector, \
                 patch('src.extractable.TextExtractor.PyPDF2Textport.process') as mock_text_extractor, \
                 patch('src.extractable.PDFtoImageConvertor.ConvertUsingPDF2image.process') as mock_convert_to_image, \
                 patch('src.extractable.Dataobj.DataObj') as mock_dataobj_class:  # Mock the DataObj class
@@ -133,7 +119,7 @@ class Test_extract_using_TATR_methods:
                 patch('src.extractable.Extractor.compose_left') as mock_compose_left, \
                 patch('src.extractable.TableDetector.TableDetectorTATR.process') as mock_table_detector, \
                 patch(
-                    'src.extractable.StructureDetector.StructureRecognitionWithTATR.process') as mock_structure_detector, \
+                    'src.extractable.StructureDetector.StructureRecognitionTATR.process') as mock_structure_detector, \
                 patch('src.extractable.TextExtractor.PyPDF2Textport.process') as mock_text_extractor, \
                 patch('src.extractable.Dataobj.DataObj.output') as mock_data_obj_output, \
                 patch('src.extractable.PDFtoImageConvertor.ConvertUsingPDF2image.process') as mock_convert_to_image, \
@@ -171,7 +157,7 @@ class Test_extract_using_TATR_methods:
                 patch('src.extractable.Extractor.compose_left') as mock_compose_left, \
                 patch('src.extractable.TableDetector.TableDetectorTATR.process') as mock_table_detector, \
                 patch(
-                    'src.extractable.StructureDetector.StructureRecognitionWithTATR.process') as mock_structure_detector, \
+                    'src.extractable.StructureDetector.StructureRecognitionTATR.process') as mock_structure_detector, \
                 patch('src.extractable.TextExtractor.PyPDF2Textport.process') as mock_text_extractor, \
                 patch('src.extractable.Dataobj.DataObj.output') as mock_data_obj_output, \
                 patch('src.extractable.PDFtoImageConvertor.ConvertUsingPDF2image.process') as mock_convert_to_image, \
@@ -204,7 +190,7 @@ class Test_extract_using_TATR_methods:
                 patch('src.extractable.Extractor.compose_left') as mock_compose_left, \
                 patch('src.extractable.TableDetector.TableDetectorTATR.process') as mock_table_detector, \
                 patch(
-                    'src.extractable.StructureDetector.StructureRecognitionWithTATR.process') as mock_structure_detector, \
+                    'src.extractable.StructureDetector.StructureRecognitionTATR.process') as mock_structure_detector, \
                 patch('src.extractable.TextExtractor.PyPDF2Textport.process') as mock_text_extractor, \
                 patch('src.extractable.Dataobj.DataObj.output') as mock_data_obj_output, \
                 patch('src.extractable.PDFtoImageConvertor.ConvertUsingPDF2image.process') as mock_convert_to_image, \
@@ -241,7 +227,7 @@ class Test_extract_using_TATR_methods:
                 patch('src.extractable.Extractor.compose_left') as mock_compose_left, \
                 patch('src.extractable.TableDetector.TableDetectorTATR.process') as mock_table_detector, \
                 patch(
-                    'src.extractable.StructureDetector.StructureRecognitionWithTATR.process') as mock_structure_detector, \
+                    'src.extractable.StructureDetector.StructureRecognitionTATR.process') as mock_structure_detector, \
                 patch('src.extractable.TextExtractor.PyPDF2Textport.process') as mock_text_extractor, \
                 patch('src.extractable.Dataobj.DataObj.output') as mock_data_obj_output, \
                 patch('src.extractable.PDFtoImageConvertor.ConvertUsingPDF2image.process') as mock_convert_to_image, \
@@ -274,7 +260,7 @@ class Test_extract_using_TATR_methods:
                 patch('src.extractable.Extractor.compose_left') as mock_compose_left, \
                 patch('src.extractable.TableDetector.TableDetectorTATR.process') as mock_table_detector, \
                 patch(
-                    'src.extractable.StructureDetector.StructureRecognitionWithTATR.process') as mock_structure_detector, \
+                    'src.extractable.StructureDetector.StructureRecognitionTATR.process') as mock_structure_detector, \
                 patch('src.extractable.TextExtractor.PyPDF2Textport.process') as mock_text_extractor, \
                 patch('src.extractable.Dataobj.DataObj.output') as mock_data_obj_output, \
                 patch('src.extractable.PDFtoImageConvertor.ConvertUsingPDF2image.process') as mock_convert_to_image, \

@@ -8,13 +8,22 @@ This created the importance of this manual testing manual.
 
 If you want to run tests on Windows you can only do this in the following way. in terminal:
 
-for the unittests:
- 
+run all tests:
+```commandline 
+pdm run pytest 
+```
+
+for only the unittests:
 ```commandline 
 pdm run pytest -v -k tests/Test_Extractable_Unittests/
 ```
 
-and for the e2e tests:
+and for only the Component tests:
+```commandline 
+pdm run pytest -v -k tests/Test_Extractable_Components/
+```
+
+and for only the e2e tests:
 ```commandline 
 
 pdm run pytest -v -k tests/Test_e2e_blackbox/
@@ -39,13 +48,24 @@ source myenv/bin/activate
 ````
 
 ###Run tests:
+All tests:
+````commandline
+pytest tests/*
+````
 
-Unittests:
+Unittests only:
 ````commandline
 pytest tests/Test_Extractable_Unittests/*
 ````
 
-and for the e2e tests:
+Component tests only:
+````commandline
+pytest tests/Test_Extractable_Components/*
+````
+
+e2e tests only:
 ````commandline
 pytest tests/Test_e2e_blackbox/*
 ````
+
+
