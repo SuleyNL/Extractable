@@ -11,7 +11,7 @@ build-backend = "pdm.backend"
 name = "extractable"
 
 
-version = "1.0.1"
+version = "1.0.2"
 
 
 description = "Extract tables from PDFs"
