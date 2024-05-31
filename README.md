@@ -104,4 +104,3 @@ This software is free to use, and I encourage anyone who finds it useful to use 
 
 ## Acknowledgments
 We would like to thank Microsoft for developing the TATR library and making it open-source. We have built upon their work to create Extractable, and we are grateful for their contribution to the open-source community.
-
