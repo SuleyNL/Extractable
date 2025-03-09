@@ -1,3 +1,14 @@
+[![Python]](https://www.python.org "Python")
+
+[Python]: https://img.shields.io/badge/Python-3776AB?style=for-the-badge&labelColor=FFD43B&logoColor=3776AB&logo=python
+
+[![PyPI Downloads](https://static.pepy.tech/badge/extractable)](https://pepy.tech/projects/extractable)
+<a href="https://project-types.github.io/#stadium">
+  <img src="https://img.shields.io/badge/project%20type-stadium-orange" alt="Stadium Badge"/>
+</a> 
+
+
+
 # Extractable: Table Extraction from PDFs using Machine Learning
 
 Extractable is an open-source library designed to bring the power of state-of-the-art machine learning to everyone. Our goal is to make it easy for anyone to extract tables from PDFs, regardless of their technical expertise. Extractable is built on top of Microsoft's Open Source Table Transformer (TATR) library, which we have expanded to include a variety of new features and improvements.
